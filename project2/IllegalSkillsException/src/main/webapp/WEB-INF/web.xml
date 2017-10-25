@@ -9,4 +9,17 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>MasterServlet</display-name>
+    <servlet-name>MasterServlet</servlet-name>
+    <servlet-class>com.revature.servlet.MasterServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MasterServlet</servlet-name>
+    <url-pattern>/MasterServlet</url-pattern>
+    <url-pattern>/welcome</url-pattern>
+    <url-pattern>/login</url-pattern>
+    <url-pattern>/enter</url-pattern>
+  </servlet-mapping>
 </web-app>
