@@ -14,4 +14,11 @@ public class HomepageCtrl {
 	public String homeNavbar() {
 		return "/features/navBar/homepageNavBar.html";
 	}
+	
+	@RequestMapping("/")
+	public String index() {
+		return "/features/form/index.html";
+	}
+	
+	
 }

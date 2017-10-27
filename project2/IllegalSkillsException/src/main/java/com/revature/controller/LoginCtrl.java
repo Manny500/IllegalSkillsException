@@ -7,34 +7,40 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import com.revature.domain.TV2User;
-import com.revature.service.Service;
-
+import com.revature.service.AppService;
+@Controller
 public class LoginCtrl {
+	@Autowired
+	private AppService service;
 	
-//	Service service = new Service();
-//
-//	public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//
-//		// return a user so we can store it in a session
-//		TV2User clientUser = service.validateLogin(request.getParameter("username"), request.getParameter("password"));
-//
-//		if (clientUser != null) {
-//
-//			// store the valid user into the session
-//			HttpSession session = request.getSession(); // create one or get existing
-//			session.setAttribute("user", clientUser);
-//
-//			request.getRequestDispatcher("homePage.html").forward(request, response);
-//
-//		} else {
-//
-//			// send error
-//
-//			// refresh page
-//			request.getRequestDispatcher("login.html").forward(request, response);
-//
-//		}
-//	}
-
+	
+	
+	@RequestMapping("/login")
+	public String login() {
+		TV2User us = new TV2User();
+		
+		us.setUserName("j");
+		us.setPassword("123123123131");
+		
+		TV2User clientUser = service.validateLogin(us);
+		
+		System.out.println(clientUser);
+		
+		if(clientUser != null) {
+			System.out.println("user is not null");
+			return "/features/home/home.html";
+		}else {
+			System.out.println("user IS null");
+			return "/features/form/login.html";
+		}
+		
+		
+		
+	}
+	
 }

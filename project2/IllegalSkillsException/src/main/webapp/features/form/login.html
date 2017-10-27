@@ -1,10 +1,63 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
-
-</body>
+	<head>
+	
+		<meta charset="ISO-8859-1">
+		
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" data-integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" data-crossorigin="anonymous">
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" data-integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" data-crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" data-integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" data-crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" data-integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" data-crossorigin="anonymous"></script>
+		
+		<title>Login Page</title>
+	</head>
+	
+	<body>
+	
+		<div class="container">
+			<!-- NAVBAR START -->
+			<nav id ="nav" class="navbar navbar-expand-lg navbar-light bg-light navbar-fixed-top" data-spy="affix">
+			 
+			  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+			   
+			    <span class="navbar-toggler-icon"></span>
+			 
+			  </button>
+			  
+			  <a class="navbar-brand" href="welcome">TrelloV2</a>
+	
+			</nav>
+			<!-- NAVBAR END -->
+			
+			<br>
+			<br>
+						
+			<form method="POST" action="login">
+			
+			  <div class="form-group col-4 mx-auto">
+			  
+			    <label for="username">Username</label>
+			    <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+			    <small id="userHelp" class="form-text text-muted">TrelloV2 will never share your Information with anyone else.</small>
+			  
+			  </div>
+			  
+			  <div class="form-group col-4 mx-auto">
+			  
+			    <label for="password">Password</label>
+			    <input type="password" class="form-control" id="password" name="password" placeholder="Password"><br>
+			 
+			  </div>
+			  
+			  <div class="form-inline justify-content-center">
+			  	
+			  	<button type="submit" class="btn btn-primary">Submit</button>
+			  	
+			  </div>
+			  
+			</form>
+		
+		</div>
+		
+	</body>
 </html>
