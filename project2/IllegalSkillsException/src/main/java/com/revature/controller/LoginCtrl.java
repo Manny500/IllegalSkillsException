@@ -12,29 +12,29 @@ import com.revature.service.Service;
 
 public class LoginCtrl {
 	
-	Service service = new Service();
-
-	public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		// return a user so we can store it in a session
-		TV2User clientUser = service.validateLogin(request.getParameter("username"), request.getParameter("password"));
-
-		if (clientUser != null) {
-
-			// store the valid user into the session
-			HttpSession session = request.getSession(); // create one or get existing
-			session.setAttribute("user", clientUser);
-
-			request.getRequestDispatcher("homePage.html").forward(request, response);
-
-		} else {
-
-			// send error
-
-			// refresh page
-			request.getRequestDispatcher("login.html").forward(request, response);
-
-		}
-	}
+//	Service service = new Service();
+//
+//	public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//
+//		// return a user so we can store it in a session
+//		TV2User clientUser = service.validateLogin(request.getParameter("username"), request.getParameter("password"));
+//
+//		if (clientUser != null) {
+//
+//			// store the valid user into the session
+//			HttpSession session = request.getSession(); // create one or get existing
+//			session.setAttribute("user", clientUser);
+//
+//			request.getRequestDispatcher("homePage.html").forward(request, response);
+//
+//		} else {
+//
+//			// send error
+//
+//			// refresh page
+//			request.getRequestDispatcher("login.html").forward(request, response);
+//
+//		}
+//	}
 
 }
