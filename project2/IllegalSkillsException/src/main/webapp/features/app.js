@@ -1,25 +1,27 @@
 /**
  * 
  */
-window.onload = function(){
-	loadHomepageNavbar();
+window.onload = function() {
+	
 }
-//function loadHomepage(){
-//	console.log("hello");
-//	var xhr = new XMLHttpRequest();
-//	
-//	xhr.onreadystatechange = function(){
-//		if(xhr.readyState == 4 && xhr.status == 200){
-//			document.getElementById("view").innerHTML = xhr.responseText;
-//			loadHomepageNavbar();
-//			
-//		}
-//	}
-//	xhr.open("GET", "homepage",true);
-//	xhr.send();
-//}
 
-//
+var app = angular.module("myHome", [ "ngRoute" ]);
+
+app.config(function($routeProvider){
+	$routeProvider.when("/",{
+		templateUrl : "home.html"
+	});
+});
+
+
+
+app.controller('TestCtrl', function() {
+
+	
+});
+
+
+
 function loadHomepageNavbar(){
 	console.log("hello")
 	var xhr = new XMLHttpRequest();
@@ -33,10 +35,11 @@ function loadHomepageNavbar(){
 		}
 	}
 	
-	xhr.open("GET", "/IllegalSkillsException/features/navBar/homepageNavBar.html", true);
+	xhr.open("GET", "../navBar/ajaxNavbar", true);
 	xhr.send();
 }
 
 function loadBoardView(){
 	console.log('testing board view');
 }
+
