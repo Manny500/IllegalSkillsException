@@ -2,19 +2,42 @@ package com.revature.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+
+@Entity
+@Table(name="TV2_USER")
 public class TV2User implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private int userId;
-	private String firstName;
-	private String lastName;
-	private String userName;
-	private String password;
-	private int roleType;
-	private String email;
+	
+	@Id
+    @Column(name="TV2_ID")
+    private int userId;
+    
+    @Column(name="TV2_FN")
+    private String firstName;
+    
+    @Column(name="TV2_LS")
+    private String lastName;
+    
+    @Column(name="TV2_USERNAME")
+    private String userName;
+    
+    @Column(name="TV2_PASSWORD")
+    private String password;
+    
+    @Column(name="RT_ID")
+    private int roleType;
+    
+    @Column(name="TV2_EMAIL")
+    private String email;
 	
 	public TV2User() {
 		

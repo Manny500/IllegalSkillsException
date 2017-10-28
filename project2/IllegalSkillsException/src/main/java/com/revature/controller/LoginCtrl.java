@@ -7,34 +7,55 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
 import com.revature.domain.TV2User;
-import com.revature.service.Service;
-
+import com.revature.service.AppService;
+@Controller
 public class LoginCtrl {
+	@Autowired
+	private AppService service;
 	
-	Service service = new Service();
-
-	public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		// return a user so we can store it in a session
-		TV2User clientUser = service.validateLogin(request.getParameter("username"), request.getParameter("password"));
-
-		if (clientUser != null) {
-
-			// store the valid user into the session
-			HttpSession session = request.getSession(); // create one or get existing
-			session.setAttribute("user", clientUser);
-
-			request.getRequestDispatcher("homePage.html").forward(request, response);
-
-		} else {
-
-			// send error
-
-			// refresh page
-			request.getRequestDispatcher("login.html").forward(request, response);
-
-		}
+	
+	@RequestMapping("/login")
+	public String login1() {
+		return "/features/form/login.html";
 	}
-
+	
+	
+	
+	
+	
+	@RequestMapping(value="/login", method=RequestMethod.POST)
+	public String login2(TV2User user){
+		
+//		TV2User temp = new TV2User();
+//		
+//		temp.setUserName(request.getParameter("username"));
+//		temp.setPassword(request.getParameter("password"));
+		
+		System.out.println("user: " +user);
+	
+		
+		TV2User clientUser = service.validateLogin(user);
+		
+		System.out.println("clientuser: "+clientUser);
+		
+		if(clientUser != null) {
+			System.out.println("user is not null");
+			return "redirect: features/home/homePage.html";
+		}else {
+			System.out.println("user IS null");
+			return "redirect: features/form/login.html";
+		}
+		
+		
+		
+	}
+	
 }
