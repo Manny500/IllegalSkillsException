@@ -1,10 +1,14 @@
 package com.revature.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -39,6 +43,10 @@ public class TV2User implements Serializable {
     @Column(name="TV2_EMAIL")
     private String email;
 	
+    @OneToMany(mappedBy = "boardUser", fetch = FetchType.EAGER)
+    private Set<Board> boards = new HashSet<Board>();
+    
+    
 	public TV2User() {
 		
 	}
@@ -114,11 +122,24 @@ public class TV2User implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	
+	
+
+	public Set<Board> getBoards() {
+		return boards;
+	}
+
+	public void setBoards(Set<Board> boards) {
+		this.boards = boards;
+	}
 
 	@Override
 	public String toString() {
 		return "TV2User [userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", userName="
-				+ userName + ", password=" + password + ", roleType=" + roleType + ", email=" + email + "]";
+				+ userName + ", password=" + password + ", roleType=" + roleType + ", email=" + email + ", boards="
+				+ boards + "]";
 	}
+
+
 
 }
