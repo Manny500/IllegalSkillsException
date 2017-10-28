@@ -23,9 +23,11 @@ public class AppService {
 	
 	public TV2User validateLogin(TV2User us) {
 		
+		System.out.println("calling dao method");
+		
 		user = dao.getUserByUsername(us);
 		
-		System.out.println(user);
+		System.out.println("appservice: " +user);
 		
 		if (user == null) {
 

@@ -133,12 +133,12 @@ public class TV2User implements Serializable {
 		this.boards = boards;
 	}
 
-	@Override
-	public String toString() {
-		return "TV2User [userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", userName="
-				+ userName + ", password=" + password + ", roleType=" + roleType + ", email=" + email + ", boards="
-				+ boards + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "TV2User [userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", userName="
+//				+ userName + ", password=" + password + ", roleType=" + roleType + ", email=" + email + ", boards="
+//				+ boards + "]";
+//	}
 
 
 

@@ -26,23 +26,18 @@ public class Card implements Serializable{
 	@Column(name="C_ID")
 	private int cId;
 	
-	@Id
-	@Column(name="l_ID")
-	private int lId;
+//	@Column(name="L_ID")
+//	private int lId;
 	
-	@Id
 	@Column(name="C_VERIFY")
 	private int cVerify;
 	
-	@Id
 	@Column(name="C_WORTH")
 	private int cWorth;
 	
-	@Id
 	@Column(name="C_TITLE")
-	private  String cTitle;
+	private String cTitle;
 	
-	@Id
 	@Column(name="C_DESCRIPTION")
 	private String cDescription;
 	
@@ -51,12 +46,31 @@ public class Card implements Serializable{
 	@JoinColumn(name="L_ID")
 	private Lane cardLane;
 	
-	@OneToMany(mappedBy = "TaskCard", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "taskCard", fetch = FetchType.EAGER)
 	Set<Task> tasks = new HashSet<Task>();
 
 	public Card() {
 		super();
 	}
+
+
+
+
+
+	public Card(int cId, int cVerify, int cWorth, String cTitle, String cDescription, Lane cardLane, Set<Task> tasks) {
+		super();
+		this.cId = cId;
+		this.cVerify = cVerify;
+		this.cWorth = cWorth;
+		this.cTitle = cTitle;
+		this.cDescription = cDescription;
+		this.cardLane = cardLane;
+		this.tasks = tasks;
+	}
+
+
+
+
 
 	public int getcId() {
 		return cId;
@@ -66,13 +80,6 @@ public class Card implements Serializable{
 		this.cId = cId;
 	}
 
-	public int getlId() {
-		return lId;
-	}
-
-	public void setlId(int lId) {
-		this.lId = lId;
-	}
 
 	public int getcVerify() {
 		return cVerify;
@@ -122,12 +129,16 @@ public class Card implements Serializable{
 		this.tasks = tasks;
 	}
 
-	@Override
-	public String toString() {
-		return "Card [cId=" + cId + ", lId=" + lId + ", cVerify=" + cVerify + ", cWorth=" + cWorth + ", cTitle="
-				+ cTitle + ", cDescription=" + cDescription + ", cardLane=" + cardLane + ", tasks=" + tasks + "]";
-	}
-	
+
+
+
+
+//	@Override
+//	public String toString() {
+//		return "Card [cId=" + cId + ", cVerify=" + cVerify + ", cWorth=" + cWorth + ", cTitle=" + cTitle
+//				+ ", cDescription=" + cDescription + ", cardLane=" + cardLane + ", tasks=" + tasks + "]";
+//	}
+
 	
 	
 	

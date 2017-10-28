@@ -27,11 +27,9 @@ public class Lane implements Serializable{
 	@Column(name="L_ID")
 	private int lId;
 	
-	@Id
-	@Column(name="B_ID")
-	private int bId;
+//	@Column(name="B_ID")
+//	private int bId;
 	
-	@Id
 	@Column(name="L_TITLE")
 	private String lTitle;
 	
@@ -47,14 +45,15 @@ public class Lane implements Serializable{
 		super();
 	}
 
-	public Lane(int lId, int bId, String lTitle, Board laneBoard, Set<Card> cards) {
+
+	public Lane(int lId, String lTitle, Board laneBoard, Set<Card> cards) {
 		super();
 		this.lId = lId;
-		this.bId = bId;
 		this.lTitle = lTitle;
 		this.laneBoard = laneBoard;
 		Cards = cards;
 	}
+
 
 	public int getlId() {
 		return lId;
@@ -62,14 +61,6 @@ public class Lane implements Serializable{
 
 	public void setlId(int lId) {
 		this.lId = lId;
-	}
-
-	public int getbId() {
-		return bId;
-	}
-
-	public void setbId(int bId) {
-		this.bId = bId;
 	}
 
 	public String getlTitle() {
@@ -96,11 +87,13 @@ public class Lane implements Serializable{
 		Cards = cards;
 	}
 
-	@Override
-	public String toString() {
-		return "Lane [lId=" + lId + ", bId=" + bId + ", lTitle=" + lTitle + ", laneBoard=" + laneBoard + ", Cards="
-				+ Cards + "]";
-	}
+
+//	@Override
+//	public String toString() {
+//		return "Lane [lId=" + lId + ", lTitle=" + lTitle + ", laneBoard=" + laneBoard + ", Cards=" + Cards + "]";
+//	}
+
+
 	
 	
 }

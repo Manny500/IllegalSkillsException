@@ -58,7 +58,11 @@ public class IllegalDaoImp implements IllegalDao {
 	
 	public TV2User getUserByUsername(TV2User user) {
 		Session session = sessionFactory.getCurrentSession();
-		return (TV2User) session.get(TV2User.class, user.getUserName());
+		Criteria crit = session.createCriteria(TV2User.class);
+		crit.add(Restrictions.like("userName", user.getUserName()));
+//		return (TV2User) session.get(TV2User.class, user.getUserId());
+		System.out.println("TV2 DAOIMPL");
+		return (TV2User) crit.uniqueResult();
 	}
 
 	@Override

@@ -27,15 +27,12 @@ public class Board implements Serializable{
 	@Column(name="B_ID")
 	private int bId;
 	
-	@Id
-	@Column(name="TV2_ID")
-	private int tv2Id;
+//	@Column(name="TV2_ID")
+//	private int tv2Id;
 	
-	@Id
 	@Column(name="B_TITLE")
 	private String bTitle;
 	
-	@Id
 	@Column(name="TOTAL")
 	private int total;
 	
@@ -50,31 +47,41 @@ public class Board implements Serializable{
 		super();
 	}
 
-	public Board(int bId, int tv2Id, String bTitle, int total, TV2User boardUser, Set<Lane> lanes) {
+//	public Board(int bId, int tv2Id, String bTitle, int total, TV2User boardUser, Set<Lane> lanes) {
+//		super();
+//		this.bId = bId;
+//		this.tv2Id = tv2Id;
+//		this.bTitle = bTitle;
+//		this.total = total;
+//		this.boardUser = boardUser;
+//		this.lanes = lanes;
+//	}
+
+	
+	public int getbId() {
+		return bId;
+	}
+
+	public Board(int bId, String bTitle, int total, TV2User boardUser, Set<Lane> lanes) {
 		super();
 		this.bId = bId;
-		this.tv2Id = tv2Id;
 		this.bTitle = bTitle;
 		this.total = total;
 		this.boardUser = boardUser;
 		this.lanes = lanes;
 	}
 
-	public int getbId() {
-		return bId;
-	}
-
 	public void setbId(int bId) {
 		this.bId = bId;
 	}
 
-	public int getTv2Id() {
-		return tv2Id;
-	}
-
-	public void setTv2Id(int tv2Id) {
-		this.tv2Id = tv2Id;
-	}
+//	public int getTv2Id() {
+//		return tv2Id;
+//	}
+//
+//	public void setTv2Id(int tv2Id) {
+//		this.tv2Id = tv2Id;
+//	}
 
 	public String getbTitle() {
 		return bTitle;
@@ -108,11 +115,18 @@ public class Board implements Serializable{
 		this.lanes = lanes;
 	}
 
-	@Override
-	public String toString() {
-		return "Board [bId=" + bId + ", tv2Id=" + tv2Id + ", bTitle=" + bTitle + ", total=" + total + ", boardUser="
-				+ boardUser + ", lanes=" + lanes + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "Board [bId=" + bId + ", bTitle=" + bTitle + ", total=" + total + ", boardUser=" + boardUser + ", lanes="
+//				+ lanes + "]";
+//	}
+
+//	@Override
+//	public String toString() {
+//		return "Board [bId=" + bId + ", tv2Id=" + tv2Id + ", bTitle=" + bTitle + ", total=" + total + ", boardUser="
+//				+ boardUser + ", lanes=" + lanes + "]";
+//	}
+	
 	
 	
 }

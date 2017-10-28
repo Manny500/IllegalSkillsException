@@ -21,15 +21,12 @@ public class Task implements Serializable{
 	@Column(name="T_ID")
 	private int tId;
 
-	@Id
-	@Column(name="C_ID")
-	private int cId;
+//	@Column(name="C_ID")
+//	private int cId;
 
-	@Id
 	@Column(name="T_COMPLETE")
 	private int tComplete;
 
-	@Id
 	@Column(name="T_INFO")
 	private String tInfo;
 	
@@ -41,14 +38,17 @@ public class Task implements Serializable{
 		super();
 	}
 
-	public Task(int tId, int cId, int tComplete, String tInfo, Card taskCard) {
+	
+
+	public Task(int tId, int tComplete, String tInfo, Card taskCard) {
 		super();
 		this.tId = tId;
-		this.cId = cId;
 		this.tComplete = tComplete;
 		this.tInfo = tInfo;
 		this.taskCard = taskCard;
 	}
+
+
 
 	public int gettId() {
 		return tId;
@@ -58,13 +58,6 @@ public class Task implements Serializable{
 		this.tId = tId;
 	}
 
-	public int getcId() {
-		return cId;
-	}
-
-	public void setcId(int cId) {
-		this.cId = cId;
-	}
 
 	public int gettComplete() {
 		return tComplete;
@@ -90,11 +83,12 @@ public class Task implements Serializable{
 		this.taskCard = taskCard;
 	}
 
-	@Override
-	public String toString() {
-		return "Task [tId=" + tId + ", cId=" + cId + ", tComplete=" + tComplete + ", tInfo=" + tInfo + ", taskCard="
-				+ taskCard + "]";
-	}
+
+
+//	@Override
+//	public String toString() {
+//		return "Task [tId=" + tId + ", tComplete=" + tComplete + ", tInfo=" + tInfo + ", taskCard=" + taskCard + "]";
+//	}
+
 	
-    
 }
