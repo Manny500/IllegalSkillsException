@@ -1,12 +1,15 @@
 package com.revature.controller;
 
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+@Controller
 public class NavbarCtrl {
-
-	@RequestMapping(value = "/ajaxNavbar", consumes = MediaType.TEXT_HTML_VALUE, produces = MediaType.TEXT_HTML_VALUE)
-	public String homeNavbar() {
-		return "features/navBar/homepageNavBar.html";
+	@RequestMapping("/ajaxNavbar")
+	public String navbar(){
+		return "/static/features/navBar/welcomeNavBar.html";
 	}
+	
+
 }
