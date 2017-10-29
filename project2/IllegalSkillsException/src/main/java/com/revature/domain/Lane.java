@@ -13,38 +13,32 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
 @Entity
-@Table(name="LANE")
-public class Lane implements Serializable{
-	
+@Table(name = "LANE")
+public class Lane implements Serializable {
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="L_ID")
+	@Column(name = "L_ID")
 	private int lId;
-	
-//	@Column(name="B_ID")
-//	private int bId;
-	
-	@Column(name="L_TITLE")
+
+	@Column(name = "L_TITLE")
 	private String lTitle;
-	
-	
+
 	@ManyToOne
-	@JoinColumn(name="B_ID")
+	@JoinColumn(name = "B_ID")
 	private Board laneBoard;
-	
+
 	@OneToMany(mappedBy = "cardLane", fetch = FetchType.EAGER)
 	Set<Card> Cards = new HashSet<Card>();
 
 	public Lane() {
 		super();
 	}
-
 
 	public Lane(int lId, String lTitle, Board laneBoard, Set<Card> cards) {
 		super();
@@ -53,7 +47,6 @@ public class Lane implements Serializable{
 		this.laneBoard = laneBoard;
 		Cards = cards;
 	}
-
 
 	public int getlId() {
 		return lId;
@@ -87,13 +80,4 @@ public class Lane implements Serializable{
 		Cards = cards;
 	}
 
-
-//	@Override
-//	public String toString() {
-//		return "Lane [lId=" + lId + ", lTitle=" + lTitle + ", laneBoard=" + laneBoard + ", Cards=" + Cards + "]";
-//	}
-
-
-	
-	
 }

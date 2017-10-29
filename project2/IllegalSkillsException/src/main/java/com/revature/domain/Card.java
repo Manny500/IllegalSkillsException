@@ -14,48 +14,40 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="CARD")
-public class Card implements Serializable{
-	
+@Table(name = "CARD")
+public class Card implements Serializable {
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="C_ID")
+	@Column(name = "C_ID")
 	private int cId;
-	
-//	@Column(name="L_ID")
-//	private int lId;
-	
-	@Column(name="C_VERIFY")
+
+	@Column(name = "C_VERIFY")
 	private int cVerify;
-	
-	@Column(name="C_WORTH")
+
+	@Column(name = "C_WORTH")
 	private int cWorth;
-	
-	@Column(name="C_TITLE")
+
+	@Column(name = "C_TITLE")
 	private String cTitle;
-	
-	@Column(name="C_DESCRIPTION")
+
+	@Column(name = "C_DESCRIPTION")
 	private String cDescription;
-	
-	
+
 	@ManyToOne
-	@JoinColumn(name="L_ID")
+	@JoinColumn(name = "L_ID")
 	private Lane cardLane;
-	
+
 	@OneToMany(mappedBy = "taskCard", fetch = FetchType.EAGER)
 	Set<Task> tasks = new HashSet<Task>();
 
 	public Card() {
 		super();
 	}
-
-
-
-
 
 	public Card(int cId, int cVerify, int cWorth, String cTitle, String cDescription, Lane cardLane, Set<Task> tasks) {
 		super();
@@ -68,10 +60,6 @@ public class Card implements Serializable{
 		this.tasks = tasks;
 	}
 
-
-
-
-
 	public int getcId() {
 		return cId;
 	}
@@ -79,7 +67,6 @@ public class Card implements Serializable{
 	public void setcId(int cId) {
 		this.cId = cId;
 	}
-
 
 	public int getcVerify() {
 		return cVerify;
@@ -129,17 +116,4 @@ public class Card implements Serializable{
 		this.tasks = tasks;
 	}
 
-
-
-
-
-//	@Override
-//	public String toString() {
-//		return "Card [cId=" + cId + ", cVerify=" + cVerify + ", cWorth=" + cWorth + ", cTitle=" + cTitle
-//				+ ", cDescription=" + cDescription + ", cardLane=" + cardLane + ", tasks=" + tasks + "]";
-//	}
-
-	
-	
-	
 }
