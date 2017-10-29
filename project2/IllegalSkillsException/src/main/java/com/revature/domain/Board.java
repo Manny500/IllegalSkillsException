@@ -13,33 +13,29 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
 @Entity
-@Table(name="BOARD")
-public class Board implements Serializable{
-	
+@Table(name = "BOARD")
+public class Board implements Serializable {
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="B_ID")
+	@Column(name = "B_ID")
 	private int bId;
-	
-//	@Column(name="TV2_ID")
-//	private int tv2Id;
-	
-	@Column(name="B_TITLE")
+
+	@Column(name = "B_TITLE")
 	private String bTitle;
-	
-	@Column(name="TOTAL")
+
+	@Column(name = "TOTAL")
 	private int total;
-	
+
 	@ManyToOne
-	@JoinColumn(name="TV2_ID")
+	@JoinColumn(name = "TV2_ID")
 	private TV2User boardUser;
-	
+
 	@OneToMany(mappedBy = "laneBoard", fetch = FetchType.EAGER)
 	Set<Lane> lanes = new HashSet<Lane>();
 
@@ -47,17 +43,17 @@ public class Board implements Serializable{
 		super();
 	}
 
-//	public Board(int bId, int tv2Id, String bTitle, int total, TV2User boardUser, Set<Lane> lanes) {
-//		super();
-//		this.bId = bId;
-//		this.tv2Id = tv2Id;
-//		this.bTitle = bTitle;
-//		this.total = total;
-//		this.boardUser = boardUser;
-//		this.lanes = lanes;
-//	}
+	// public Board(int bId, int tv2Id, String bTitle, int total, TV2User boardUser,
+	// Set<Lane> lanes) {
+	// super();
+	// this.bId = bId;
+	// this.tv2Id = tv2Id;
+	// this.bTitle = bTitle;
+	// this.total = total;
+	// this.boardUser = boardUser;
+	// this.lanes = lanes;
+	// }
 
-	
 	public int getbId() {
 		return bId;
 	}
@@ -74,14 +70,6 @@ public class Board implements Serializable{
 	public void setbId(int bId) {
 		this.bId = bId;
 	}
-
-//	public int getTv2Id() {
-//		return tv2Id;
-//	}
-//
-//	public void setTv2Id(int tv2Id) {
-//		this.tv2Id = tv2Id;
-//	}
 
 	public String getbTitle() {
 		return bTitle;
@@ -115,18 +103,4 @@ public class Board implements Serializable{
 		this.lanes = lanes;
 	}
 
-//	@Override
-//	public String toString() {
-//		return "Board [bId=" + bId + ", bTitle=" + bTitle + ", total=" + total + ", boardUser=" + boardUser + ", lanes="
-//				+ lanes + "]";
-//	}
-
-//	@Override
-//	public String toString() {
-//		return "Board [bId=" + bId + ", tv2Id=" + tv2Id + ", bTitle=" + bTitle + ", total=" + total + ", boardUser="
-//				+ boardUser + ", lanes=" + lanes + "]";
-//	}
-	
-	
-	
 }

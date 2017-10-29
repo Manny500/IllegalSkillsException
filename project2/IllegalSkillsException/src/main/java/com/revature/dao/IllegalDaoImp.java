@@ -1,6 +1,5 @@
 package com.revature.dao;
 
-
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,7 +12,6 @@ import com.revature.domain.Card;
 import com.revature.domain.Lane;
 import com.revature.domain.TV2User;
 import com.revature.domain.Task;
-
 
 @Repository
 public class IllegalDaoImp implements IllegalDao {
@@ -29,25 +27,25 @@ public class IllegalDaoImp implements IllegalDao {
 	@Override
 	public void createBoard(Board board) {
 		Session session = sessionFactory.getCurrentSession();
-		session.save(board);		
+		session.save(board);
 	}
 
 	@Override
 	public void createLane(Lane lane) {
 		Session session = sessionFactory.getCurrentSession();
-		session.save(lane);		
+		session.save(lane);
 	}
 
 	@Override
 	public void createCard(Card card) {
 		Session session = sessionFactory.getCurrentSession();
-		session.save(card);		
+		session.save(card);
 	}
 
 	@Override
 	public void createTask(Task task) {
 		Session session = sessionFactory.getCurrentSession();
-		session.save(task);		
+		session.save(task);
 	}
 
 	@Override
@@ -55,36 +53,37 @@ public class IllegalDaoImp implements IllegalDao {
 		Session session = sessionFactory.getCurrentSession();
 		return (TV2User) session.get(TV2User.class, user.getUserId());
 	}
-	
+
 	public TV2User getUserByUsername(TV2User user) {
 		Session session = sessionFactory.getCurrentSession();
 		Criteria crit = session.createCriteria(TV2User.class);
 		crit.add(Restrictions.like("userName", user.getUserName()));
-//		return (TV2User) session.get(TV2User.class, user.getUserId());
-		System.out.println("TV2 DAOIMPL");
 		return (TV2User) crit.uniqueResult();
 	}
 
 	@Override
 	public Board getBoard(Board board) {
 		Session session = sessionFactory.getCurrentSession();
-		return (Board) session.get(Board.class, board.getbId());	}
+		return (Board) session.get(Board.class, board.getbId());
+	}
 
 	@Override
 	public Lane getLane(Lane lane) {
 		Session session = sessionFactory.getCurrentSession();
-		return (Lane) session.get(Lane.class, lane.getlId());	}
+		return (Lane) session.get(Lane.class, lane.getlId());
+	}
 
 	@Override
 	public Card getCard(Card card) {
 		Session session = sessionFactory.getCurrentSession();
-		return (Card) session.get(Card.class, card.getcId());	}
+		return (Card) session.get(Card.class, card.getcId());
+	}
 
 	@Override
 	public Task getTask(Task task) {
 		Session session = sessionFactory.getCurrentSession();
 		return (Task) session.get(Task.class, task.gettId());
-		}
+	}
 
 	@Override
 	public void updateUser(TV2User user) {
@@ -95,7 +94,7 @@ public class IllegalDaoImp implements IllegalDao {
 	@Override
 	public void updateBoard(Board board) {
 		Session session = sessionFactory.getCurrentSession();
-		session.update(board);		
+		session.update(board);
 	}
 
 	@Override
@@ -107,47 +106,45 @@ public class IllegalDaoImp implements IllegalDao {
 	@Override
 	public void updateCard(Card card) {
 		Session session = sessionFactory.getCurrentSession();
-		session.update(card);		
+		session.update(card);
 	}
 
 	@Override
 	public void updateTask(Task task) {
 		Session session = sessionFactory.getCurrentSession();
-		session.update(task);		
+		session.update(task);
 	}
 
 	@Override
 	public void deleteUser(TV2User user) {
 		Session session = sessionFactory.getCurrentSession();
 		session.delete(user);
-		
+
 	}
 
 	@Override
 	public void deleteBoard(Board board) {
 		Session session = sessionFactory.getCurrentSession();
-		session.delete(board);		
+		session.delete(board);
 	}
 
 	@Override
 	public void deleteLane(Lane lane) {
 		Session session = sessionFactory.getCurrentSession();
-		session.delete(lane); 
-		
+		session.delete(lane);
+
 	}
 
 	@Override
 	public void deleteCard(Card card) {
 		Session session = sessionFactory.getCurrentSession();
-		session.delete(card);		
+		session.delete(card);
 	}
 
 	@Override
 	public void deleteTask(Task task) {
 		Session session = sessionFactory.getCurrentSession();
-		session.delete(task);		
+		session.delete(task);
 	}
-
-	
 
 }

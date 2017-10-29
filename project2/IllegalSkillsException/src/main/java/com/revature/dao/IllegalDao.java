@@ -1,7 +1,5 @@
 package com.revature.dao;
 
-import org.hibernate.Session;
-
 import com.revature.domain.Board;
 import com.revature.domain.Card;
 import com.revature.domain.Lane;
@@ -23,8 +21,9 @@ public interface IllegalDao {
 
 	// READ
 	public TV2User getUser(TV2User user);
+
 	public TV2User getUserByUsername(TV2User user);
-	
+
 	public Board getBoard(Board board);
 
 	public Lane getLane(Lane lane);
