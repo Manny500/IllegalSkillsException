@@ -10,7 +10,10 @@ public class HomepageCtrl {
 	public String index() {
 		return "/static/features/welcome/index.html";
 	}
-
 	
+	@RequestMapping("/home")
+	public String app(){
+		return "/static/homePage.html";
+	}
 
 }
