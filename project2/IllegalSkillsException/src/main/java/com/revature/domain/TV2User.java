@@ -11,48 +11,49 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
 @Entity
-@Table(name="TV2_USER")
+@Table(name = "TV2_USER")
 public class TV2User implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-    @Column(name="TV2_ID")
-    private int userId;
-    
-    @Column(name="TV2_FN")
-    private String firstName;
-    
-    @Column(name="TV2_LS")
-    private String lastName;
-    
-    @Column(name="TV2_USERNAME")
-    private String userName;
-    
-    @Column(name="TV2_PASSWORD")
-    private String password;
-    
-    @Column(name="RT_ID")
-    private int roleType;
-    
-    @Column(name="TV2_EMAIL")
-    private String email;
-	
-    @OneToMany(mappedBy = "boardUser", fetch = FetchType.EAGER)
-    private Set<Board> boards = new HashSet<Board>();
-    
-    
+	@Column(name = "TV2_ID")
+	private int userId;
+
+	@Column(name = "TV2_FN")
+	private String firstName;
+
+	@Column(name = "TV2_LS")
+	private String lastName;
+
+	@Column(name = "TV2_USERNAME")
+	private String userName;
+
+	@Column(name = "TV2_PASSWORD")
+	private String password;
+
+	@Column(name = "RT_ID")
+	private int roleType;
+
+	@Column(name = "TV2_EMAIL")
+	private String email;
+
+	@Column(name = "TV2_TEAM")
+	private int teamId;
+
+	@OneToMany(mappedBy = "boardUser", fetch = FetchType.EAGER)
+	private Set<Board> boards = new HashSet<Board>();
+
 	public TV2User() {
-		
+
 	}
 
 	public TV2User(int userId, String firstName, String lastName, String userName, String password, int roleType,
-			String email) {
+			String email, int teamId, Set<Board> boards) {
 		super();
 		this.userId = userId;
 		this.firstName = firstName;
@@ -61,6 +62,8 @@ public class TV2User implements Serializable {
 		this.password = password;
 		this.roleType = roleType;
 		this.email = email;
+		this.teamId = teamId;
+		this.boards = boards;
 	}
 
 	public int getUserId() {
@@ -119,11 +122,13 @@ public class TV2User implements Serializable {
 		this.email = email;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public int getTeamId() {
+		return teamId;
 	}
-	
-	
+
+	public void setTeamId(int teamId) {
+		this.teamId = teamId;
+	}
 
 	public Set<Board> getBoards() {
 		return boards;
@@ -133,13 +138,8 @@ public class TV2User implements Serializable {
 		this.boards = boards;
 	}
 
-//	@Override
-//	public String toString() {
-//		return "TV2User [userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", userName="
-//				+ userName + ", password=" + password + ", roleType=" + roleType + ", email=" + email + ", boards="
-//				+ boards + "]";
-//	}
-
-
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 }

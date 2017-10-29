@@ -10,35 +10,30 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="TASK")
-public class Task implements Serializable{
+@Table(name = "TASK")
+public class Task implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="T_ID")
+	@Column(name = "T_ID")
 	private int tId;
 
-//	@Column(name="C_ID")
-//	private int cId;
-
-	@Column(name="T_COMPLETE")
+	@Column(name = "T_COMPLETE")
 	private int tComplete;
 
-	@Column(name="T_INFO")
+	@Column(name = "T_INFO")
 	private String tInfo;
-	
+
 	@ManyToOne
-	@JoinColumn(name="C_ID")
+	@JoinColumn(name = "C_ID")
 	private Card taskCard;
 
 	public Task() {
 		super();
 	}
-
-	
 
 	public Task(int tId, int tComplete, String tInfo, Card taskCard) {
 		super();
@@ -48,8 +43,6 @@ public class Task implements Serializable{
 		this.taskCard = taskCard;
 	}
 
-
-
 	public int gettId() {
 		return tId;
 	}
@@ -57,7 +50,6 @@ public class Task implements Serializable{
 	public void settId(int tId) {
 		this.tId = tId;
 	}
-
 
 	public int gettComplete() {
 		return tComplete;
@@ -83,12 +75,4 @@ public class Task implements Serializable{
 		this.taskCard = taskCard;
 	}
 
-
-
-//	@Override
-//	public String toString() {
-//		return "Task [tId=" + tId + ", tComplete=" + tComplete + ", tInfo=" + tInfo + ", taskCard=" + taskCard + "]";
-//	}
-
-	
 }
