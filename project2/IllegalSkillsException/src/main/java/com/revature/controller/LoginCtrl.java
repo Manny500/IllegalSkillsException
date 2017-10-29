@@ -16,7 +16,12 @@ public class LoginCtrl {
 
 	@RequestMapping("/login")
 	public String login1() {
-		return "/features/form/login.html";
+		return "/static/features/form/login.html";
+	}
+	
+	@RequestMapping("/app")
+	public String app(){
+		return "/static/homePage.html";
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -25,9 +30,9 @@ public class LoginCtrl {
 		TV2User clientUser = service.validateLogin(user);
 
 		if (clientUser != null) {
-			return "redirect: features/home/homePage.html";
-		} else {
-			return "redirect: features/form/login.html";
+			return "redirect: app";
+ 		} else {
+			return "redirect: login";
 		}
 	}
 }
