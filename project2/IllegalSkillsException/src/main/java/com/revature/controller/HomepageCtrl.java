@@ -8,12 +8,12 @@ public class HomepageCtrl {
 
 	@RequestMapping("/")
 	public String index() {
-		return "/features/welcome/index.html";
+		return "/static/features/welcome/index.html";
 	}
-
-	@RequestMapping("/homepage")
-	public String home() {
-		return "/features/home/homePage.html";
+	
+	@RequestMapping("/home")
+	public String app(){
+		return "/static/homePage.html";
 	}
 
 }
