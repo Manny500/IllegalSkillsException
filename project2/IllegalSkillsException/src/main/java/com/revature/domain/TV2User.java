@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "TV2_USER")
 public class TV2User implements Serializable {
@@ -45,6 +47,7 @@ public class TV2User implements Serializable {
 	@Column(name = "TV2_TEAM")
 	private int teamId;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "boardUser", fetch = FetchType.EAGER)
 	private Set<Board> boards = new HashSet<Board>();
 
@@ -141,5 +144,4 @@ public class TV2User implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-
 }

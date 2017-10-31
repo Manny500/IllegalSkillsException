@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "CARD")
 public class Card implements Serializable {
@@ -42,6 +44,7 @@ public class Card implements Serializable {
 	@JoinColumn(name = "L_ID")
 	private Lane cardLane;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "taskCard", fetch = FetchType.EAGER)
 	Set<Task> tasks = new HashSet<Task>();
 
