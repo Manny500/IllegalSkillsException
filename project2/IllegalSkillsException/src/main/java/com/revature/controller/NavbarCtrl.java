@@ -11,6 +11,11 @@ public class NavbarCtrl {
 	public String navbar() {
 		return "/static/features/navBar/welcomeNavBar.html";
 	}
+	
+	@RequestMapping("/userNavbar")
+	public String userNavbar() {
+		return "/static/features/navBar/homepageNavBar.html";
+	}
 
 	
 
