@@ -30,16 +30,4 @@ public class HomepageCtrl {
 		return "/static/homePage.html";
 	}
 
-	@RequestMapping(value = { "/profile" }, method = RequestMethod.GET, produces = "application/json")
-	@ResponseBody
-	public ResponseEntity<TV2User> profile(HttpServletRequest request) {
-
-		// client wants the bankUser that at this point should be stored in the session
-		HttpSession session = request.getSession();
-
-		TV2User clientUser = (TV2User) session.getAttribute("user");
-
-		return new ResponseEntity<TV2User>(clientUser, HttpStatus.OK);
-	}
-
 }
