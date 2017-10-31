@@ -60,7 +60,7 @@ app.controller('role', function(dataService) {
 
 	dataService.profile = function() {
 
-		$http.get('login').then(function(response) {
+		$http.get('getRole').then(function(response) {
 
 			getRoleType(response);
 

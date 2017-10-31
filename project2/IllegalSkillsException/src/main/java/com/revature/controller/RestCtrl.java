@@ -27,7 +27,7 @@ public class RestCtrl {
 		return new ResponseEntity<TV2User>(clientUser, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = { "/login" }, method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = { "/getRole" }, method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public ResponseEntity<TV2User> loginInfo(HttpServletRequest request){
 		HttpSession session = request.getSession();
