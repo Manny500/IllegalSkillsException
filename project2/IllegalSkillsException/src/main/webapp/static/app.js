@@ -46,19 +46,19 @@ app.controller('profile', function(dataService) {
 	}
 });
 
-app.controller('role', function(dataService) {
+app.controller('role', function(getInfoService) {
 
-	prof = this;
+	inf = this;
 
-	prof.getRole = dataService.profile
+	inf.getRole = getInfoService.info
 
-	prof.getRole();
+	inf.getRole();
 
-}).service('dataService', function($http) {
+}).service('getInfoService', function($http) {
 
-	var dataService = this;
+	var getInfoService = this;
 
-	dataService.profile = function() {
+	getInfoService.info = function() {
 
 		$http.get('getRole').then(function(response) {
 
@@ -93,7 +93,7 @@ function loadUserNavbar() {
 }
 
 function getProfileInfo(response) {
-
+	
 	client = response.data;
 
 	// Grab the data from the json
