@@ -15,6 +15,7 @@ import com.revature.domain.Task;
 
 @Repository
 public class IllegalDaoImp implements IllegalDao {
+	
 	@Autowired
 	private SessionFactory sessionFactory;
 
