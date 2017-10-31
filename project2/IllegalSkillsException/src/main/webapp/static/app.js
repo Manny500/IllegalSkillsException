@@ -2,7 +2,7 @@
  * 
  */
 window.onload = function() {
-	loadNavbar();
+//	loadNavbar();
 }
 
 // ///////////////ANGULAR//////////////////////////////////////////
@@ -10,8 +10,9 @@ var app = angular.module("myHome", [ "ngRoute" ]);
 
 app.config(function($routeProvider) {
 	$routeProvider.when("/", {
-		templateUrl : "static/features/home/home.html"
-
+		templateUrl : "static/features/home/home.html",
+		controller 	: "role"
+			
 	}).when("/Profile", {
 		templateUrl : "static/features/table/profile.html",
 		controller : 'profile'
@@ -45,9 +46,31 @@ app.controller('profile', function(dataService) {
 	}
 });
 
+app.controller('role', function(dataService) {
+
+	prof = this;
+
+	prof.getRole = dataService.profile
+
+	prof.getRole();
+
+}).service('dataService', function($http) {
+
+	var dataService = this;
+
+	dataService.profile = function() {
+
+		$http.get('getRole').then(function(response) {
+
+			getRoleType(response);
+
+		});
+	}
+});
+
 // ///////////////ANGULAR//////////////////////////////////////////
 
-function loadNavbar() {
+function loadMasterNavbar() {
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4 && xhr.status == 200) {
@@ -55,6 +78,17 @@ function loadNavbar() {
 		}
 	}
 	xhr.open("GET", "ajaxNavbar", true);
+	xhr.send();
+}
+
+function loadUserNavbar() {
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4 && xhr.status == 200) {
+			document.getElementById('navbar').innerHTML = xhr.responseText;
+		}
+	}
+	xhr.open("GET", "userNavbar", true);
 	xhr.send();
 }
 
@@ -107,4 +141,17 @@ function getProfileInfo(response) {
 	// add the row to the table
 	var table = document.getElementById('userTable');
 	table.appendChild(row);
+}
+
+function getRoleType(response){
+	client = response.data;
+	var roleType = client.roleType;
+	
+	if(roleType == 1){
+		loadMasterNavbar();
+	}
+	else if(roleType == 2){
+		loadUserNavbar();
+	}
+	
 }

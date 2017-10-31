@@ -26,5 +26,14 @@ public class RestCtrl {
 
 		return new ResponseEntity<TV2User>(clientUser, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = { "/getRole" }, method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public ResponseEntity<TV2User> loginInfo(HttpServletRequest request){
+		HttpSession session = request.getSession();
+		TV2User clientUser = (TV2User) session.getAttribute("user");
+
+		return new ResponseEntity<TV2User>(clientUser, HttpStatus.OK);
+	}
 
 }
