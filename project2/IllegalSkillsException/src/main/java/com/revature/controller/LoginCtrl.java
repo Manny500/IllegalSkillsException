@@ -43,4 +43,13 @@ public class LoginCtrl {
 			return "redirect: login";
 		}
 	}
+	
+	@RequestMapping("/logout")
+	public String logout(HttpServletRequest request) {
+
+		HttpSession session = request.getSession();
+		session.invalidate();
+
+		return "/static/features/welcome/index.html"; // welcome page
+	}
 }
