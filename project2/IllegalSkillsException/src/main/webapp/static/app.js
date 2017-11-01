@@ -96,9 +96,16 @@ app.controller('role', function(getInfoService) {
 
 	inf = this;
 
+	homeB = this;
+	
 	inf.getRole = getInfoService.info
 
 	inf.getRole();
+	
+	//For Boards
+	homeB.getBoards = getInfoService.boards
+	
+	homeB.getBoards();
 
 }).service('getInfoService', function($http) {
 
@@ -112,7 +119,17 @@ app.controller('role', function(getInfoService) {
 
 		});
 	}
+	
+	getInfoService.boards = function() {
+		$http.get('getHome').then(function(response) {
+
+		loadHome(response);
+
+		});
+	}
 });
+
+
 
 // ///////////////ANGULAR//////////////////////////////////////////
 
@@ -198,5 +215,45 @@ function getRoleType(response) {
 	} else if (roleType == 2) {
 		loadUserNavbar();
 	}
+	
+}
 
+function loadHome(response){
+	
+	var clientUser = response.data;
+	
+	var tableElement = document.getElementById('view');
+	
+//	var board = document.getElementById('homeTitle');
+//	board.innerHTML = 'Here are Your Boards';
+	
+	var boardTitle;
+	
+	
+	for (i = 0; i < clientUser.length; i++){
+		
+		var row = document.createElement('tr');
+		
+		var tdTitle = document.createElement('td');
+		tdTitle.innerHTML = clientUser[i]["bTitle"];
+		row.appendChild(tdTitle);
+		
+		var link = document.createElement('button');
+		link.innerHTML = 'Go to board';
+		link.setAttribute('id', clientUser[i]["bId"]);
+		link.addEventListener('click', getBoard, false);
+		link.setAttribute('class', 'btn btn-info');
+		row.appendChild(link);
+		
+		tableElement.appendChild(row);
+		
+	}
+	
+}
+
+function getBoard(){
+	var boardId = this.id;
+	console.log(boardId);
+	//Add call to board
+	console.log("Go to Board");
 }
