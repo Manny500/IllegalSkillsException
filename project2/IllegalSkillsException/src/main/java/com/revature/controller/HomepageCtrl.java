@@ -1,5 +1,7 @@
 package com.revature.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -17,8 +19,17 @@ public class HomepageCtrl {
 	}
 
 	@RequestMapping("/home")
-	public String home() {
-		return "/static/homePage.html";
+	public String home(HttpServletRequest request) {
+		
+		if(request.isRequestedSessionIdValid()) {
+			
+			return "/static/homePage.html";
+
+		}else {
+						
+			return "/static/features/form/login.html";
+
+		}
 	}
 
 }

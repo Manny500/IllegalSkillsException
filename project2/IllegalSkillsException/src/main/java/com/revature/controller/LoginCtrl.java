@@ -22,11 +22,6 @@ public class LoginCtrl {
 		return "/static/features/form/login.html";
 	}
 
-	@RequestMapping("/app")
-	public String app(){
-		return "/static/homePage.html";
-	}
-
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login2(TV2User user, HttpServletRequest request) {
 
@@ -37,9 +32,10 @@ public class LoginCtrl {
 			HttpSession session = request.getSession(); // create one or get existing
 			session.setAttribute("user", clientUser);
 
-			return "redirect: app";
+			return "redirect: home";
 			
  		} else {
+ 			
 			return "redirect: login";
 		}
 	}

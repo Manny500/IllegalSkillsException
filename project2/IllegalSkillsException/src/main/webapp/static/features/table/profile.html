@@ -17,3 +17,18 @@
 		
 	</tbody>
 </table>
+<br>
+
+<button type="button" data-ng-click="test.updateInfo()" id="updateBtn" class="btn btn-primary">Update Profile</button>
+
+<div id="profileForm" style="visibility:hidden;">
+
+	Enter new First Name: <input id="firstName" data-ng-model="test.firstName" type="text"> <br>
+	Enter new Last Name: <input id="lastName" data-ng-model="test.lastName" type="text"> <br>
+	Enter new Username:	<input id="userName" data-ng-model="test.userName" type="text"> <br>
+	Enter new Password:	<input id="password" data-ng-model="test.password"type="text"> <br>
+	Enter new Email:	<input id="email" data-ng-model="test.email" type="text"> <br>
+	
+	<button type="button" data-ng-click="test.done()" id="doneBtn" class="btn btn-primary">Done</button>
+	
+</div>
