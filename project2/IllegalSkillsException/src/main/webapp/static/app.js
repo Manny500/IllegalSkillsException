@@ -17,9 +17,6 @@ app.config(function($routeProvider) {
 		templateUrl : "static/features/table/profile.html",
 		controller : 'profile'
 
-	}).when("/home", {
-		templateUrl : "static/features/home/home.html",
-		controller 	: "homeDisplay"
 	});
 });
 
@@ -53,9 +50,16 @@ app.controller('role', function(getInfoService) {
 
 	inf = this;
 
+	homeB = this;
+	
 	inf.getRole = getInfoService.info
 
 	inf.getRole();
+	
+	//For Boards
+	homeB.getBoards = getInfoService.boards
+	
+	homeB.getBoards();
 
 }).service('getInfoService', function($http) {
 
@@ -69,29 +73,17 @@ app.controller('role', function(getInfoService) {
 
 		});
 	}
-});
-
-app.controller('homeDisplay', function(homeService) {
-
-	homeB = this;
-
-	homeB.getBoards = homeService.boards
-
-	homeB.getBoards();
-
-}).service('homeService', function($http) {
-
-	var homeService = this;
-
-	homeService.boards = function() {
-
+	
+	getInfoService.boards = function() {
 		$http.get('getHome').then(function(response) {
 
-			loadHome(response);
+		loadHome(response);
 
 		});
 	}
 });
+
+
 
 // ///////////////ANGULAR//////////////////////////////////////////
 
@@ -187,6 +179,9 @@ function loadHome(response){
 	
 	var tableElement = document.getElementById('view');
 	
+//	var board = document.getElementById('homeTitle');
+//	board.innerHTML = 'Here are Your Boards';
+	
 	var boardTitle;
 	
 	
@@ -200,6 +195,7 @@ function loadHome(response){
 		
 		var link = document.createElement('button');
 		link.innerHTML = 'Go to board';
+		link.setAttribute('id', clientUser[i]["bId"]);
 		link.addEventListener('click', getBoard, false);
 		link.setAttribute('class', 'btn btn-info');
 		row.appendChild(link);
@@ -211,5 +207,8 @@ function loadHome(response){
 }
 
 function getBoard(){
+	var boardId = this.id;
+	console.log(boardId);
+	//Add call to board
 	console.log("Go to Board");
 }
