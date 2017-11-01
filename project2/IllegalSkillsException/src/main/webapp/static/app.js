@@ -2,7 +2,7 @@
  * 
  */
 window.onload = function() {
-//	loadNavbar();
+	// loadNavbar();
 }
 
 // ///////////////ANGULAR//////////////////////////////////////////
@@ -11,8 +11,8 @@ var app = angular.module("myHome", [ "ngRoute" ]);
 app.config(function($routeProvider) {
 	$routeProvider.when("/", {
 		templateUrl : "static/features/home/home.html",
-		controller 	: "role"
-			
+		controller : "role"
+
 	}).when("/Profile", {
 		templateUrl : "static/features/table/profile.html",
 		controller : 'profile'
@@ -20,8 +20,54 @@ app.config(function($routeProvider) {
 	});
 });
 
-app.controller('TestCtrl', function() {
-	// nothing yet
+app.controller('TestCtrl', function(dataServ) {
+
+	reim = this;
+
+	reim.updateInfo = function() {
+		document.getElementById('updateBtn').style.visibility = 'hidden';
+		document.getElementById('profileForm').style.visibility = 'visible';
+	}
+
+	// hide the form and send the ajax request
+	reim.done = function() {
+
+		reim.update = dataServ.update;
+
+		reim.update();
+
+		// delete all contents of previous table
+		$(document).ready(function() {
+			$("#userTable").find("tr:gt(0)").remove();
+		});
+
+		// hide the form and show the update button
+		document.getElementById('updateBtn').style.visibility = 'visible';
+		document.getElementById('profileForm').style.visibility = 'hidden';
+
+	}
+
+}).service('dataServ', function($http) {
+
+	var dataService = this;
+
+	// sends the post information from the profile form
+	dataService.update = function() {
+
+		var indata = {
+			'firstName' : reim.firstName,
+			'lastName' : reim.lastName,
+			'userName' : reim.userName,
+			'password' : reim.password,
+			'email' : reim.email
+		};
+		
+		$http.post('updateProfile', indata).then(function(response) {
+			
+			getProfileInfo(response);
+
+		});
+	};
 });
 
 app.controller('profile', function(dataService) {
@@ -110,7 +156,7 @@ function loadUserNavbar() {
 }
 
 function getProfileInfo(response) {
-	
+
 	client = response.data;
 
 	// Grab the data from the json
@@ -160,14 +206,13 @@ function getProfileInfo(response) {
 	table.appendChild(row);
 }
 
-function getRoleType(response){
+function getRoleType(response) {
 	client = response.data;
 	var roleType = client.roleType;
-	
-	if(roleType == 1){
+
+	if (roleType == 1) {
 		loadMasterNavbar();
-	}
-	else if(roleType == 2){
+	} else if (roleType == 2) {
 		loadUserNavbar();
 	}
 	
