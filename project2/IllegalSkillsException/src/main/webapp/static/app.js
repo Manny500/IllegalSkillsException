@@ -17,6 +17,9 @@ app.config(function($routeProvider) {
 		templateUrl : "static/features/table/profile.html",
 		controller : 'profile'
 
+	}).when("/home", {
+		templateUrl : "static/features/home/home.html",
+		controller 	: "homeDisplay"
 	});
 });
 
@@ -63,6 +66,28 @@ app.controller('role', function(getInfoService) {
 		$http.get('getRole').then(function(response) {
 
 			getRoleType(response);
+
+		});
+	}
+});
+
+app.controller('homeDisplay', function(homeService) {
+
+	homeB = this;
+
+	homeB.getBoards = homeService.boards
+
+	homeB.getBoards();
+
+}).service('homeService', function($http) {
+
+	var homeService = this;
+
+	homeService.boards = function() {
+
+		$http.get('getHome').then(function(response) {
+
+			loadHome(response);
 
 		});
 	}
@@ -154,4 +179,37 @@ function getRoleType(response){
 		loadUserNavbar();
 	}
 	
+}
+
+function loadHome(response){
+	
+	var clientUser = response.data;
+	
+	var tableElement = document.getElementById('view');
+	
+	var boardTitle;
+	
+	
+	for (i = 0; i < clientUser.length; i++){
+		
+		var row = document.createElement('tr');
+		
+		var tdTitle = document.createElement('td');
+		tdTitle.innerHTML = clientUser[i]["bTitle"];
+		row.appendChild(tdTitle);
+		
+		var link = document.createElement('button');
+		link.innerHTML = 'Go to board';
+		link.addEventListener('click', getBoard, false);
+		link.setAttribute('class', 'btn btn-info');
+		row.appendChild(link);
+		
+		tableElement.appendChild(row);
+		
+	}
+	
+}
+
+function getBoard(){
+	console.log("Go to Board");
 }
