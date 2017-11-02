@@ -1,11 +1,8 @@
 package com.revature.controller;
 
-<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.List;
-=======
 import java.util.Set;
->>>>>>> d29b52983763ca8958bbe727ccc18d2a6df79529
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;

@@ -136,7 +136,6 @@ app.controller('role', function(getInfoService) {
 	}
 });
 
-<<<<<<< HEAD
 app.controller('usersList', function(getUsersService) {
 
 	users = this;
@@ -158,9 +157,7 @@ app.controller('usersList', function(getUsersService) {
 		});
 	}
 });
-=======
 
->>>>>>> d29b52983763ca8958bbe727ccc18d2a6df79529
 
 // ///////////////ANGULAR//////////////////////////////////////////
 
@@ -341,15 +338,11 @@ function loadHome(response){
 	
 }
 
-<<<<<<< HEAD
-				
-				
-}
-=======
+
 function getBoard(){
 	var boardId = this.id;
 	console.log(boardId);
 	//Add call to board
 	console.log("Go to Board");
 }
->>>>>>> d29b52983763ca8958bbe727ccc18d2a6df79529
+
