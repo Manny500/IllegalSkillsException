@@ -1,6 +1,7 @@
 package com.revature.controller;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -85,11 +86,13 @@ public class RestCtrl {
 	
 	@RequestMapping(value = { "/getUsers" }, method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public ResponseEntity<List<TV2User>> userList(HttpServletRequest request){
-		
+	public ResponseEntity<HashSet<TV2User>> userList(HttpServletRequest request){
+		HashSet<TV2User> setOfUsers = new HashSet<TV2User>();
 		ArrayList<TV2User> listOfUsers = (ArrayList<TV2User>) service.getAllUsers();
-		System.out.println(listOfUsers);
-		return new ResponseEntity<List<TV2User>>(listOfUsers, HttpStatus.OK);
+		for(TV2User user : listOfUsers) {
+			setOfUsers.add(user);
+		}
+		return new ResponseEntity<HashSet<TV2User>>(setOfUsers, HttpStatus.OK);
 	}
 	
 	@ExceptionHandler(Exception.class)
