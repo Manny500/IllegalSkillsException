@@ -307,6 +307,16 @@ function loadHome(response) {
 	var tableElement = document.getElementById('view');
 
 	var boardTitle;
+	
+	var BoardBtn = document.createElement('button');
+	BoardBtn.innerHTML ="+ Create Board";
+	BoardBtn.addEventListener('click', createBoard, false);
+	BoardBtn.setAttribute('class', 'btn btn-primary btn-sm')
+	
+	tableElement.append(BoardBtn);
+	tableElement.append(document.createElement('br'));
+	tableElement.append(document.createElement('br'));
+	
 
 	for (i = 0; i < clientUser.length; i++) {
 
@@ -324,6 +334,7 @@ function loadHome(response) {
 		row.appendChild(link);
 
 		tableElement.appendChild(row);
+	
 
 	}
 
@@ -331,4 +342,8 @@ function loadHome(response) {
 
 function getBoard() {
 	var boardId = this.id;
+}
+
+function createBoard(){
+	console.log('creating board');
 }
