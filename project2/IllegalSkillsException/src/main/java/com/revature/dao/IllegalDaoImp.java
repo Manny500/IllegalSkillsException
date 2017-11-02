@@ -17,7 +17,7 @@ import com.revature.domain.Task;
 
 @Repository
 public class IllegalDaoImp implements IllegalDao {
-	
+
 	@Autowired
 	private SessionFactory sessionFactory;
 
@@ -56,7 +56,7 @@ public class IllegalDaoImp implements IllegalDao {
 		Session session = sessionFactory.getCurrentSession();
 		return (TV2User) session.get(TV2User.class, user.getUserId());
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<TV2User> getAllUsers() {

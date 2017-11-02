@@ -23,7 +23,7 @@ public interface IllegalDao {
 
 	// READ
 	public TV2User getUser(TV2User user);
-	
+
 	public List<TV2User> getAllUsers();
 
 	public TV2User getUserByUsername(TV2User user);

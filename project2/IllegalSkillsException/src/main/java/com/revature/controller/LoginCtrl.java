@@ -33,13 +33,13 @@ public class LoginCtrl {
 			session.setAttribute("user", clientUser);
 
 			return "redirect: home";
-			
- 		} else {
- 			
+
+		} else {
+
 			return "redirect: login";
 		}
 	}
-	
+
 	@RequestMapping("/logout")
 	public String logout(HttpServletRequest request) {
 
