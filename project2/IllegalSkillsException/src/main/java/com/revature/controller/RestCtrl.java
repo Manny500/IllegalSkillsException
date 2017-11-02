@@ -1,7 +1,11 @@
 package com.revature.controller;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.List;
+=======
+import java.util.Set;
+>>>>>>> d29b52983763ca8958bbe727ccc18d2a6df79529
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.domain.Board;
 import com.revature.domain.TV2User;
 import com.revature.service.AppService;
 
@@ -97,4 +102,14 @@ public class RestCtrl {
 	}
 
 
+	@RequestMapping(value = { "/getHome" }, method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public ResponseEntity<Set<Board>> homeBoards(HttpServletRequest request){
+		
+		HttpSession session = request.getSession();
+		TV2User clientUser = (TV2User) session.getAttribute("user");
+		Set<Board> clientBoards = clientUser.getBoards();
+		return new ResponseEntity<Set<Board>>(clientBoards, HttpStatus.OK);
+	}
+	
 }
