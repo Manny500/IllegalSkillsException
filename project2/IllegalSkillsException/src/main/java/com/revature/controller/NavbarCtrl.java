@@ -9,12 +9,12 @@ public class NavbarCtrl {
 
 	@RequestMapping("/ajaxNavbar")
 	public String navbar() {
-		return "/static/features/navBar/welcomeNavBar.html";
+		return "/static/features/navBar/MasterNavbar.html";
 	}
 	
 	@RequestMapping("/userNavbar")
 	public String userNavbar() {
-		return "/static/features/navBar/homepageNavBar.html";
+		return "/static/features/navBar/UserNavbar.html";
 	}
 
 	

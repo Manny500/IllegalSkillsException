@@ -1,5 +1,7 @@
 package com.revature.dao;
 
+import java.util.List;
+
 import com.revature.domain.Board;
 import com.revature.domain.Card;
 import com.revature.domain.Lane;
@@ -21,6 +23,8 @@ public interface IllegalDao {
 
 	// READ
 	public TV2User getUser(TV2User user);
+	
+	public List<TV2User> getAllUsers();
 
 	public TV2User getUserByUsername(TV2User user);
 
