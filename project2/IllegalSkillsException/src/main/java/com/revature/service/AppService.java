@@ -1,5 +1,7 @@
 package com.revature.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,6 +67,10 @@ public class AppService {
 	// READ
 	public TV2User getUser(TV2User user) {
 		return dao.getUser(user);
+	}
+	
+	public List<TV2User> getAllUsers(){
+		return dao.getAllUsers();
 	}
 
 	public TV2User getUserByUsername(TV2User user) {
