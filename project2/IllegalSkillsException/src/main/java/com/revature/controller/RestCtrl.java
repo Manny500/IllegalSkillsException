@@ -7,6 +7,9 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +30,30 @@ public class RestCtrl {
 	@Autowired
 	private AppService service;
 
+	@RequestMapping(value = { "/chart" }, method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public JSONObject chart(HttpServletRequest request) {
+
+		// client wants the bankUser that at this point should be stored in the session
+		// HttpSession session = request.getSession();
+		//
+		// TV2User clientUser = (TV2User) session.getAttribute("user");
+		//
+		JSONParser parser = new JSONParser();
+		JSONObject json2 = null;
+
+		String json = "{ \"Afghanistan\" : [{\"Date\" : 1999,\"Imports\" :15,\"Exports\" :20},{\"Date\" : 2000,\"Imports\" :40,\"Exports\" :115}]}";
+		System.out.println(json);
+		try {
+			json2 = (JSONObject) parser.parse(json);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return json2;
+	}
+
 	@RequestMapping(value = { "/profile" }, method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public ResponseEntity<TV2User> profile(HttpServletRequest request) {
@@ -38,7 +65,8 @@ public class RestCtrl {
 		return new ResponseEntity<TV2User>(clientUser, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = { "/updateProfile" }, method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@RequestMapping(value = {
+			"/updateProfile" }, method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public ResponseEntity<TV2User> updateProfile(@RequestBody TV2User user, HttpServletRequest request) {
 
@@ -85,10 +113,10 @@ public class RestCtrl {
 
 	@RequestMapping(value = { "/getUsers" }, method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public ResponseEntity<HashSet<TV2User>> userList(HttpServletRequest request){
+	public ResponseEntity<HashSet<TV2User>> userList(HttpServletRequest request) {
 		HashSet<TV2User> setOfUsers = new HashSet<TV2User>();
 		ArrayList<TV2User> listOfUsers = (ArrayList<TV2User>) service.getAllUsers();
-		for(TV2User user : listOfUsers) {
+		for (TV2User user : listOfUsers) {
 			setOfUsers.add(user);
 		}
 		return new ResponseEntity<HashSet<TV2User>>(setOfUsers, HttpStatus.OK);
