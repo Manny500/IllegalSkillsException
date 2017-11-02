@@ -1,5 +1,7 @@
 package com.revature.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -79,6 +81,15 @@ public class RestCtrl {
 		HttpSession session = request.getSession();
 		TV2User clientUser = (TV2User) session.getAttribute("user");
 		return new ResponseEntity<TV2User>(clientUser, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = { "/getUsers" }, method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public ResponseEntity<List<TV2User>> userList(HttpServletRequest request){
+		
+		ArrayList<TV2User> listOfUsers = (ArrayList<TV2User>) service.getAllUsers();
+		System.out.println(listOfUsers);
+		return new ResponseEntity<List<TV2User>>(listOfUsers, HttpStatus.OK);
 	}
 	
 	@ExceptionHandler(Exception.class)

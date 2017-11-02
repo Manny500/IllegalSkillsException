@@ -1,5 +1,7 @@
 package com.revature.dao;
 
+import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -53,6 +55,15 @@ public class IllegalDaoImp implements IllegalDao {
 	public TV2User getUser(TV2User user) {
 		Session session = sessionFactory.getCurrentSession();
 		return (TV2User) session.get(TV2User.class, user.getUserId());
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<TV2User> getAllUsers() {
+		Session session = sessionFactory.getCurrentSession();
+		Criteria crit = session.createCriteria(TV2User.class);
+		List<TV2User> tv2u = crit.list();
+		return tv2u;
 	}
 
 	public TV2User getUserByUsername(TV2User user) {
