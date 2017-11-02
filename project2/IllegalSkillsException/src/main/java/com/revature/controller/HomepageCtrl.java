@@ -20,13 +20,13 @@ public class HomepageCtrl {
 
 	@RequestMapping("/home")
 	public String home(HttpServletRequest request) {
-		
-		if(request.isRequestedSessionIdValid()) {
-			
+
+		if (request.isRequestedSessionIdValid()) {
+
 			return "/static/homePage.html";
 
-		}else {
-						
+		} else {
+
 			return "/static/features/form/login.html";
 
 		}

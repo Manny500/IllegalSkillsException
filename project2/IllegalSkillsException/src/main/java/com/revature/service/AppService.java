@@ -68,8 +68,8 @@ public class AppService {
 	public TV2User getUser(TV2User user) {
 		return dao.getUser(user);
 	}
-	
-	public List<TV2User> getAllUsers(){
+
+	public List<TV2User> getAllUsers() {
 		return dao.getAllUsers();
 	}
 
