@@ -17,6 +17,13 @@ app.config(function($routeProvider) {
 		templateUrl : "static/features/table/profile.html",
 		controller : 'profile'
 
+	}).when("/ViewUsers", {
+		templateUrl	: "static/features/table/listOfUsers.html",
+		controller	: 'usersList'
+		
+	}).when("/Burndown", {
+		templateUrl	: "static/features/table/burndownChart.html"
+		//controller 	: not implemented yet
 	});
 });
 
@@ -129,7 +136,31 @@ app.controller('role', function(getInfoService) {
 	}
 });
 
+<<<<<<< HEAD
+app.controller('usersList', function(getUsersService) {
 
+	users = this;
+
+	users.getAllUsers = getUsersService.list
+
+	users.getAllUsers();
+
+}).service('getUsersService', function($http) {
+
+	var getUsersService = this;
+
+	getUsersService.list = function() {
+
+		$http.get('getUsers').then(function(response) {
+
+			getListOfUsers(response);
+
+		});
+	}
+});
+=======
+
+>>>>>>> d29b52983763ca8958bbe727ccc18d2a6df79529
 
 // ///////////////ANGULAR//////////////////////////////////////////
 
@@ -211,9 +242,68 @@ function getRoleType(response) {
 	var roleType = client.roleType;
 
 	if (roleType == 1) {
-		loadMasterNavbar();
-	} else if (roleType == 2) {
 		loadUserNavbar();
+	} else if (roleType == 2) {
+		loadMasterNavbar();
+		
+	}
+
+}
+
+
+function getListOfUsers(response){
+	//this should be an array/list of users
+	client = response.data;
+	console.log(client);
+	
+	//trying to iterate through the list gotten from above
+	for (var i = 0; i < client.length; i++) {
+		
+
+		// Grab the data from the json
+		var userId = client[i].userId;
+		var firstName = client[i].firstName;
+		var lastName = client[i].lastName;
+		var userName = client[i].userName;
+		var roleType = client[i].roleType;
+		var email = client[i].email;
+		var team = client[i].teamId;
+
+		// create the cells - td and give the value to the cells
+		var tdID = document.createElement('td');
+		var tdFirstName = document.createElement('td');
+		var tdLastName = document.createElement('td');
+		var tdUser = document.createElement('td');
+		var tdRole = document.createElement('td');
+		var tdEmail = document.createElement('td');
+		var tdTeam = document.createElement('td');
+
+		
+		if(roleType == 1){
+			tdID.innerHTML = userId;
+			tdFirstName.innerHTML = firstName;
+			tdLastName.innerHTML = lastName;
+			tdUser.innerHTML = userName;
+			tdRole.innerHTML = roleType;
+			tdEmail.innerHTML = email;
+			tdTeam.innerHTML = team;
+			
+			var row = document.createElement('tr');
+
+			// append the cells to the tr
+			row.appendChild(tdID);
+			row.appendChild(tdFirstName);
+			row.appendChild(tdLastName);
+			row.appendChild(tdUser);
+			row.appendChild(tdRole);
+			row.appendChild(tdEmail);
+			row.appendChild(tdTeam);
+
+			// add the row to the table
+			var table = document.getElementById('listOfUsers');
+			table.appendChild(row);
+		}
+
 	}
 	
 }
@@ -251,9 +341,15 @@ function loadHome(response){
 	
 }
 
+<<<<<<< HEAD
+				
+				
+}
+=======
 function getBoard(){
 	var boardId = this.id;
 	console.log(boardId);
 	//Add call to board
 	console.log("Go to Board");
 }
+>>>>>>> d29b52983763ca8958bbe727ccc18d2a6df79529
