@@ -4,15 +4,14 @@
 	xmlns:log4j='http://jakarta.apache.org/log4j/'>
 
 	<appender name="file" class="org.apache.log4j.RollingFileAppender">
-	   <param name="append" value="false" />
-	   <param name="maxFileSize" value="1000KB" />
-	   <param name="maxBackupIndex" value="5" />
-	   <!-- For Tomcat -->
-	   <param name="file" value="${catalina.home}/logs/myStruts1App.log" />
-	   <layout class="org.apache.log4j.PatternLayout">
-		<param name="ConversionPattern"
-			value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
-	   </layout>
+		<param name="append" value="false" />
+		<param name="maxFileSize" value="1000KB" />
+		<param name="maxBackupIndex" value="5" />
+		<!-- For Tomcat -->
+		<param name="file" value="${catalina.home}/logs/myStruts1App.log" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
+		</layout>
 	</appender>
 
 	<root>
