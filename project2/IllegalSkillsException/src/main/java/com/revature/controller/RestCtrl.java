@@ -23,10 +23,10 @@ import com.revature.service.AppService;
 
 @RestController
 public class RestCtrl {
-	
+
 	@Autowired
 	private AppService service;
-	
+
 	@RequestMapping(value = { "/profile" }, method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public ResponseEntity<TV2User> profile(HttpServletRequest request) {
@@ -37,8 +37,8 @@ public class RestCtrl {
 		TV2User clientUser = (TV2User) session.getAttribute("user");
 		return new ResponseEntity<TV2User>(clientUser, HttpStatus.OK);
 	}
-	
-	@RequestMapping(value = { "/updateProfile" }, method = RequestMethod.POST, produces="application/json", consumes="application/json")
+
+	@RequestMapping(value = { "/updateProfile" }, method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public ResponseEntity<TV2User> updateProfile(@RequestBody TV2User user, HttpServletRequest request) {
 
@@ -46,67 +46,66 @@ public class RestCtrl {
 		HttpSession session = request.getSession();
 
 		TV2User clientUser = (TV2User) session.getAttribute("user");
-		
+
 		user.setUserId(clientUser.getUserId());
 		user.setRoleType(clientUser.getRoleType());
 		user.setTeamId(clientUser.getTeamId());
-		
-		if(user.getFirstName() == null || user.getFirstName() == "") {
+
+		if (user.getFirstName() == null || user.getFirstName() == "") {
 			user.setFirstName(clientUser.getFirstName());
 		}
-		if(user.getLastName() == null || user.getLastName() == "") {
+		if (user.getLastName() == null || user.getLastName() == "") {
 			user.setLastName(clientUser.getLastName());
 		}
-		if(user.getUserName() == null || user.getUserName() == "") {
+		if (user.getUserName() == null || user.getUserName() == "") {
 			user.setUserName(clientUser.getUserName());
 		}
-		if(user.getPassword() == null || user.getPassword() == "") {
+		if (user.getPassword() == null || user.getPassword() == "") {
 			System.out.println("in pass");
 			user.setPassword(clientUser.getPassword());
 		}
-		if(user.getEmail() == null || user.getEmail() == "") {
+		if (user.getEmail() == null || user.getEmail() == "") {
 			user.setEmail(clientUser.getEmail());
 		}
-			
+
 		service.updateUser(user);
 
 		return new ResponseEntity<TV2User>(user, HttpStatus.OK);
-			
+
 	}
-	
+
 	@RequestMapping(value = { "/getRole" }, method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public ResponseEntity<TV2User> loginInfo(HttpServletRequest request){
-		
+	public ResponseEntity<TV2User> loginInfo(HttpServletRequest request) {
+
 		HttpSession session = request.getSession();
 		TV2User clientUser = (TV2User) session.getAttribute("user");
 		return new ResponseEntity<TV2User>(clientUser, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = { "/getUsers" }, method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public ResponseEntity<List<TV2User>> userList(HttpServletRequest request){
-		
+	public ResponseEntity<List<TV2User>> userList(HttpServletRequest request) {
+
 		ArrayList<TV2User> listOfUsers = (ArrayList<TV2User>) service.getAllUsers();
 		System.out.println(listOfUsers);
 		return new ResponseEntity<List<TV2User>>(listOfUsers, HttpStatus.OK);
 	}
-	
-	@ExceptionHandler(Exception.class)
-	public ResponseEntity<Exception> handleException(Exception e){
-		System.out.println("lol spring...wow catches exceptions");
-		return new ResponseEntity<Exception>(e,HttpStatus.CONFLICT);
-	}
 
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<Exception> handleException(Exception e) {
+		System.out.println("lol spring...wow catches exceptions");
+		return new ResponseEntity<Exception>(e, HttpStatus.CONFLICT);
+	}
 
 	@RequestMapping(value = { "/getHome" }, method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public ResponseEntity<Set<Board>> homeBoards(HttpServletRequest request){
-		
+	public ResponseEntity<Set<Board>> homeBoards(HttpServletRequest request) {
+
 		HttpSession session = request.getSession();
 		TV2User clientUser = (TV2User) session.getAttribute("user");
 		Set<Board> clientBoards = clientUser.getBoards();
 		return new ResponseEntity<Set<Board>>(clientBoards, HttpStatus.OK);
 	}
-	
+
 }
