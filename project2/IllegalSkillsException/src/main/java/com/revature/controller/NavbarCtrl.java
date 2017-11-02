@@ -3,7 +3,6 @@ package com.revature.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-
 @Controller
 public class NavbarCtrl {
 
@@ -16,7 +15,5 @@ public class NavbarCtrl {
 	public String userNavbar() {
 		return "/static/features/navBar/UserNavbar.html";
 	}
-
-	
 
 }

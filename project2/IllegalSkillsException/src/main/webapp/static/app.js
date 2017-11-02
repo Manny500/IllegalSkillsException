@@ -2,7 +2,7 @@
  * 
  */
 window.onload = function() {
-	// loadNavbar();
+	// nothing so far
 }
 
 // ///////////////ANGULAR//////////////////////////////////////////
@@ -18,12 +18,12 @@ app.config(function($routeProvider) {
 		controller : 'profile'
 
 	}).when("/ViewUsers", {
-		templateUrl	: "static/features/table/listOfUsers.html",
-		controller	: 'usersList'
-		
+		templateUrl : "static/features/table/listOfUsers.html",
+		controller : 'usersList'
+
 	}).when("/Burndown", {
-		templateUrl	: "static/features/table/burndownChart.html"
-		//controller 	: not implemented yet
+		templateUrl : "static/features/table/burndownChart.html"
+	// controller : not implemented yet
 	});
 });
 
@@ -68,9 +68,9 @@ app.controller('TestCtrl', function(dataServ) {
 			'password' : reim.password,
 			'email' : reim.email
 		};
-		
+
 		$http.post('updateProfile', indata).then(function(response) {
-			
+
 			getProfileInfo(response);
 
 		});
@@ -104,14 +104,14 @@ app.controller('role', function(getInfoService) {
 	inf = this;
 
 	homeB = this;
-	
+
 	inf.getRole = getInfoService.info
 
 	inf.getRole();
-	
-	//For Boards
+
+	// For Boards
 	homeB.getBoards = getInfoService.boards
-	
+
 	homeB.getBoards();
 
 }).service('getInfoService', function($http) {
@@ -126,11 +126,11 @@ app.controller('role', function(getInfoService) {
 
 		});
 	}
-	
+
 	getInfoService.boards = function() {
 		$http.get('getHome').then(function(response) {
 
-		loadHome(response);
+			loadHome(response);
 
 		});
 	}
@@ -157,7 +157,6 @@ app.controller('usersList', function(getUsersService) {
 		});
 	}
 });
-
 
 // ///////////////ANGULAR//////////////////////////////////////////
 
@@ -242,20 +241,17 @@ function getRoleType(response) {
 		loadUserNavbar();
 	} else if (roleType == 2) {
 		loadMasterNavbar();
-		
+
 	}
 
 }
 
-
-function getListOfUsers(response){
-	//this should be an array/list of users
+function getListOfUsers(response) {
+	// this should be an array/list of users
 	client = response.data;
-	console.log(client);
-	
-	//trying to iterate through the list gotten from above
+
+	// trying to iterate through the list gotten from above
 	for (var i = 0; i < client.length; i++) {
-		
 
 		// Grab the data from the json
 		var userId = client[i].userId;
@@ -275,8 +271,7 @@ function getListOfUsers(response){
 		var tdEmail = document.createElement('td');
 		var tdTeam = document.createElement('td');
 
-		
-		if(roleType == 1){
+		if (roleType == 1) {
 			tdID.innerHTML = userId;
 			tdFirstName.innerHTML = firstName;
 			tdLastName.innerHTML = lastName;
@@ -284,7 +279,7 @@ function getListOfUsers(response){
 			tdRole.innerHTML = roleType;
 			tdEmail.innerHTML = email;
 			tdTeam.innerHTML = team;
-			
+
 			var row = document.createElement('tr');
 
 			// append the cells to the tr
@@ -302,47 +297,38 @@ function getListOfUsers(response){
 		}
 
 	}
-	
+
 }
 
-function loadHome(response){
-	
+function loadHome(response) {
+
 	var clientUser = response.data;
-	
+
 	var tableElement = document.getElementById('view');
-	
-//	var board = document.getElementById('homeTitle');
-//	board.innerHTML = 'Here are Your Boards';
-	
+
 	var boardTitle;
-	
-	
-	for (i = 0; i < clientUser.length; i++){
-		
+
+	for (i = 0; i < clientUser.length; i++) {
+
 		var row = document.createElement('tr');
-		
+
 		var tdTitle = document.createElement('td');
 		tdTitle.innerHTML = clientUser[i]["bTitle"];
 		row.appendChild(tdTitle);
-		
+
 		var link = document.createElement('button');
 		link.innerHTML = 'Go to board';
 		link.setAttribute('id', clientUser[i]["bId"]);
 		link.addEventListener('click', getBoard, false);
 		link.setAttribute('class', 'btn btn-info');
 		row.appendChild(link);
-		
+
 		tableElement.appendChild(row);
-		
+
 	}
-	
+
 }
 
-
-function getBoard(){
+function getBoard() {
 	var boardId = this.id;
-	console.log(boardId);
-	//Add call to board
-	console.log("Go to Board");
 }
-
