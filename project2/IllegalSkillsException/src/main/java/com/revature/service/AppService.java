@@ -80,6 +80,10 @@ public class AppService {
 	public Board getBoard(Board board) {
 		return dao.getBoard(board);
 	}
+	
+	public List<Board> getAllBoards(){
+		return dao.getAllBoards();
+	}
 
 	public Lane getLane(Lane lane) {
 		return dao.getLane(lane);

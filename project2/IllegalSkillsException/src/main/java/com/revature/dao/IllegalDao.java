@@ -29,6 +29,8 @@ public interface IllegalDao {
 	public TV2User getUserByUsername(TV2User user);
 
 	public Board getBoard(Board board);
+	
+	public List<Board> getAllBoards();
 
 	public Lane getLane(Lane lane);
 
