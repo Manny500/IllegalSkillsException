@@ -24,6 +24,9 @@ app.config(function($routeProvider) {
 	}).when("/Burndown", {
 		templateUrl : "static/features/table/burndownChart.html"
 	// controller : not implemented yet
+	}).when("/RegisterUser", {
+		templateUrl : "static/features/form/register.html",
+//		controller: "register"
 	});
 });
 
@@ -157,6 +160,28 @@ app.controller('usersList', function(getUsersService) {
 		});
 	}
 });
+
+//app.controller('register', function(getRegisterService) {
+//	
+//	regForm = this;
+//	
+//	regForm.getForm = getRegisterService.form;
+//	
+//	regForm.getForm();
+//	
+//}).service('getRegisterService', function($http) {
+//	
+//	var getRegisterService = this;
+//	
+//	getRegisterService.form = function() {
+//		
+//		$http.get('getRegisterForm').then(function(response) {
+//			
+//			console.log('Form');
+//			
+//		})
+//	}
+//});
 
 // ///////////////ANGULAR//////////////////////////////////////////
 
@@ -308,6 +333,19 @@ function loadHome(response) {
 
 	var boardTitle;
 
+	if(clientUser.length == 0){
+		
+		
+		var row = document.createElement('tr');
+
+		var message = document.createElement('td');
+		message.innerHTML = 'You have no Boards. Please create a Board below.';
+		row.appendChild(message);
+
+
+		tableElement.appendChild(row);
+	}
+	
 	for (i = 0; i < clientUser.length; i++) {
 
 		var row = document.createElement('tr');
