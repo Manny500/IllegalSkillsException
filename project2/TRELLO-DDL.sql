@@ -104,9 +104,16 @@ CREATE OR REPLACE TRIGGER board_seq_trg BEFORE
 END IF;
 END;
 /
+<<<<<<< HEAD
 create or replace TRIGGER user2_seq_trg BEFORE
   INSERT ON TV2_USER FOR EACH ROW BEGIN IF :new.TV2_ID = 0  THEN
   SELECT tv2_user_seq.NEXTVAL INTO :new.TV2_ID FROM dual;
+=======
+
+create or replace TRIGGER board2_seq_trg BEFORE
+  INSERT ON board FOR EACH ROW BEGIN IF :new.B_ID = 0  THEN
+  SELECT board_seq.NEXTVAL INTO :new.B_ID FROM dual;
+>>>>>>> master
 END IF;
 END;
 /

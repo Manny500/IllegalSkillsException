@@ -34,9 +34,14 @@ public class Board implements Serializable {
 	@Column(name = "TOTAL")
 	private int total;
 
+	@Column(name = "TEAM")
+	private int team;
+
 	@ManyToOne
 	@JoinColumn(name = "TV2_ID")
 	private TV2User boardUser;
+
+	
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "laneBoard", fetch = FetchType.EAGER)
@@ -45,20 +50,12 @@ public class Board implements Serializable {
 	public Board() {
 		super();
 	}
-
-	// public Board(int bId, int tv2Id, String bTitle, int total, TV2User boardUser,
-	// Set<Lane> lanes) {
-	// super();
-	// this.bId = bId;
-	// this.tv2Id = tv2Id;
-	// this.bTitle = bTitle;
-	// this.total = total;
-	// this.boardUser = boardUser;
-	// this.lanes = lanes;
-	// }
-
-	public int getbId() {
-		return bId;
+	
+	public Board(String bTitle, int team, TV2User boardUser) {
+		super();
+		this.bTitle = bTitle;
+		this.team = team;
+		this.boardUser = boardUser;
 	}
 
 	public Board(int bId, String bTitle, int total, TV2User boardUser, Set<Lane> lanes) {
@@ -68,6 +65,20 @@ public class Board implements Serializable {
 		this.total = total;
 		this.boardUser = boardUser;
 		this.lanes = lanes;
+	}
+
+	public Board(int bId, String bTitle, int total, int team, TV2User boardUser, Set<Lane> lanes) {
+		super();
+		this.bId = bId;
+		this.bTitle = bTitle;
+		this.total = total;
+		this.team = team;
+		this.boardUser = boardUser;
+		this.lanes = lanes;
+	}
+
+	public int getbId() {
+		return bId;
 	}
 
 	public void setbId(int bId) {
@@ -104,6 +115,14 @@ public class Board implements Serializable {
 
 	public void setLanes(Set<Lane> lanes) {
 		this.lanes = lanes;
+	}
+
+	public int getTeam() {
+		return team;
+	}
+
+	public void setTeam(int team) {
+		this.team = team;
 	}
 
 }
