@@ -104,4 +104,11 @@ CREATE OR REPLACE TRIGGER board_seq_trg BEFORE
 END IF;
 END;
 /
+
+create or replace TRIGGER board2_seq_trg BEFORE
+  INSERT ON board FOR EACH ROW BEGIN IF :new.B_ID = 0  THEN
+  SELECT board_seq.NEXTVAL INTO :new.B_ID FROM dual;
+END IF;
+END;
+/
 COMMIT;
