@@ -502,6 +502,7 @@ function loadHome(response) {
 		
 
 	}
+}
 
 function loadTeamBoards(response){
 	var clientUser = response.data;
@@ -539,6 +540,7 @@ function getBoard() {
 function getTB(){
 	var team = this.id;
 }
+
 
 ////////////////////ENDJAVASCRIPT/////////////////////////////////////
 
