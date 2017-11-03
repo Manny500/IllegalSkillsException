@@ -137,5 +137,22 @@ public class RestCtrl {
 		Set<Board> clientBoards = clientUser.getBoards();
 		return new ResponseEntity<Set<Board>>(clientBoards, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = {"/createBoard" }, method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public ResponseEntity<Board> createBoard(@RequestBody Board board, HttpServletRequest request) {
+		// getting TV2User at this session to give Board this user's id and team #
+		HttpSession session = request.getSession();
+		TV2User clientUser = (TV2User) session.getAttribute("user");
+		Board b = new Board(board.getbTitle(), clientUser.getTeamId(), clientUser);
+		
+		
+		System.out.println(b.getbTitle());
+		service.createBoard(b);
+
+		return new ResponseEntity<Board>(b, HttpStatus.OK);
+
+	}
+	
 
 }

@@ -41,12 +41,21 @@ public class Board implements Serializable {
 	@JoinColumn(name = "TV2_ID")
 	private TV2User boardUser;
 
+	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "laneBoard", fetch = FetchType.EAGER)
 	Set<Lane> lanes = new HashSet<Lane>();
 
 	public Board() {
 		super();
+	}
+	
+	public Board(String bTitle, int team, TV2User boardUser) {
+		super();
+		this.bTitle = bTitle;
+		this.team = team;
+		this.boardUser = boardUser;
 	}
 
 	public Board(int bId, String bTitle, int total, TV2User boardUser, Set<Lane> lanes) {
