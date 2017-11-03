@@ -8,7 +8,7 @@ var app = angular.module("myHome", [ "ngRoute" ]);
 app.config(function($routeProvider) {
 	$routeProvider.when("/", {
 		templateUrl : "static/features/home/home.html",
-		controller : "role"
+		controller : "home"
 
 	}).when("/Profile", {
 		templateUrl : "static/features/table/profile.html",
@@ -50,11 +50,20 @@ app.controller('chartCtrl', function(dataChart) {
 app.controller('TestCtrl', function(dataServ) {
 
 	reim = this;
+	
+	createB = this;
 
 	reim.updateInfo = function() {
 		document.getElementById('updateBtn').style.visibility = 'hidden';
 		document.getElementById('profileForm').style.visibility = 'visible';
 	}
+	
+	createB.startCreate = function(){
+		document.getElementById('createBoardBtn').style.visibility = 'hidden';
+		document.getElementById('createBoardForm').style.visibility = 'visible';
+	};
+	
+	
 
 	// hide the form and send the ajax request
 	reim.done = function() {
@@ -73,10 +82,21 @@ app.controller('TestCtrl', function(dataServ) {
 		document.getElementById('profileForm').style.visibility = 'hidden';
 
 	}
+	
+	createB.create = function(){
+		createB.process = dataServ.process;
+		createB.process();
+
+		// hide the form and show the update button and clear input form
+		document.getElementById('bTitle').value = "";
+		document.getElementById('createBoardBtn').style.visibility = 'visible';
+		document.getElementById('createBoardForm').style.visibility = 'hidden';
+	}
 
 }).service('dataServ', function($http) {
 
 	var dataService = this;
+	var bDataService = this;
 
 	// sends the post information from the profile form
 	dataService.update = function() {
@@ -95,6 +115,19 @@ app.controller('TestCtrl', function(dataServ) {
 
 		});
 	};
+	
+	bDataService.process = function() {
+		
+		var cbData = {
+				'bTitle' : createB.bTitle
+		} 
+		
+		$http.post('createBoard', cbData).then(function(response) {
+			loadHome(response);
+
+		});
+	};
+	
 });
 
 app.controller('profile', function(dataService) {
@@ -119,20 +152,23 @@ app.controller('profile', function(dataService) {
 	}
 });
 
-app.controller('role', function(getInfoService) {
+app.controller('home', function(getInfoService) {
 
 	inf = this;
-
 	homeB = this;
-
+	
+	
+	// to get role type of user who logged in
 	inf.getRole = getInfoService.info
-
 	inf.getRole();
+	
+	
 
 	// For Boards
 	homeB.getBoards = getInfoService.boards
-
 	homeB.getBoards();
+	
+	
 
 }).service('getInfoService', function($http) {
 
@@ -428,10 +464,16 @@ function loadHome(response) {
 		tableElement.appendChild(row);
 
 	}
+	tableElement.append(document.createElement('br'));
 
 }
 
 function getBoard() {
 	var boardId = this.id;
 }
+
+
+
+
 // //////////////////ENDJAVASCRIPT/////////////////////////////////////
+
