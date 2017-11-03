@@ -147,8 +147,10 @@ public class RestCtrl {
 		Board b = new Board(board.getbTitle(), clientUser.getTeamId(), clientUser);
 		
 		
-		System.out.println(b.getbTitle());
-		service.createBoard(b);
+		if(b.getbTitle() != null) {
+			service.createBoard(b);
+		}
+		
 
 		return new ResponseEntity<Board>(b, HttpStatus.OK);
 
