@@ -19,8 +19,13 @@ app.config(function($routeProvider) {
 		controller : 'usersList'
 
 	}).when("/Burndown", {
-		templateUrl : "static/features/table/burndownChart.html",
-		controller : 'chartCtrl'
+	templateUrl : "static/features/table/burndownChart.html",
+	controller : 'chartCtrl'
+		
+	}).when("/RegisterUser", {
+		templateUrl : "static/features/form/register.html",
+//		controller: "register"
+
 	});
 });
 
@@ -214,6 +219,10 @@ app.controller('usersList', function(getUsersService) {
 	}
 });
 
+
+
+// ///////////////ANGULAR//////////////////////////////////////////
+
 // ///////////////ENDANGULAR//////////////////////////////////////////
 
 // /////////////////D3.JS////////////////////////////////////////////
@@ -265,6 +274,7 @@ function displayChart(myData) {
 			d.Imports = +d.Imports;
 			d.Exports = +d.Exports;
 		});
+
 
 		// sort years ascending
 		data.sort(function(a, b) {
@@ -446,6 +456,19 @@ function loadHome(response) {
 
 	var boardTitle;
 
+	if(clientUser.length == 0){
+		
+		
+		var row = document.createElement('tr');
+
+		var message = document.createElement('td');
+		message.innerHTML = 'You have no Boards. Click the button above to create a Board.';
+		row.appendChild(message);
+
+
+		tableElement.appendChild(row);
+	}
+	
 	for (i = 0; i < clientUser.length; i++) {
 
 		var row = document.createElement('tr');
@@ -464,7 +487,7 @@ function loadHome(response) {
 		tableElement.appendChild(row);
 
 	}
-	tableElement.append(document.createElement('br'));
+
 
 }
 
