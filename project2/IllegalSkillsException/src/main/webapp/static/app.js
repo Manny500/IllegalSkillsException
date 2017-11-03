@@ -483,7 +483,7 @@ function loadHome(response) {
 		var row = document.createElement('tr');
 
 		var message = document.createElement('td');
-		message.innerHTML = 'You have no Boards. Please create a Board below.';
+		message.innerHTML = 'You have no Boards. Click the button above to create a Board.';
 		row.appendChild(message);
 
 
@@ -508,7 +508,7 @@ function loadHome(response) {
 		tableElement.appendChild(row);
 
 	}
-	tableElement.append(document.createElement('br'));
+
 
 }
 

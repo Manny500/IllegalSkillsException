@@ -17,13 +17,18 @@ public class RegisterCtrl {
 	@Autowired
 	private AppService service;
 	
+	@RequestMapping("/register")
+	public String register1() {
+		return "redirect: home#!/RegisterUser";
+	}
+	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String register(TV2User user, HttpServletRequest request) {
+	public String register2(TV2User user, HttpServletRequest request) {
 
 		try {
 		service.createUser(user);
 		} catch (Exception e) {
-			return "redirect: RegisterUser";
+			return "redirect: register";
 		}
 
 
