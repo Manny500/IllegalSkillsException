@@ -220,27 +220,6 @@ app.controller('usersList', function(getUsersService) {
 });
 
 
-//app.controller('register', function(getRegisterService) {
-//	
-//	regForm = this;
-//	
-//	regForm.getForm = getRegisterService.form;
-//	
-//	regForm.getForm();
-//	
-//}).service('getRegisterService', function($http) {
-//	
-//	var getRegisterService = this;
-//	
-//	getRegisterService.form = function() {
-//		
-//		$http.get('getRegisterForm').then(function(response) {
-//			
-//			console.log('Form');
-//			
-//		})
-//	}
-//});
 
 // ///////////////ANGULAR//////////////////////////////////////////
 
