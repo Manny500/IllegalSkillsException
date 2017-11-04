@@ -453,6 +453,8 @@ function loadHome(response) {
 	var clientUser = response.data;
 
 	var tableElement = document.getElementById('view');
+	
+	document.body.style.backgroundImage = "url('static/features/img/portfolio/thumbnails/2.jpg')";
 
 	var boardTitle;
 
@@ -473,17 +475,60 @@ function loadHome(response) {
 
 		var row = document.createElement('tr');
 
+//		var combine = document.createElement('div');
+		
 		var tdTitle = document.createElement('td');
-		tdTitle.innerHTML = clientUser[i]["bTitle"];
+		var content = document.createElement('h1');
+		content.innerHTML = clientUser[i]["bTitle"];
+		content.style.backgroundImage = "url('static/features/img/water.jpg')";
+		content.setAttribute('id', clientUser[i]["bId"]);
+		content.addEventListener('click', getBoard, false);
+		content.width = '100';
+		content.height = '50';
+		content.style.backgroundSize = 'contain';
+		tdTitle.appendChild(content);
+		tdTitle.height = "60";
 		row.appendChild(tdTitle);
+		
+//		var tdTitle = document.createElement('td');
+//		tdTitle.innerHTML = clientUser[i]["bTitle"];
+//		tdTitle.style.backgroundImage = "url('static/features/img/boardP.jpg')";
+//		tdTitle.setAttribute('id', clientUser[i]["bId"]);
+//		tdTitle.addEventListener('click', getBoard, false);
+//		tdTitle.width = '100';
+//		tdTitle.height = '50';
+//		tdTitle.style.backgroundSize = '100px, 50px';
+//		row.appendChild(tdTitle);
+		
+//		var link = document.createElement('img');
+//		link.setAttribute('src', 'static/features/img/boardP.jpg');
+//		link.setAttribute('id', clientUser[i]["bId"]);
+//		link.width = '100';
+//		link.height = '100';
+//		link.addEventListener('click', getBoard, false);
+		
+		
+//		var tdTitle = document.createElement('td');
+//		tdTitle.innerHTML = clientUser[i]["bTitle"];
+//		row.appendChild(tdTitle);
+//		
+//		var link = document.createElement('img');
+//		link.setAttribute('src', 'static/features/img/boardP.jpg');
+//		link.setAttribute('id', clientUser[i]["bId"]);
+//		link.width = '100';
+//		link.height = '100';
+//		link.addEventListener('click', getBoard, false);
+//		row.appendChild(link);
 
-		var link = document.createElement('button');
-		link.innerHTML = 'Go to board';
-		link.setAttribute('id', clientUser[i]["bId"]);
-		link.addEventListener('click', getBoard, false);
-		link.setAttribute('class', 'btn btn-info');
-		row.appendChild(link);
+//		var link = document.createElement('button');
+//		link.innerHTML = 'Go to board';
+//		link.setAttribute('id', clientUser[i]["bId"]);
+//		link.addEventListener('click', getBoard, false);
+//		link.setAttribute('class', 'btn btn-info');
+//		row.appendChild(link);
 
+		
+		
 		tableElement.appendChild(row);
 
 	}
@@ -492,7 +537,10 @@ function loadHome(response) {
 }
 
 function getBoard() {
+	console.log(this.id)
 	var boardId = this.id;
+	
+
 }
 
 
