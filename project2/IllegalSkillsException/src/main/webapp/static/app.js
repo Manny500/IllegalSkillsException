@@ -26,7 +26,11 @@ app.config(function($routeProvider) {
 		templateUrl : "static/features/form/register.html",
 //		controller: "register"
 
-	});
+	}).when("/Trello", {
+		templateUrl : "static/features/trello/trello.html",
+		controller: "trello"
+
+	});;
 });
 
 app.controller('chartCtrl', function(dataChart) {
@@ -52,7 +56,26 @@ app.controller('chartCtrl', function(dataChart) {
 
 });
 
-app.controller('TestCtrl', function(dataServ) {
+app.controller('trello', function(scrumService) {
+    trel = this; 
+    
+    console.log(boardTId+"jf;aljf;oaiwhjf;aihf;oiawhf;oiwh;ofiha;")
+    trel.getInfo = scrumService.info ;
+    trel.getInfo(); 
+}).service('scrumService', function($http) {
+    var scrumService = this;
+    scrumService.info = function() {
+        var trelloB = {
+                'bId': boardTId
+        }
+        $http.post('trelloInfo',trelloB).then(function(response) {
+            getTrelloInfo(response);
+        });
+    }
+});
+
+
+app.controller('TestCtrl',function(dataServ) {
 
 	reim = this;
 	
@@ -68,7 +91,11 @@ app.controller('TestCtrl', function(dataServ) {
 		document.getElementById('createBoardForm').style.visibility = 'visible';
 	};
 	
+
 	
+	reim.getInfo = dataServ.viewBoard
+	var responseb = reim.getInfo();
+	console.log(responseb)
 
 	// hide the form and send the ajax request
 	reim.done = function() {
@@ -103,6 +130,16 @@ app.controller('TestCtrl', function(dataServ) {
 	var dataService = this;
 	var bDataService = this;
 
+	
+	dataService.viewBoard = function(){
+		$http.get('getHome').then(function(response){
+//			loadHome(response)
+//			$scope.records = ["abc","123"]
+			
+			var r = response;
+			console.log(r)
+		});
+	}
 	// sends the post information from the profile form
 	dataService.update = function() {
 
@@ -199,6 +236,8 @@ app.controller('home', function(getInfoService) {
 		$http.get('getHome').then(function(response) {
 
 			loadHome(response);
+			
+			
 
 		});
 	}
@@ -491,11 +530,11 @@ function loadHome(response) {
 		tdTitle.innerHTML = clientUser[i]["bTitle"];
 		row.appendChild(tdTitle);
 
-		var link = document.createElement('button');
-		link.innerHTML = 'Go to board';
-		link.setAttribute('id', clientUser[i]["bId"]);
-		link.addEventListener('click', getBoard, false);
-		link.setAttribute('class', 'btn btn-info');
+		var link = document.createElement('a');
+		link.setAttribute('id', clientUser[i]["bId"])
+		link.onclick = goTo;
+		link.innerHTML = "click here";
+		link.setAttribute('href', '#!Trello')
 		row.appendChild(link);
 
 		tableElement.appendChild(row);
@@ -519,11 +558,18 @@ function loadTeamBoards(response){
 		tdTitle.innerHTML = clientUser[i]["bTitle"];
 		row.appendChild(tdTitle);
 
-		var link = document.createElement('button');
-		link.innerHTML = 'Go to board';
-		link.setAttribute('id', clientUser[i]["bId"]);
-		link.addEventListener('click', getBoard, false);
-		link.setAttribute('class', 'btn btn-info');
+//		var link = document.createElement('button');
+//		link.innerHTML = 'Go to board';
+//		link.setAttribute('id', clientUser[i]["bId"]);
+//		link.addEventListener('click', getBoard, false);
+//		link.setAttribute('class', 'btn btn-info');
+//		row.appendChild(link);
+		
+		var link = document.createElement('a');
+		link.setAttribute('id', clientUser[i]["bId"])
+		link.onclick = goTo;
+		link.innerHTML = "click here";
+		link.setAttribute('href', '#!Trello')
 		row.appendChild(link);
 
 		tableElement.appendChild(row);
@@ -533,8 +579,44 @@ function loadTeamBoards(response){
 	
 }
 
+function getTrelloInfo(response){
+	var d = response
+	console.log("d values: "+d)
+    console.log("resp.data values: "+ response.data);
+    var trelloInfo = response.data;
+    
+    for(var i = 0; i < trelloInfo.lanes.length; i++){
+                
+        
+                var lTitle = trelloInfo.lanes[i].lTitle;
+                console.log(lTitle);
+                
+                //create 
+                var tdlTitle = document.createElement('td');
+                //var tdbId = document.createElement('td');
+                
+                
+                tdlTitle.innerHTML = lTitle;
+                //tdbId.innerHTML = bid;
+                
+                // create the row -tr
+                var row = document.createElement('tr');
+                
+                //creatd
+                //add the row to the table
+                var table = document.getElementById('lane');
+//              table.appendChild(row);
+    }
+}
+
+var boardTId;
+function goTo(){
+	boardTId = this.id;
+}
+
 function getBoard() {
 	var boardId = this.id;
+	console.log(boardId)
 }
 
 function getTB(){
