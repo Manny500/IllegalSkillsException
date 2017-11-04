@@ -26,7 +26,11 @@ app.config(function($routeProvider) {
 		templateUrl : "static/features/form/register.html",
 //		controller: "register"
 
-	});
+	}).when("/Trello", {
+		templateUrl : "static/features/trello/trello.html",
+		controller: "trello"
+
+	});;
 });
 
 app.controller('chartCtrl', function(dataChart) {
@@ -52,7 +56,25 @@ app.controller('chartCtrl', function(dataChart) {
 
 });
 
-app.controller('TestCtrl', function(dataServ) {
+app.controller('trello', function(scrumService) {
+    trel = this; 
+    
+    trel.getInfo = scrumService.info ;
+    trel.getInfo(); 
+}).service('scrumService', function($http) {
+    var scrumService = this;
+    scrumService.info = function() {
+        var trelloB = {
+                'bId': boardTId
+        }
+        $http.post('trelloInfo',trelloB).then(function(response) {
+            getTrelloInfo(response);
+        });
+    }
+});
+
+
+app.controller('TestCtrl',function(dataServ) {
 
 	reim = this;
 	
@@ -68,7 +90,10 @@ app.controller('TestCtrl', function(dataServ) {
 		document.getElementById('createBoardForm').style.visibility = 'visible';
 	};
 	
+
 	
+	reim.getInfo = dataServ.viewBoard
+	var responseb = reim.getInfo();
 
 	// hide the form and send the ajax request
 	reim.done = function() {
@@ -103,6 +128,10 @@ app.controller('TestCtrl', function(dataServ) {
 	var dataService = this;
 	var bDataService = this;
 
+	
+	dataService.viewBoard = function(){
+		$http.get('getHome')
+	}
 	// sends the post information from the profile form
 	dataService.update = function() {
 
@@ -161,6 +190,7 @@ app.controller('home', function(getInfoService) {
 
 	inf = this;
 	homeB = this;
+	team = this;
 	
 	
 	// to get role type of user who logged in
@@ -172,6 +202,12 @@ app.controller('home', function(getInfoService) {
 	// For Boards
 	homeB.getBoards = getInfoService.boards
 	homeB.getBoards();
+	
+	// TB stands for team boards
+	team.getTB = getInfoService.tb
+	team.getTB();
+	
+	
 	
 	
 
@@ -192,6 +228,15 @@ app.controller('home', function(getInfoService) {
 		$http.get('getHome').then(function(response) {
 
 			loadHome(response);
+			
+			
+
+		});
+	}
+	getInfoService.tb = function() {
+		$http.get('getTeamBoards').then(function(response) {
+
+			loadTeamBoards(response);
 
 		});
 	}
@@ -221,7 +266,6 @@ app.controller('usersList', function(getUsersService) {
 
 
 
-// ///////////////ANGULAR//////////////////////////////////////////
 
 // ///////////////ENDANGULAR//////////////////////////////////////////
 
@@ -454,8 +498,6 @@ function loadHome(response) {
 
 	var tableElement = document.getElementById('view');
 	
-	//document.body.style.backgroundImage = "url('static/features/img/b3.jpg')";
-
 	var boardTitle;
 
 	if(clientUser.length == 0){
@@ -475,66 +517,106 @@ function loadHome(response) {
 
 		var row = document.createElement('tr');
 
-//		var combine = document.createElement('div');
 		
 		var tdTitle = document.createElement('td');
-		var content = document.createElement('h1');
+		var content = document.createElement('a');
 		content.innerHTML = clientUser[i]["bTitle"];
-		content.style.backgroundImage = "url('static/features/img/water.jpg')";
+		content.style.backgroundImage = "url('static/features/img/b8.jpg')";
 		content.setAttribute('id', clientUser[i]["bId"]);
-		content.addEventListener('click', getBoard, false);
+		content.onclick = goTo;
+		content.setAttribute('href', '#!Trello')
 		content.width = '100';
 		content.height = '50';
 		content.style.backgroundSize = 'contain';
 		tdTitle.appendChild(content);
 		tdTitle.height = "60";
 		tdTitle.style.textAlign = "center";
+		tdTitle.style.fontSize = "xx-large";
+		tdTitle.style.color = "black";
 		row.appendChild(tdTitle);
 		
-//		var tdTitle = document.createElement('td');
-//		tdTitle.innerHTML = clientUser[i]["bTitle"];
-//		tdTitle.style.backgroundImage = "url('static/features/img/boardP.jpg')";
-//		tdTitle.setAttribute('id', clientUser[i]["bId"]);
-//		tdTitle.addEventListener('click', getBoard, false);
-//		tdTitle.width = '100';
-//		tdTitle.height = '50';
-//		tdTitle.style.backgroundSize = '100px, 50px';
-//		row.appendChild(tdTitle);
-		
-//		var link = document.createElement('img');
-//		link.setAttribute('src', 'static/features/img/boardP.jpg');
-//		link.setAttribute('id', clientUser[i]["bId"]);
-//		link.width = '100';
-//		link.height = '100';
-//		link.addEventListener('click', getBoard, false);
-		
-		
-//		var tdTitle = document.createElement('td');
-//		tdTitle.innerHTML = clientUser[i]["bTitle"];
-//		row.appendChild(tdTitle);
-//		
-//		var link = document.createElement('img');
-//		link.setAttribute('src', 'static/features/img/boardP.jpg');
-//		link.setAttribute('id', clientUser[i]["bId"]);
-//		link.width = '100';
-//		link.height = '100';
-//		link.addEventListener('click', getBoard, false);
-//		row.appendChild(link);
 
-//		var link = document.createElement('button');
-//		link.innerHTML = 'Go to board';
-//		link.setAttribute('id', clientUser[i]["bId"]);
-//		link.addEventListener('click', getBoard, false);
-//		link.setAttribute('class', 'btn btn-info');
-//		row.appendChild(link);
+		tableElement.appendChild(row);
+		
+
+	}
+}
+
+function loadTeamBoards(response){
+	var clientUser = response.data;
+
+	var tableElement = document.getElementById('view2');
+
+	var boardTitle;
+
+if(clientUser.length == 0){
+		
+		
+		var row = document.createElement('tr');
+
+		var message = document.createElement('td');
+		message.innerHTML = 'You have no Boards. Click the button above to create a Board.';
+		row.appendChild(message);
+
+
+		tableElement.appendChild(row);
+	}
+	
+	for (i = 0; i < clientUser.length; i++) {
+
+		var row = document.createElement('tr');
 
 		
+		var tdTitle = document.createElement('td');
+		var content = document.createElement('a');
+		content.innerHTML = clientUser[i]["bTitle"];
+		content.style.backgroundImage = "url('static/features/img/b8.jpg')";
+		content.setAttribute('id', clientUser[i]["bId"]);
+		content.onclick = goTo;
+		content.setAttribute('href', '#!Trello')
+		content.width = '100';
+		content.height = '50';
+		content.style.backgroundSize = 'contain';
+		tdTitle.appendChild(content);
+		tdTitle.height = "60";
+		tdTitle.style.textAlign = "center";
+		tdTitle.style.fontSize = "xx-large";
+		tdTitle.style.color = "black";
+		row.appendChild(tdTitle);
 		
+
 		tableElement.appendChild(row);
 
 	}
+	
+}
 
+function getTrelloInfo(response){
+	var d = response
+    var trelloInfo = response.data;
+    
+    for(var i = 0; i < trelloInfo.lanes.length; i++){
+                
+        
+                var lTitle = trelloInfo.lanes[i].lTitle;
+                
+                //create 
+                var tdlTitle = document.createElement('td');
+                //var tdbId = document.createElement('td');
+                
+                tdlTitle.innerHTML = lTitle;
+                
+                var row = document.createElement('tr');
+                
+                //add the row to the table
+                var table = document.getElementById('lane');
+//              table.appendChild(row);
+    }
+}
 
+var boardTId;
+function goTo(){
+	boardTId = this.id;
 }
 
 function getBoard() {
@@ -544,8 +626,11 @@ function getBoard() {
 
 }
 
+function getTB(){
+	var team = this.id;
+}
 
 
+////////////////////ENDJAVASCRIPT/////////////////////////////////////
 
-// //////////////////ENDJAVASCRIPT/////////////////////////////////////
 
