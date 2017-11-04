@@ -488,6 +488,7 @@ function loadHome(response) {
 		content.style.backgroundSize = 'contain';
 		tdTitle.appendChild(content);
 		tdTitle.height = "60";
+		tdTitle.style.textAlign = "center";
 		row.appendChild(tdTitle);
 		
 //		var tdTitle = document.createElement('td');
