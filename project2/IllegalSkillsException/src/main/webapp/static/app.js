@@ -454,7 +454,7 @@ function loadHome(response) {
 
 	var tableElement = document.getElementById('view');
 	
-	document.body.style.backgroundImage = "url('static/features/img/portfolio/thumbnails/2.jpg')";
+	//document.body.style.backgroundImage = "url('static/features/img/b3.jpg')";
 
 	var boardTitle;
 
