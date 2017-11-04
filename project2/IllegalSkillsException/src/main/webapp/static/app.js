@@ -59,7 +59,6 @@ app.controller('chartCtrl', function(dataChart) {
 app.controller('trello', function(scrumService) {
     trel = this; 
     
-    console.log(boardTId+"jf;aljf;oaiwhjf;aihf;oiawhf;oiwh;ofiha;")
     trel.getInfo = scrumService.info ;
     trel.getInfo(); 
 }).service('scrumService', function($http) {
@@ -95,7 +94,6 @@ app.controller('TestCtrl',function(dataServ) {
 	
 	reim.getInfo = dataServ.viewBoard
 	var responseb = reim.getInfo();
-	console.log(responseb)
 
 	// hide the form and send the ajax request
 	reim.done = function() {
@@ -132,13 +130,7 @@ app.controller('TestCtrl',function(dataServ) {
 
 	
 	dataService.viewBoard = function(){
-		$http.get('getHome').then(function(response){
-//			loadHome(response)
-//			$scope.records = ["abc","123"]
-			
-			var r = response;
-			console.log(r)
-		});
+		$http.get('getHome')
 	}
 	// sends the post information from the profile form
 	dataService.update = function() {
@@ -581,28 +573,21 @@ function loadTeamBoards(response){
 
 function getTrelloInfo(response){
 	var d = response
-	console.log("d values: "+d)
-    console.log("resp.data values: "+ response.data);
     var trelloInfo = response.data;
     
     for(var i = 0; i < trelloInfo.lanes.length; i++){
                 
         
                 var lTitle = trelloInfo.lanes[i].lTitle;
-                console.log(lTitle);
                 
                 //create 
                 var tdlTitle = document.createElement('td');
                 //var tdbId = document.createElement('td');
                 
-                
                 tdlTitle.innerHTML = lTitle;
-                //tdbId.innerHTML = bid;
                 
-                // create the row -tr
                 var row = document.createElement('tr');
                 
-                //creatd
                 //add the row to the table
                 var table = document.getElementById('lane');
 //              table.appendChild(row);
@@ -616,7 +601,6 @@ function goTo(){
 
 function getBoard() {
 	var boardId = this.id;
-	console.log(boardId)
 }
 
 function getTB(){
