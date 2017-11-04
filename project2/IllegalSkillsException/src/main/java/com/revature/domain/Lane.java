@@ -30,7 +30,8 @@ public class Lane implements Serializable {
 
 	@Column(name = "L_TITLE")
 	private String lTitle;
-
+	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "B_ID")
 	private Board laneBoard;

@@ -1,5 +1,6 @@
 package com.revature.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import com.revature.dao.IllegalDao;
 import com.revature.domain.Board;
 import com.revature.domain.Card;
 import com.revature.domain.Lane;
+import com.revature.domain.LaneDTO;
 import com.revature.domain.TV2User;
 import com.revature.domain.Task;
 
@@ -138,5 +140,8 @@ public class AppService {
 	public void deleteTask(Task task) {
 		dao.deleteTask(task);
 	}
+	 public LaneDTO convertToLaneCardTaskDTO(ArrayList<Lane>  lane, ArrayList<Card> card,  ArrayList<Task> task) {
+	        return new LaneDTO(lane, card, task);
+	    }
 
 }
