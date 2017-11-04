@@ -22,7 +22,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.domain.Board;
+import com.revature.domain.Card;
+import com.revature.domain.Lane;
+import com.revature.domain.LaneDTO;
 import com.revature.domain.TV2User;
+import com.revature.domain.Task;
 import com.revature.service.AppService;
 
 @RestController
@@ -145,7 +149,7 @@ public class RestCtrl {
 		Set<Board> teamBoards = new HashSet<Board>();
 		HttpSession session = request.getSession();
 		TV2User clientUser = (TV2User) session.getAttribute("user");
-		System.out.println(clientUser.getTeamId());
+		
 		List<Board> clientBoards = service.getAllBoards();
 		for(Board b : clientBoards) {
 			{
@@ -176,6 +180,32 @@ public class RestCtrl {
 		return new ResponseEntity<Board>(b, HttpStatus.OK);
 
 	}
+	@RequestMapping(value = { "/trelloInfo" }, method = RequestMethod.POST, consumes= "application/json",produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<LaneDTO> trello(@RequestBody Board board,HttpServletRequest request) {
+
+		Board nb = service.getBoard(board);
+		Set<Lane> lanes = nb.getLanes();
+		Set<Card> cards = new HashSet<Card>();
+		Set<Task> tasks = new HashSet<Task>();
+		for (Lane l : lanes) {
+			Set<Card> card = l.getCards();
+			for (Card c : card) {
+				cards.add(c);
+				Set<Task> task = c.getTasks();
+				for (Task t : task) {
+					tasks.add(t);
+				}
+			}
+		}
+
+		ArrayList<Lane> laneList = new ArrayList<Lane>(lanes);
+		ArrayList<Card> cardList = new ArrayList<Card>(cards);
+		ArrayList<Task> taskList = new ArrayList<Task>(tasks);
+
+		LaneDTO dto = service.convertToLaneCardTaskDTO(laneList, cardList, taskList);
+		return new ResponseEntity<LaneDTO>(dto, HttpStatus.OK);
+    }
 	
 
 }

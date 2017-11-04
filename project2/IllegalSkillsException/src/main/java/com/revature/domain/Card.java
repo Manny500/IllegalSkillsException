@@ -40,6 +40,7 @@ public class Card implements Serializable {
 	@Column(name = "C_DESCRIPTION")
 	private String cDescription;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "L_ID")
 	private Lane cardLane;
