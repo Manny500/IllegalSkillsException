@@ -161,6 +161,7 @@ app.controller('home', function(getInfoService) {
 
 	inf = this;
 	homeB = this;
+	team = this;
 	
 	
 	// to get role type of user who logged in
@@ -172,6 +173,12 @@ app.controller('home', function(getInfoService) {
 	// For Boards
 	homeB.getBoards = getInfoService.boards
 	homeB.getBoards();
+	
+	// TB stands for team boards
+	team.getTB = getInfoService.tb
+	team.getTB();
+	
+	
 	
 	
 
@@ -192,6 +199,13 @@ app.controller('home', function(getInfoService) {
 		$http.get('getHome').then(function(response) {
 
 			loadHome(response);
+
+		});
+	}
+	getInfoService.tb = function() {
+		$http.get('getTeamBoards').then(function(response) {
+
+			loadTeamBoards(response);
 
 		});
 	}
@@ -485,18 +499,49 @@ function loadHome(response) {
 		row.appendChild(link);
 
 		tableElement.appendChild(row);
+		
 
 	}
+}
 
+function loadTeamBoards(response){
+	var clientUser = response.data;
 
+	var tableElement = document.getElementById('view2');
+
+	var boardTitle;
+
+	for (i = 0; i < clientUser.length; i++) {
+
+		var row = document.createElement('tr');
+
+		var tdTitle = document.createElement('td');
+		tdTitle.innerHTML = clientUser[i]["bTitle"];
+		row.appendChild(tdTitle);
+
+		var link = document.createElement('button');
+		link.innerHTML = 'Go to board';
+		link.setAttribute('id', clientUser[i]["bId"]);
+		link.addEventListener('click', getBoard, false);
+		link.setAttribute('class', 'btn btn-info');
+		row.appendChild(link);
+
+		tableElement.appendChild(row);
+		
+
+	}
+	
 }
 
 function getBoard() {
 	var boardId = this.id;
 }
 
+function getTB(){
+	var team = this.id;
+}
 
 
+////////////////////ENDJAVASCRIPT/////////////////////////////////////
 
-// //////////////////ENDJAVASCRIPT/////////////////////////////////////
 

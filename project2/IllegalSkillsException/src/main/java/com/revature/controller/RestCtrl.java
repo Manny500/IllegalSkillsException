@@ -2,6 +2,7 @@ package com.revature.controller;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -136,6 +137,26 @@ public class RestCtrl {
 		TV2User clientUser = (TV2User) session.getAttribute("user");
 		Set<Board> clientBoards = clientUser.getBoards();
 		return new ResponseEntity<Set<Board>>(clientBoards, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = { "/getTeamBoards" }, method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public ResponseEntity<Set<Board>> teamBoards(HttpServletRequest request) {
+		Set<Board> teamBoards = new HashSet<Board>();
+		HttpSession session = request.getSession();
+		TV2User clientUser = (TV2User) session.getAttribute("user");
+		System.out.println(clientUser.getTeamId());
+		List<Board> clientBoards = service.getAllBoards();
+		for(Board b : clientBoards) {
+			{
+				if(b.getTeam() == clientUser.getTeamId()) {
+					teamBoards.add(b);
+				}
+				
+			}
+			
+		}
+		return new ResponseEntity<Set<Board>>(teamBoards, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = {"/createBoard" }, method = RequestMethod.POST, produces = "application/json")
