@@ -530,11 +530,11 @@ function loadHome(response) {
 		tdTitle.innerHTML = clientUser[i]["bTitle"];
 		row.appendChild(tdTitle);
 
-		var link = document.createElement('button');
-		link.innerHTML = 'Go to board';
-		link.setAttribute('id', clientUser[i]["bId"]);
-		link.addEventListener('click', getBoard, false);
-		link.setAttribute('class', 'btn btn-info');
+		var link = document.createElement('a');
+		link.setAttribute('id', clientUser[i]["bId"])
+		link.onclick = goTo;
+		link.innerHTML = "click here";
+		link.setAttribute('href', '#!Trello')
 		row.appendChild(link);
 
 		tableElement.appendChild(row);

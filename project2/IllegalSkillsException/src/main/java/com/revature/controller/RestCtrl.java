@@ -183,41 +183,28 @@ public class RestCtrl {
 	@RequestMapping(value = { "/trelloInfo" }, method = RequestMethod.POST, consumes= "application/json",produces = "application/json")
     @ResponseBody
     public ResponseEntity<LaneDTO> trello(@RequestBody Board board,HttpServletRequest request) {
-//  public ResponseEntity<LaneDTO> trello(HttpServletRequest request) {
-        System.out.println("inside TrelloCtrl" +board.getbId());
-        HttpSession session = request.getSession();
-        //
-        // Board b = (Board) session.getAttribute("board");
-        // Board board = service.getBoard(b);
-//      Board b = new Board();
-//      b.setbId(1);
-      Board nb = service.getBoard(board);
-        Set<Lane> lanes = nb.getLanes();
-        Set<Card> cards = new HashSet<Card>();
-        Set<Task> tasks = new HashSet<Task>();
-        for (Lane l : lanes) {
-            Set<Card> card = l.getCards();
-            for (Card c : card) {
-                cards.add(c);
-                Set<Task> task = c.getTasks();
-                for (Task t : task) {
-                    tasks.add(t);
-                }
-            }
-        }
-      System.out.println("lane size: " + lanes.size());
-      System.out.println("card size: " + cards.size());
-      System.out.println("task size: " + tasks.size());
-        ArrayList<Lane> laneList = new ArrayList<Lane>(lanes);
-        ArrayList<Card> cardList = new ArrayList<Card>(cards);
-        ArrayList<Task> taskList = new ArrayList<Task>(tasks);
-      System.out.println(laneList);
-      System.out.println(cardList);
-      System.out.println(taskList);
-        
-        LaneDTO dto = service.convertToLaneCardTaskDTO(laneList, cardList, taskList);
-        //String json = new Gson().toJson(laneList);
-        return new ResponseEntity<LaneDTO>(dto, HttpStatus.OK);
+
+		Board nb = service.getBoard(board);
+		Set<Lane> lanes = nb.getLanes();
+		Set<Card> cards = new HashSet<Card>();
+		Set<Task> tasks = new HashSet<Task>();
+		for (Lane l : lanes) {
+			Set<Card> card = l.getCards();
+			for (Card c : card) {
+				cards.add(c);
+				Set<Task> task = c.getTasks();
+				for (Task t : task) {
+					tasks.add(t);
+				}
+			}
+		}
+
+		ArrayList<Lane> laneList = new ArrayList<Lane>(lanes);
+		ArrayList<Card> cardList = new ArrayList<Card>(cards);
+		ArrayList<Task> taskList = new ArrayList<Task>(tasks);
+
+		LaneDTO dto = service.convertToLaneCardTaskDTO(laneList, cardList, taskList);
+		return new ResponseEntity<LaneDTO>(dto, HttpStatus.OK);
     }
 	
 
