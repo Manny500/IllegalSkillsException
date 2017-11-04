@@ -266,7 +266,6 @@ app.controller('usersList', function(getUsersService) {
 
 
 
-// ///////////////ANGULAR//////////////////////////////////////////
 
 // ///////////////ENDANGULAR//////////////////////////////////////////
 
@@ -549,13 +548,6 @@ function loadTeamBoards(response){
 		var tdTitle = document.createElement('td');
 		tdTitle.innerHTML = clientUser[i]["bTitle"];
 		row.appendChild(tdTitle);
-
-//		var link = document.createElement('button');
-//		link.innerHTML = 'Go to board';
-//		link.setAttribute('id', clientUser[i]["bId"]);
-//		link.addEventListener('click', getBoard, false);
-//		link.setAttribute('class', 'btn btn-info');
-//		row.appendChild(link);
 		
 		var link = document.createElement('a');
 		link.setAttribute('id', clientUser[i]["bId"])
