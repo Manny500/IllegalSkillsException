@@ -313,7 +313,6 @@ app.controller('usersList', function(getUsersService) {
 
 function displayChart(myData) {
 
-	console.log(myData)
 	// Add a helper to format timestamp data
 	Date.prototype.formatYYYYDDMM = function() {
 		return (this.getFullYear() + 1) + "-" + this.getDate() + "-"
@@ -326,9 +325,6 @@ function displayChart(myData) {
 		labels.push(new Date(chart.chartDate).formatYYYYDDMM());
 		data.push(chart.chartSum);
 	});
-
-	console.log(labels);
-	console.log(data);
 
 	// Create the chart.js data structure using 'labels' and 'data'
 	var tempData = {
