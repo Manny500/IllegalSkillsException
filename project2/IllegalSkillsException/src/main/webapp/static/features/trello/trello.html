@@ -8,3 +8,16 @@
     <tbody>
     </tbody>
 </table>
+
+
+<!-- ADD LANES -->
+<button type="button" data-ng-click="test.updateLane()" id="updateLaneBtn" class="btn btn-primary">Add a new Lane</button>
+
+
+<div id="laneForm" style="visibility:hidden;">
+
+	New Lane: <input id="newLane" data-ng-model="test.newLane" type="text"> <br>
+	
+	<button type="button" data-ng-click="test.done()" id="doneLaneBtn" class="btn btn-primary">Done</button>
+	
+</div>

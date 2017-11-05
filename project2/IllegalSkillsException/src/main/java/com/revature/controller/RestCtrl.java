@@ -62,7 +62,7 @@ public class RestCtrl {
 	@RequestMapping(value = { "/profile" }, method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public ResponseEntity<TV2User> profile(HttpServletRequest request) {
-
+        System.out.println("ResponseEntity<TV2User> profile");
 		// client wants the bankUser that at this point should be stored in the session
 		HttpSession session = request.getSession();
 
@@ -74,7 +74,7 @@ public class RestCtrl {
 			"/updateProfile" }, method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public ResponseEntity<TV2User> updateProfile(@RequestBody TV2User user, HttpServletRequest request) {
-
+		System.out.println("ResponseEntity<TV2User> updateProfile");
 		// client wants the bankUser that at this point should be stored in the session
 		HttpSession session = request.getSession();
 

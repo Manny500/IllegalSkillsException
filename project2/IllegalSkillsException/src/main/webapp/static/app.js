@@ -75,15 +75,23 @@ app.controller('trello', function(scrumService) {
 
 
 app.controller('TestCtrl',function(dataServ) {
-
+	console.log('11111111 TestCtrl');
 	reim = this;
-	
 	createB = this;
-
+	addL = this; // add lines
+	
 	reim.updateInfo = function() {
+		console.log('reim.updateInfo  => profile updateInfo js function')
 		document.getElementById('updateBtn').style.visibility = 'hidden';
 		document.getElementById('profileForm').style.visibility = 'visible';
 	}
+	
+	addL.updateLane = function(){ //1229
+		console.log('updateLane js function');
+		document.getElementById('updateLaneBtn').style.visibility = 'hidden';
+		document.getElementById('laneForm').style.visibility = 'visible';
+	}
+	
 	
 	createB.startCreate = function(){
 		document.getElementById('createBoardBtn').style.visibility = 'hidden';
@@ -96,9 +104,9 @@ app.controller('TestCtrl',function(dataServ) {
 	var responseb = reim.getInfo();
 
 	// hide the form and send the ajax request
-	reim.done = function() {
-
-		reim.update = dataServ.update;
+	reim.done = function() {                            
+		console.log('reim.done');
+		reim.update = dataServ.update; 
 
 		reim.update();
 
@@ -127,14 +135,16 @@ app.controller('TestCtrl',function(dataServ) {
 
 	var dataService = this;
 	var bDataService = this;
+	var lnDataService = this; //line
 
 	
 	dataService.viewBoard = function(){
 		$http.get('getHome')
 	}
+	
 	// sends the post information from the profile form
 	dataService.update = function() {
-
+		console.log('reim done -> dataService update')
 		var indata = {
 			'firstName' : reim.firstName,
 			'lastName' : reim.lastName,
@@ -144,8 +154,20 @@ app.controller('TestCtrl',function(dataServ) {
 		};
 
 		$http.post('updateProfile', indata).then(function(response) {
-
+			console.log('getProfileInfo $http.post')
 			getProfileInfo(response);
+
+		});
+	};
+	
+	lnDataService.update = function(){    //1229
+		
+		var lnData = {
+				'lTitle' : addL.lTitle
+		}
+		$http.post('updateLane', lnData).then(function(response) {
+			console.log('lnDataService.update $http.post')
+			//getLaneInfo(response);
 
 		});
 	};
