@@ -6,14 +6,14 @@ import com.revature.domain.Task;
 public class LaneDTO {
     
     private ArrayList<Lane> lanes;
-    private ArrayList<Card> cards;
-    private ArrayList<Task> tasks;
+    private ArrayList<cardDTO> cards;
+    private ArrayList<taskDTO> tasks;
     
-    public LaneDTO(ArrayList<Lane> lanes, ArrayList<Card> cards, ArrayList<Task> tasks) {
+    public LaneDTO(ArrayList<Lane> lanes, ArrayList<cardDTO> card, ArrayList<taskDTO> task) {
         super();
         this.lanes = lanes;
-        this.cards = cards;
-        this.tasks = tasks;
+        this.cards = card;
+        this.tasks = task;
     }
     public ArrayList<Lane> getLanes() {
         return lanes;
@@ -21,16 +21,16 @@ public class LaneDTO {
     public void setLanes(ArrayList<Lane> lanes) {
         this.lanes = lanes;
     }
-    public ArrayList<Card> getCards() {
+    public ArrayList<cardDTO> getCards() {
         return cards;
     }
-    public void setCards(ArrayList<Card> cards) {
+    public void setCards(ArrayList<cardDTO> cards) {
         this.cards = cards;
     }
-    public ArrayList<Task> getTasks() {
+    public ArrayList<taskDTO> getTasks() {
         return tasks;
     }
-    public void setTasks(ArrayList<Task> tasks) {
+    public void setTasks(ArrayList<taskDTO> tasks) {
         this.tasks = tasks;
     }
    

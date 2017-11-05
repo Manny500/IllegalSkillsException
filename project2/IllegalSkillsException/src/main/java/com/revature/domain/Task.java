@@ -26,6 +26,7 @@ public class Task implements Serializable {
 
 	@Column(name = "T_INFO")
 	private String tInfo;
+	
 
 	@ManyToOne
 	@JoinColumn(name = "C_ID")
@@ -43,6 +44,8 @@ public class Task implements Serializable {
 		this.taskCard = taskCard;
 	}
 
+	
+	
 	public int gettId() {
 		return tId;
 	}
