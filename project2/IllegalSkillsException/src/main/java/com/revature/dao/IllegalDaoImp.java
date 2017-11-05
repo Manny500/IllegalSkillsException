@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.revature.domain.Board;
 import com.revature.domain.Card;
+import com.revature.domain.Chart;
 import com.revature.domain.Lane;
 import com.revature.domain.TV2User;
 import com.revature.domain.Task;
@@ -87,7 +88,6 @@ public class IllegalDaoImp implements IllegalDao {
 		List<Board> boards = crit.list();
 		return boards;
 	}
-	
 
 	@Override
 	public Lane getLane(Lane lane) {
@@ -169,6 +169,28 @@ public class IllegalDaoImp implements IllegalDao {
 		session.delete(task);
 	}
 
-	
+	@Override
+	public void createChart(Chart chart) {
+		Session session = sessionFactory.getCurrentSession();
+		session.save(chart);
+	}
+
+	@Override
+	public Chart getChart(Chart chart) {
+		Session session = sessionFactory.getCurrentSession();
+		return (Chart) session.get(Chart.class, chart.getChartId());
+	}
+
+	@Override
+	public void updateChart(Chart chart) {
+		Session session = sessionFactory.getCurrentSession();
+		session.update(chart);
+	}
+
+	@Override
+	public void deleteChart(Chart chart) {
+		Session session = sessionFactory.getCurrentSession();
+		session.delete(chart);
+	}
 
 }
