@@ -44,6 +44,8 @@ public class Card implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "L_ID")
 	private Lane cardLane;
+	
+
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "taskCard", fetch = FetchType.EAGER)
@@ -64,6 +66,8 @@ public class Card implements Serializable {
 		this.tasks = tasks;
 	}
 
+
+	
 	public int getcId() {
 		return cId;
 	}

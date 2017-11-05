@@ -68,7 +68,7 @@ app.controller('trello', function(scrumService) {
                 'bId': boardTId
         }
         $http.post('trelloInfo',trelloB).then(function(response) {
-            getTrelloInfo(response);
+            getTrelloInfo(response); //&1
         });
     }
 });
@@ -591,26 +591,63 @@ if(clientUser.length == 0){
 	
 }
 
-function getTrelloInfo(response){
+function getTrelloInfo(response){ //&1 (using this as a marker)
 	var d = response
     var trelloInfo = response.data;
+	
+    var lanes = trelloInfo.lanes;
+    var cards = trelloInfo.cards;
+    var tasks = trelloInfo.tasks;
+
     
-    for(var i = 0; i < trelloInfo.lanes.length; i++){
-                
-        
-                var lTitle = trelloInfo.lanes[i].lTitle;
-                
-                //create 
-                var tdlTitle = document.createElement('td');
-                //var tdbId = document.createElement('td');
-                
-                tdlTitle.innerHTML = lTitle;
-                
-                var row = document.createElement('tr');
-                
-                //add the row to the table
-                var table = document.getElementById('lane');
-//              table.appendChild(row);
+    
+    //sorting the lanes by their id 
+    lanes = lanes.sort(function(a,b){
+    			return a.lId - b.lId;
+    		})
+    cards = cards.sort(function(a,b){
+    			return a.cId - b.cId;
+    		})
+    tasks = tasks.sort(function(a,b){
+    			return a.tId - b.tId;
+    		})		
+    
+   
+    	
+    var tableElement = document.getElementById('view');
+    for(var i = 0; i < lanes.length; i++){
+    	var laneDivs = document.createElement('div');
+    	laneDivs.setAttribute("id", "lane"+lanes[i].lId)
+    	laneDivs.setAttribute("style", "float:left; width: 20%")
+
+    	var row = document.createElement('tr');
+    	var tdlTitle = document.createElement('td');
+    	
+    	var lTitle = lanes[i].lId+"."+lanes[i].lTitle;
+    	tdlTitle.innerHTML = lTitle;
+    	
+    	row.appendChild(tdlTitle);
+    	
+    	
+    	for(var j = 0; j< cards.length; j++){
+    		var aCard = document.createElement('tr')
+	    	var aCardTitle = document.createElement('td')
+	    	aCardTitle.innerHTML = cards[j].cTitle;
+    		
+    		aCard.appendChild(aCardTitle);
+    		
+    		if(lanes[i].lId == cards[j].laneId){
+    			//append card to the lane
+    			
+    			tdlTitle.appendChild(aCard)
+  
+    		}
+    		
+    		
+    	}
+    	
+		laneDivs.appendChild(row);
+		tableElement.appendChild(laneDivs);
     }
 }
 
