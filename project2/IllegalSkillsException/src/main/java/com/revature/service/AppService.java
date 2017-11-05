@@ -15,6 +15,8 @@ import com.revature.domain.Lane;
 import com.revature.domain.LaneDTO;
 import com.revature.domain.TV2User;
 import com.revature.domain.Task;
+import com.revature.domain.cardDTO;
+import com.revature.domain.taskDTO;
 
 @Service(value = "AppService")
 @Transactional
@@ -142,12 +144,12 @@ public class AppService {
 		dao.deleteTask(task);
 	}
 
-	public LaneDTO convertToLaneCardTaskDTO(ArrayList<Lane> lane, ArrayList<Card> card, ArrayList<Task> task) {
-		return new LaneDTO(lane, card, task);
-	}
-
 	public LaneDTO convertToLaneCardTaskDTO(ArrayList<Chart> chart) {
 		return new LaneDTO(chart);
+	}
+
+	public LaneDTO convertToLaneCardTaskDTO(ArrayList<Lane> lane, ArrayList<cardDTO> card, ArrayList<taskDTO> task) {
+		return new LaneDTO(lane, card, task);
 	}
 
 }

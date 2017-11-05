@@ -25,6 +25,8 @@ import com.revature.domain.Lane;
 import com.revature.domain.LaneDTO;
 import com.revature.domain.TV2User;
 import com.revature.domain.Task;
+import com.revature.domain.cardDTO;
+import com.revature.domain.taskDTO;
 import com.revature.service.AppService;
 
 @RestController
@@ -174,22 +176,29 @@ public class RestCtrl {
 
 		Board nb = service.getBoard(board);
 		Set<Lane> lanes = nb.getLanes();
-		Set<Card> cards = new HashSet<Card>();
-		Set<Task> tasks = new HashSet<Task>();
+		Set<cardDTO> cards = new HashSet<cardDTO>();
+		Set<taskDTO> tasks = new HashSet<taskDTO>();
 		for (Lane l : lanes) {
 			Set<Card> card = l.getCards();
+			
 			for (Card c : card) {
-				cards.add(c);
+				int laneid = c.getCardLane().getlId();
+				cardDTO cdto = new cardDTO(c.getcId(),c.getcVerify(),c.getcWorth(),c.getcTitle(),c.getcDescription(),laneid);
+				cards.add(cdto);
 				Set<Task> task = c.getTasks();
+				
 				for (Task t : task) {
-					tasks.add(t);
+					int cardid = t.getTaskCard().getcId();
+					taskDTO tdto = new taskDTO(t.gettId(), t.gettComplete(), t.gettInfo(), cardid);
+					tasks.add(tdto);
 				}
 			}
 		}
 
 		ArrayList<Lane> laneList = new ArrayList<Lane>(lanes);
-		ArrayList<Card> cardList = new ArrayList<Card>(cards);
-		ArrayList<Task> taskList = new ArrayList<Task>(tasks);
+		ArrayList<cardDTO> cardList = new ArrayList<cardDTO>(cards);
+		ArrayList<taskDTO> taskList = new ArrayList<taskDTO>(tasks);
+		
 
 		LaneDTO dto = service.convertToLaneCardTaskDTO(laneList, cardList, taskList);
 		return new ResponseEntity<LaneDTO>(dto, HttpStatus.OK);
