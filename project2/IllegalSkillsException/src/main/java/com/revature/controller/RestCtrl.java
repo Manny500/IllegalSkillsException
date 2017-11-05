@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.sym.Name1;
 import com.revature.domain.Board;
 import com.revature.domain.Card;
 import com.revature.domain.Lane;
@@ -62,7 +63,7 @@ public class RestCtrl {
 	@RequestMapping(value = { "/profile" }, method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public ResponseEntity<TV2User> profile(HttpServletRequest request) {
-        System.out.println("ResponseEntity<TV2User> profile");
+		System.out.println("ResponseEntity<TV2User> profile");
 		// client wants the bankUser that at this point should be stored in the session
 		HttpSession session = request.getSession();
 
@@ -142,47 +143,47 @@ public class RestCtrl {
 		Set<Board> clientBoards = clientUser.getBoards();
 		return new ResponseEntity<Set<Board>>(clientBoards, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = { "/getTeamBoards" }, method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public ResponseEntity<Set<Board>> teamBoards(HttpServletRequest request) {
 		Set<Board> teamBoards = new HashSet<Board>();
 		HttpSession session = request.getSession();
 		TV2User clientUser = (TV2User) session.getAttribute("user");
-		
+
 		List<Board> clientBoards = service.getAllBoards();
-		for(Board b : clientBoards) {
+		for (Board b : clientBoards) {
 			{
-				if(b.getTeam() == clientUser.getTeamId()) {
+				if (b.getTeam() == clientUser.getTeamId()) {
 					teamBoards.add(b);
 				}
-				
+
 			}
-			
+
 		}
 		return new ResponseEntity<Set<Board>>(teamBoards, HttpStatus.OK);
 	}
-	
-	@RequestMapping(value = {"/createBoard" }, method = RequestMethod.POST, produces = "application/json")
+
+	@RequestMapping(value = { "/createBoard" }, method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public ResponseEntity<Board> createBoard(@RequestBody Board board, HttpServletRequest request) {
 		// getting TV2User at this session to give Board this user's id and team #
 		HttpSession session = request.getSession();
 		TV2User clientUser = (TV2User) session.getAttribute("user");
 		Board b = new Board(board.getbTitle(), clientUser.getTeamId(), clientUser);
-		
-		
-		if(b.getbTitle() != null) {
+
+		if (b.getbTitle() != null) {
 			service.createBoard(b);
 		}
-		
 
 		return new ResponseEntity<Board>(b, HttpStatus.OK);
 
 	}
-	@RequestMapping(value = { "/trelloInfo" }, method = RequestMethod.POST, consumes= "application/json",produces = "application/json")
-    @ResponseBody
-    public ResponseEntity<LaneDTO> trello(@RequestBody Board board,HttpServletRequest request) {
+
+	@RequestMapping(value = {
+			"/trelloInfo" }, method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	@ResponseBody
+	public ResponseEntity<LaneDTO> trello(@RequestBody Board board, HttpServletRequest request) {
 
 		Board nb = service.getBoard(board);
 		Set<Lane> lanes = nb.getLanes();
@@ -205,7 +206,33 @@ public class RestCtrl {
 
 		LaneDTO dto = service.convertToLaneCardTaskDTO(laneList, cardList, taskList);
 		return new ResponseEntity<LaneDTO>(dto, HttpStatus.OK);
-    }
-	
+	}
+
+	@RequestMapping(value = {
+			"/updateLane" }, method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@ResponseBody
+	public ResponseEntity<Lane> updateLane(@RequestBody Lane lane, HttpServletRequest request) {
+		System.out.println("ResponseEntity<Lane> updateLane()");
+		
+		
+		HttpSession session = request.getSession();
+		Board laneBoard = (Board) session.getAttribute("board");
+		Lane nl = new Lane(lane.getlTitle(), laneBoard);
+		
+	//	Lane nl = (Lane) session.getAttribute("lane");
+//		System.out.println(nl.getlTitle());
+//		Lane newlane = new Lane(nl.getlTitle());           // youre the fucking problem
+//		//lane.setlTitle(newLane.getlTitle());
+//
+		if (nl.getlTitle() != null) {
+			service.createLane(nl);
+		}else {
+			System.out.println("Title is empty!!");
+		}
+
+
+		return new ResponseEntity<Lane>(nl, HttpStatus.OK);
+
+	}
 
 }

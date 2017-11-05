@@ -43,6 +43,23 @@ public class Lane implements Serializable {
 	public Lane() {
 		super();
 	}
+	
+	
+
+	public Lane(String lTitle) {
+		super();
+		this.lTitle = lTitle;
+	}
+
+
+
+	public Lane(String lTitle, Board laneBoard) {
+		super();
+		this.lTitle = lTitle;
+		this.laneBoard = laneBoard;
+	}
+
+
 
 	public Lane(int lId, String lTitle, Board laneBoard, Set<Card> cards) {
 		super();
@@ -83,5 +100,7 @@ public class Lane implements Serializable {
 	public void setCards(Set<Card> cards) {
 		Cards = cards;
 	}
+	
+	
 
 }

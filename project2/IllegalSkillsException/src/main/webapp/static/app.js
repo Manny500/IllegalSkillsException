@@ -103,6 +103,23 @@ app.controller('TestCtrl',function(dataServ) {
 	reim.getInfo = dataServ.viewBoard
 	var responseb = reim.getInfo();
 
+	addL.doneL= function(){  //1229
+		console.log('addL.done');
+		addL.updateL = dataServ.updateL;
+		addL.updateL();
+		
+		// delete all contents of previous table ????????????????????????????????????????????IMPLEMENT
+//		$(document).ready(function() {
+//			$("#userTable").find("tr:gt(0)").remove();
+//		});
+
+		//
+		// hide the form and show the update button
+		document.getElementById('updateLaneBtn').style.visibility = 'visible';
+		document.getElementById('laneForm').style.visibility = 'hidden';
+
+	}
+	
 	// hide the form and send the ajax request
 	reim.done = function() {                            
 		console.log('reim.done');
@@ -135,7 +152,7 @@ app.controller('TestCtrl',function(dataServ) {
 
 	var dataService = this;
 	var bDataService = this;
-	var lnDataService = this; //line
+	var lnDataService = this; //line 1229
 
 	
 	dataService.viewBoard = function(){
@@ -160,14 +177,14 @@ app.controller('TestCtrl',function(dataServ) {
 		});
 	};
 	
-	lnDataService.update = function(){    //1229
-		
+	lnDataService.updateL = function(){    //1229
+		console.log('updateL');
 		var lnData = {
 				'lTitle' : addL.lTitle
 		}
 		$http.post('updateLane', lnData).then(function(response) {
-			console.log('lnDataService.update $http.post')
-			//getLaneInfo(response);
+			console.log('lnDataService.update LANE $http.post')
+			//getTrelloInfo(response);
 
 		});
 	};
