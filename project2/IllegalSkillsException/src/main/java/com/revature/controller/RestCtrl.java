@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.sym.Name1;
 import com.revature.domain.Board;
+import com.revature.domain.BoardDTO;
 import com.revature.domain.Card;
 import com.revature.domain.Lane;
 import com.revature.domain.LaneDTO;
@@ -184,7 +185,7 @@ public class RestCtrl {
 			"/trelloInfo" }, method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	@ResponseBody
 	public ResponseEntity<LaneDTO> trello(@RequestBody Board board, HttpServletRequest request) {
-
+		
 		Board nb = service.getBoard(board);
 		Set<Lane> lanes = nb.getLanes();
 		Set<Card> cards = new HashSet<Card>();
@@ -211,19 +212,19 @@ public class RestCtrl {
 	@RequestMapping(value = {
 			"/updateLane" }, method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public ResponseEntity<Lane> updateLane(@RequestBody Lane lane, HttpServletRequest request) {
+	public ResponseEntity<BoardDTO> updateLane(@RequestBody BoardDTO bDTO, HttpServletRequest request) {
 		System.out.println("ResponseEntity<Lane> updateLane()");
 		
+		System.out.println("TITLE!!!!! "+ bDTO.getlTitle());
+		System.out.println("BID!!!!! "+ bDTO.getbId());
+		Board b = new Board(bDTO.getbId());
+	    Lane nl = new Lane(bDTO.getlTitle(),b);
 		
-		HttpSession session = request.getSession();
-		Board laneBoard = (Board) session.getAttribute("board");
-		Lane nl = new Lane(lane.getlTitle(), laneBoard);
+		//Board laneBoard = (Board) session.getAttribute("board");
+		//System.out.println("bid? " +lane.getLaneBoard().getbId());
+		//Lane nl = new Lane(lane.getlTitle(), lane.getLaneBoard().getbId());
 		
-	//	Lane nl = (Lane) session.getAttribute("lane");
-//		System.out.println(nl.getlTitle());
-//		Lane newlane = new Lane(nl.getlTitle());           // youre the fucking problem
-//		//lane.setlTitle(newLane.getlTitle());
-//
+
 		if (nl.getlTitle() != null) {
 			service.createLane(nl);
 		}else {
@@ -231,7 +232,7 @@ public class RestCtrl {
 		}
 
 
-		return new ResponseEntity<Lane>(nl, HttpStatus.OK);
+		return new ResponseEntity<BoardDTO>(bDTO, HttpStatus.OK);
 
 	}
 

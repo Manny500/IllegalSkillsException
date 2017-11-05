@@ -180,11 +180,13 @@ app.controller('TestCtrl',function(dataServ) {
 	lnDataService.updateL = function(){    //1229
 		console.log('updateL');
 		var lnData = {
-				'lTitle' : addL.lTitle
+				'lTitle' : addL.lTitle,
+				'bId': boardTId
 		}
+		console.log(boardTId);
 		$http.post('updateLane', lnData).then(function(response) {
 			console.log('lnDataService.update LANE $http.post')
-			//getTrelloInfo(response);
+			loadTrelloInfo();
 
 		});
 	};
@@ -641,4 +643,37 @@ function getTB(){
 
 ////////////////////ENDJAVASCRIPT/////////////////////////////////////
 
+//AJAX
+function loadTrelloInfo(){
+	console.log('Loading loadTrelloInfo!!');
+ 	
+	//Use AJAX to grab the navbar.html fragment
+	var xhr = new XMLHttpRequest();
+	console.log('received loadTrelloInfo fragment');
+	
+	var trelloB = {
+            'bId': boardTId
+    }
+	
+	trelB = JSON.stringify(trelloB);
+	
+	
+	xhr.onreadystatechange = function(){
+		
+		if(xhr.readyState == 4 && xhr.status == 200){
+//			document.getElementById("view").innerHTML = xhr.responseText;
+			console.log(xhr.responseText);
+			
+            getTrelloInfo(xhr.responseText);
+
+		}
+	}
+	// open the request  ?? where does get go
+	xhr.open("POST", "trelloInfo", true); //method, URL, true =>synchronous
+
+	xhr.setRequestHeader("Content-type", "application/json");
+	//sent it
+	xhr.send(trelB);
+	
+}
 
