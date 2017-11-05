@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.domain.Board;
 import com.revature.domain.Card;
+import com.revature.domain.Chart;
 import com.revature.domain.Lane;
 import com.revature.domain.LaneDTO;
 import com.revature.domain.TV2User;
@@ -32,29 +33,17 @@ public class RestCtrl {
 	@Autowired
 	private AppService service;
 
-	@RequestMapping(value = {
-			"/chart" }, method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = {"/chart" }, method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	@ResponseBody
 	public ResponseEntity<LaneDTO> chart(@RequestBody Board board, HttpServletRequest request) {
 
 		Board nb = service.getBoard(board);
-		Set<Lane> lanes = nb.getLanes();
-		Set<Card> cards = new HashSet<Card>();
-		Set<Task> tasks = new HashSet<Task>();
-		for (Lane l : lanes) {
-			Set<Card> card = l.getCards();
-			for (Card c : card) {
-				cards.add(c);
-				Set<Task> task = c.getTasks();
-				for (Task t : task) {
-					tasks.add(t);
-				}
-			}
-		}
+		Set<Chart> chart = nb.getChart();
+		
+		ArrayList<Chart> chartList = new ArrayList<Chart>(chart);
 
-		ArrayList<Card> cardList = new ArrayList<Card>(cards);
-
-		LaneDTO dto = service.convertToLaneCardTaskDTO(cardList);
+		LaneDTO dto = service.convertToLaneCardTaskDTO(chartList);
+		
 		return new ResponseEntity<LaneDTO>(dto, HttpStatus.OK);
 	}
 
