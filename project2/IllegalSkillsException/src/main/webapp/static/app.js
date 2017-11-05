@@ -71,106 +71,109 @@ app.controller('trello', function(scrumService) {
 
 }).service('scrumService', function($http) {
 
-    var scrumService = this;
-    scrumService.info = function() {
-        var trelloB = {
-                'bId': boardTId
-        }
-        $http.post('trelloInfo',trelloB).then(function(response) {
-            getTrelloInfo(response); //&1
-        });
-    }
+	var scrumService = this;
+	scrumService.info = function() {
+		var trelloB = {
+			'bId' : boardTId
+		}
+		$http.post('trelloInfo', trelloB).then(function(response) {
+			getTrelloInfo(response); // &1
+		});
+	}
 });
 
 // //////////////////////////////CONTROLLER/////////////////////////////
 
-app.controller('TestCtrl',function(dataServ) {
+app
+		.controller(
+				'TestCtrl',
+				function(dataServ) {
 
-			reim = this;
+					reim = this;
 
-			createB = this;
+					createB = this;
 
-			reim.updateInfo = function() {
-				document.getElementById('updateBtn').style.visibility = 'hidden';
-				document.getElementById('profileForm').style.visibility = 'visible';
+					reim.updateInfo = function() {
+						document.getElementById('updateBtn').style.visibility = 'hidden';
+						document.getElementById('profileForm').style.visibility = 'visible';
+					}
+
+					createB.startCreate = function() {
+						document.getElementById('createBoardBtn').style.visibility = 'hidden';
+						document.getElementById('createBoardForm').style.visibility = 'visible';
+					};
+
+					reim.getInfo = dataServ.viewBoard
+					var responseb = reim.getInfo();
+
+					// hide the form and send the ajax request
+					reim.done = function() {
+
+						reim.update = dataServ.update;
+
+						reim.update();
+
+						// delete all contents of previous table
+						$(document).ready(function() {
+							$("#userTable").find("tr:gt(0)").remove();
+						});
+
+						// hide the form and show the update button
+						document.getElementById('updateBtn').style.visibility = 'visible';
+						document.getElementById('profileForm').style.visibility = 'hidden';
+
+					}
+
+					createB.create = function() {
+						createB.process = dataServ.process;
+						createB.process();
+
+						// hide the form and show the update button and clear
+						// input form
+						document.getElementById('bTitle').value = "";
+						document.getElementById('createBoardBtn').style.visibility = 'visible';
+						document.getElementById('createBoardForm').style.visibility = 'hidden';
+					}
+
+				}).service('dataServ', function($http) {
+
+			var dataService = this;
+			var bDataService = this;
+
+			dataService.viewBoard = function() {
+				$http.get('getHome')
 			}
+			// sends the post information from the profile form
+			dataService.update = function() {
 
-			createB.startCreate = function() {
-				document.getElementById('createBoardBtn').style.visibility = 'hidden';
-				document.getElementById('createBoardForm').style.visibility = 'visible';
+				var indata = {
+					'firstName' : reim.firstName,
+					'lastName' : reim.lastName,
+					'userName' : reim.userName,
+					'password' : reim.password,
+					'email' : reim.email
+				};
+
+				$http.post('updateProfile', indata).then(function(response) {
+
+					getProfileInfo(response);
+
+				});
 			};
 
-			reim.getInfo = dataServ.viewBoard
-			var responseb = reim.getInfo();
+			bDataService.process = function() {
 
-			// hide the form and send the ajax request
-			reim.done = function() {
+				var cbData = {
+					'bTitle' : createB.bTitle
+				}
 
-				reim.update = dataServ.update;
+				$http.post('createBoard', cbData).then(function(response) {
+					loadHome(response);
 
-				reim.update();
-
-				// delete all contents of previous table
-				$(document).ready(function() {
-					$("#userTable").find("tr:gt(0)").remove();
 				});
-
-				// hide the form and show the update button
-				document.getElementById('updateBtn').style.visibility = 'visible';
-				document.getElementById('profileForm').style.visibility = 'hidden';
-
-			}
-
-			createB.create = function() {
-				createB.process = dataServ.process;
-				createB.process();
-
-				// hide the form and show the update button and clear
-				// input form
-				document.getElementById('bTitle').value = "";
-				document.getElementById('createBoardBtn').style.visibility = 'visible';
-				document.getElementById('createBoardForm').style.visibility = 'hidden';
-			}
-
-		}).service('dataServ', function($http) {
-
-	var dataService = this;
-	var bDataService = this;
-
-	dataService.viewBoard = function() {
-		$http.get('getHome')
-	}
-	// sends the post information from the profile form
-	dataService.update = function() {
-
-		var indata = {
-			'firstName' : reim.firstName,
-			'lastName' : reim.lastName,
-			'userName' : reim.userName,
-			'password' : reim.password,
-			'email' : reim.email
-		};
-
-		$http.post('updateProfile', indata).then(function(response) {
-
-			getProfileInfo(response);
+			};
 
 		});
-	};
-
-	bDataService.process = function() {
-
-		var cbData = {
-			'bTitle' : createB.bTitle
-		}
-
-		$http.post('createBoard', cbData).then(function(response) {
-			loadHome(response);
-
-		});
-	};
-
-});
 
 // //////////////////////////////CONTROLLER/////////////////////////////
 
@@ -310,93 +313,68 @@ app.controller('usersList', function(getUsersService) {
 
 function displayChart(myData) {
 
-	// set the dimensions and margins of the graph
-	var margin = {
-		top : 20,
-		right : 20,
-		bottom : 30,
-		left : 50
-	}, width = 960 - margin.left - margin.right, height = 500 - margin.top
-			- margin.bottom;
-
-	// parse the date / time
-	var parseTime = d3.timeFormat("%Y-%m-%d %H:%M:%S:%L");
-
-	// set the ranges
-	var x = d3.scaleTime().range([ 0, width ]);
-	var y = d3.scaleLinear().range([ height, 0 ]);
-
-	// define the line
-	var line = d3.line().x(function(d) { 
-    	
-    	return x(parseTime(new Date(d.chartDate)));
-    	
-    	}).y(function(d) { 
-    		    	
-    	return y(d.chartSum); 
-    	});
-
-	// append the svg obgect to the body of the page
-	// appends a 'group' element to 'svg'
-	// moves the 'group' element to the top left margin
-	var svg = d3.select("#svg").append("svg").attr("width",
-			width + margin.left + margin.right).attr("height",
-			height + margin.top + margin.bottom).append("g").attr("transform",
-			"translate(" + margin.left + "," + margin.top + ")");
-
-	function draw(data, chart) {
-
-		var data = data[chart];
-		
-		// format the data
-		data.forEach(function(d) {
-			d.chartDate = parseTime(new Date(d.chartDate));
-			d.chartSum = +d.chartSum;
-		});
-
-		// sort years ascending
-		data.sort(function(a, b) {
-			return b["chartDate"] - a["chartDate"];
-		})
-
-		// Scale the range of the data
-		x.domain(d3.extent(data, function(d) {
-			return d.chartDate;
-		}));
-		y.domain([ 0, d3.max(data, function(d) {
-			return d.chartSum;
-		}) ]);
-
-		// Add the valueline path.
-
-		svg.append("path")
-		      .datum(data)
-		      .attr("fill", "none")
-		      .attr("stroke", "steelblue")
-		      .attr("stroke-linejoin", "round")
-		      .attr("stroke-linecap", "round")
-		      .attr("stroke-width", 1.5)
-		      .attr("d", line);		// Add the X Axis
-		svg.append("g").attr("transform", "translate(0," + height + ")").call(
-				d3.axisBottom(x));
-
-		// Add the Y Axis
-		svg.append("g").call(d3.axisLeft(y));
+	console.log(myData)
+	// Add a helper to format timestamp data
+	Date.prototype.formatYYYYDDMM = function() {
+		return (this.getFullYear() + 1) + "-" + this.getDate() + "-"
+				+ this.getMonth();
 	}
 
-	draw(myData, "chart");
+	// Split timestamp and data into separate arrays
+	var labels = [], data = [];
+	myData["chart"].forEach(function(chart) {
+		labels.push(new Date(chart.chartDate).formatYYYYDDMM());
+		data.push(chart.chartSum);
+	});
+
+	console.log(labels);
+	console.log(data);
+
+	// Create the chart.js data structure using 'labels' and 'data'
+	var tempData = {
+		labels : labels,
+		datasets : [ {
+			fillColor : "rgba(151,187,205,0.2)",
+			strokeColor : "rgba(151,187,205,1)",
+			pointColor : "rgba(151,187,205,1)",
+			pointStrokeColor : "#fff",
+			pointHighlightFill : "#fff",
+			pointHighlightStroke : "rgba(151,187,205,1)",
+			data : data
+		} ]
+	};
+
+	// Get the context of the canvas element we want to select
+	var ctx = document.getElementById("myChart").getContext("2d");
+
+	// Instantiate a new chart
+	var myNewChart = new Chart(ctx, {
+		type : "line",
+		data : tempData,
+		scales : {
+			yAxes : [ {
+				ticks : {
+					beginAtZero : true,
+					min : 0,
+					max : 500
+				}
+			} ]
+		}
+
+	});
+
 }
 // /////////////////ENDD3.JS////////////////////////////////////////////
 
 // //////////////////JAVASCRIPT/////////////////////////////////////
 function loadMasterNavbar() {
-	
+
 	var xhr = new XMLHttpRequest();
-	
+
 	xhr.onreadystatechange = function() {
-		
+
 		if (xhr.readyState == 4 && xhr.status == 200) {
-			
+
 			document.getElementById('navbar').innerHTML = xhr.responseText;
 		}
 	}
@@ -405,13 +383,13 @@ function loadMasterNavbar() {
 }
 
 function loadUserNavbar() {
-	
+
 	var xhr = new XMLHttpRequest();
-	
+
 	xhr.onreadystatechange = function() {
-		
+
 		if (xhr.readyState == 4 && xhr.status == 200) {
-			
+
 			document.getElementById('navbar').innerHTML = xhr.responseText;
 		}
 	}
@@ -628,64 +606,58 @@ function loadTeamBoards(response, href) {
 
 }
 
-function getTrelloInfo(response){ //&1 (using this as a marker)
+function getTrelloInfo(response) { // &1 (using this as a marker)
 	var d = response
-    var trelloInfo = response.data;
-	
-    var lanes = trelloInfo.lanes;
-    var cards = trelloInfo.cards;
-    var tasks = trelloInfo.tasks;
+	var trelloInfo = response.data;
 
-    
-    
-    //sorting the lanes by their id 
-    lanes = lanes.sort(function(a,b){
-    			return a.lId - b.lId;
-    		})
-    cards = cards.sort(function(a,b){
-    			return a.cId - b.cId;
-    		})
-    tasks = tasks.sort(function(a,b){
-    			return a.tId - b.tId;
-    		})		
-    
-   
-    	
-    var tableElement = document.getElementById('view');
-    for(var i = 0; i < lanes.length; i++){
-    	var laneDivs = document.createElement('div');
-    	laneDivs.setAttribute("id", "lane"+lanes[i].lId)
-    	laneDivs.setAttribute("style", "float:left; width: 20%")
+	var lanes = trelloInfo.lanes;
+	var cards = trelloInfo.cards;
+	var tasks = trelloInfo.tasks;
 
-    	var row = document.createElement('tr');
-    	var tdlTitle = document.createElement('td');
-    	
-    	var lTitle = lanes[i].lId+"."+lanes[i].lTitle;
-    	tdlTitle.innerHTML = lTitle;
-    	
-    	row.appendChild(tdlTitle);
-    	
-    	
-    	for(var j = 0; j< cards.length; j++){
-    		var aCard = document.createElement('tr')
-	    	var aCardTitle = document.createElement('td')
-	    	aCardTitle.innerHTML = cards[j].cTitle;
-    		
-    		aCard.appendChild(aCardTitle);
-    		
-    		if(lanes[i].lId == cards[j].laneId){
-    			//append card to the lane
-    			
-    			tdlTitle.appendChild(aCard)
-  
-    		}
-    		
-    		
-    	}
-    	
+	// sorting the lanes by their id
+	lanes = lanes.sort(function(a, b) {
+		return a.lId - b.lId;
+	})
+	cards = cards.sort(function(a, b) {
+		return a.cId - b.cId;
+	})
+	tasks = tasks.sort(function(a, b) {
+		return a.tId - b.tId;
+	})
+
+	var tableElement = document.getElementById('view');
+	for (var i = 0; i < lanes.length; i++) {
+		var laneDivs = document.createElement('div');
+		laneDivs.setAttribute("id", "lane" + lanes[i].lId)
+		laneDivs.setAttribute("style", "float:left; width: 20%")
+
+		var row = document.createElement('tr');
+		var tdlTitle = document.createElement('td');
+
+		var lTitle = lanes[i].lId + "." + lanes[i].lTitle;
+		tdlTitle.innerHTML = lTitle;
+
+		row.appendChild(tdlTitle);
+
+		for (var j = 0; j < cards.length; j++) {
+			var aCard = document.createElement('tr')
+			var aCardTitle = document.createElement('td')
+			aCardTitle.innerHTML = cards[j].cTitle;
+
+			aCard.appendChild(aCardTitle);
+
+			if (lanes[i].lId == cards[j].laneId) {
+				// append card to the lane
+
+				tdlTitle.appendChild(aCard)
+
+			}
+
+		}
+
 		laneDivs.appendChild(row);
 		tableElement.appendChild(laneDivs);
-    }
+	}
 }
 
 var boardTId;

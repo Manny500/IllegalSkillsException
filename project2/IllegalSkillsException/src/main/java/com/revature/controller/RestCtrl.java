@@ -42,6 +42,10 @@ public class RestCtrl {
 		Board nb = service.getBoard(board);
 		Set<Chart> chart = nb.getChart();
 		
+		for(Chart c: chart) {
+			c.setChartDate(c.getChartDate().split(" ")[0]);
+			System.out.println(c.getChartDate());
+		}
 		ArrayList<Chart> chartList = new ArrayList<Chart>(chart);
 
 		LaneDTO dto = service.convertToLaneCardTaskDTO(chartList);

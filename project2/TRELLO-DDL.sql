@@ -1,4 +1,7 @@
 --Lookup table 1-Employee, 2-Manager
+
+DROP TABLE CHART;
+/
 CREATE TABLE ROLE_TYPE
   (
     RT_ID   INT,
@@ -11,7 +14,7 @@ CREATE TABLE CHART
     CHART_ID INT,
     B_ID INT,
     CHART_SUM INT,
-    CHART_DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    CHART_DATE DATE DEFAULT SYSDATE NOT NULL,
     PRIMARY KEY(CHART_ID),
     FOREIGN KEY(B_ID) REFERENCES BOARD(B_ID)
 );
@@ -127,7 +130,7 @@ create or replace TRIGGER board2_seq_trg BEFORE
 END IF;
 END;
 /
-create or replace TRIGGER chart_seq_trg BEFORE
+create or replace TRIGGER chart_seq_trg2 BEFORE
   INSERT ON chart FOR EACH ROW BEGIN IF :new.CHART_ID = 0  THEN
   SELECT chart_seq.NEXTVAL INTO :new.CHART_ID FROM dual;
 END IF;
