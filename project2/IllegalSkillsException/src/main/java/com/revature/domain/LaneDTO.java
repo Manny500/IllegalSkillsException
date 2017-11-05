@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import com.revature.domain.Card;
 import com.revature.domain.Lane;
 import com.revature.domain.Task;
+
 public class LaneDTO {
     
     private ArrayList<Lane> lanes;
