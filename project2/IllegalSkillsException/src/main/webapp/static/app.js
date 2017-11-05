@@ -497,7 +497,7 @@ function loadHome(response) {
 	var clientUser = response.data;
 
 	var tableElement = document.getElementById('view');
-
+	
 	var boardTitle;
 
 	if(clientUser.length == 0){
@@ -517,16 +517,24 @@ function loadHome(response) {
 
 		var row = document.createElement('tr');
 
+		
 		var tdTitle = document.createElement('td');
-		tdTitle.innerHTML = clientUser[i]["bTitle"];
+		var content = document.createElement('a');
+		content.innerHTML = clientUser[i]["bTitle"];
+		content.style.backgroundImage = "url('static/features/img/b8.jpg')";
+		content.setAttribute('id', clientUser[i]["bId"]);
+		content.onclick = goTo;
+		content.setAttribute('href', '#!Trello')
+		content.width = '100';
+		content.height = '50';
+		content.style.backgroundSize = 'contain';
+		tdTitle.appendChild(content);
+		tdTitle.height = "60";
+		tdTitle.style.textAlign = "center";
+		tdTitle.style.fontSize = "xx-large";
+		tdTitle.style.color = "black";
 		row.appendChild(tdTitle);
-
-		var link = document.createElement('a');
-		link.setAttribute('id', clientUser[i]["bId"])
-		link.onclick = goTo;
-		link.innerHTML = "click here";
-		link.setAttribute('href', '#!Trello')
-		row.appendChild(link);
+		
 
 		tableElement.appendChild(row);
 		
@@ -541,23 +549,43 @@ function loadTeamBoards(response){
 
 	var boardTitle;
 
+if(clientUser.length == 0){
+		
+		
+		var row = document.createElement('tr');
+
+		var message = document.createElement('td');
+		message.innerHTML = 'You have no Boards. Click the button above to create a Board.';
+		row.appendChild(message);
+
+
+		tableElement.appendChild(row);
+	}
+	
 	for (i = 0; i < clientUser.length; i++) {
 
 		var row = document.createElement('tr');
 
+		
 		var tdTitle = document.createElement('td');
-		tdTitle.innerHTML = clientUser[i]["bTitle"];
+		var content = document.createElement('a');
+		content.innerHTML = clientUser[i]["bTitle"];
+		content.style.backgroundImage = "url('static/features/img/b8.jpg')";
+		content.setAttribute('id', clientUser[i]["bId"]);
+		content.onclick = goTo;
+		content.setAttribute('href', '#!Trello')
+		content.width = '100';
+		content.height = '50';
+		content.style.backgroundSize = 'contain';
+		tdTitle.appendChild(content);
+		tdTitle.height = "60";
+		tdTitle.style.textAlign = "center";
+		tdTitle.style.fontSize = "xx-large";
+		tdTitle.style.color = "black";
 		row.appendChild(tdTitle);
 		
-		var link = document.createElement('a');
-		link.setAttribute('id', clientUser[i]["bId"])
-		link.onclick = goTo;
-		link.innerHTML = "click here";
-		link.setAttribute('href', '#!Trello')
-		row.appendChild(link);
 
 		tableElement.appendChild(row);
-		
 
 	}
 	
@@ -592,7 +620,10 @@ function goTo(){
 }
 
 function getBoard() {
+	console.log(this.id)
 	var boardId = this.id;
+	
+
 }
 
 function getTB(){
