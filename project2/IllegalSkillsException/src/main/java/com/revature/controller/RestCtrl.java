@@ -8,9 +8,6 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,28 +32,30 @@ public class RestCtrl {
 	@Autowired
 	private AppService service;
 
-	@RequestMapping(value = { "/chart" }, method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = {
+			"/chart" }, method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	@ResponseBody
-	public JSONObject chart(HttpServletRequest request) {
+	public ResponseEntity<LaneDTO> chart(@RequestBody Board board, HttpServletRequest request) {
 
-		// client wants the bankUser that at this point should be stored in the session
-		// HttpSession session = request.getSession();
-		//
-		// TV2User clientUser = (TV2User) session.getAttribute("user");
-		//
-		JSONParser parser = new JSONParser();
-		JSONObject json2 = null;
-
-		String json = "{ \"Afghanistan\" : [{\"Date\" : 1999,\"Imports\" :15,\"Exports\" :20},{\"Date\" : 2000,\"Imports\" :40,\"Exports\" :115}]}";
-		System.out.println(json);
-		try {
-			json2 = (JSONObject) parser.parse(json);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		Board nb = service.getBoard(board);
+		Set<Lane> lanes = nb.getLanes();
+		Set<Card> cards = new HashSet<Card>();
+		Set<Task> tasks = new HashSet<Task>();
+		for (Lane l : lanes) {
+			Set<Card> card = l.getCards();
+			for (Card c : card) {
+				cards.add(c);
+				Set<Task> task = c.getTasks();
+				for (Task t : task) {
+					tasks.add(t);
+				}
+			}
 		}
 
-		return json2;
+		ArrayList<Card> cardList = new ArrayList<Card>(cards);
+
+		LaneDTO dto = service.convertToLaneCardTaskDTO(cardList);
+		return new ResponseEntity<LaneDTO>(dto, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = { "/profile" }, method = RequestMethod.GET, produces = "application/json")
@@ -142,47 +141,47 @@ public class RestCtrl {
 		Set<Board> clientBoards = clientUser.getBoards();
 		return new ResponseEntity<Set<Board>>(clientBoards, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = { "/getTeamBoards" }, method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public ResponseEntity<Set<Board>> teamBoards(HttpServletRequest request) {
 		Set<Board> teamBoards = new HashSet<Board>();
 		HttpSession session = request.getSession();
 		TV2User clientUser = (TV2User) session.getAttribute("user");
-		
+
 		List<Board> clientBoards = service.getAllBoards();
-		for(Board b : clientBoards) {
+		for (Board b : clientBoards) {
 			{
-				if(b.getTeam() == clientUser.getTeamId()) {
+				if (b.getTeam() == clientUser.getTeamId()) {
 					teamBoards.add(b);
 				}
-				
+
 			}
-			
+
 		}
 		return new ResponseEntity<Set<Board>>(teamBoards, HttpStatus.OK);
 	}
-	
-	@RequestMapping(value = {"/createBoard" }, method = RequestMethod.POST, produces = "application/json")
+
+	@RequestMapping(value = { "/createBoard" }, method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public ResponseEntity<Board> createBoard(@RequestBody Board board, HttpServletRequest request) {
 		// getting TV2User at this session to give Board this user's id and team #
 		HttpSession session = request.getSession();
 		TV2User clientUser = (TV2User) session.getAttribute("user");
 		Board b = new Board(board.getbTitle(), clientUser.getTeamId(), clientUser);
-		
-		
-		if(b.getbTitle() != null) {
+
+		if (b.getbTitle() != null) {
 			service.createBoard(b);
 		}
-		
 
 		return new ResponseEntity<Board>(b, HttpStatus.OK);
 
 	}
-	@RequestMapping(value = { "/trelloInfo" }, method = RequestMethod.POST, consumes= "application/json",produces = "application/json")
-    @ResponseBody
-    public ResponseEntity<LaneDTO> trello(@RequestBody Board board,HttpServletRequest request) {
+
+	@RequestMapping(value = {
+			"/trelloInfo" }, method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	@ResponseBody
+	public ResponseEntity<LaneDTO> trello(@RequestBody Board board, HttpServletRequest request) {
 
 		Board nb = service.getBoard(board);
 		Set<Lane> lanes = nb.getLanes();
@@ -205,7 +204,6 @@ public class RestCtrl {
 
 		LaneDTO dto = service.convertToLaneCardTaskDTO(laneList, cardList, taskList);
 		return new ResponseEntity<LaneDTO>(dto, HttpStatus.OK);
-    }
-	
+	}
 
 }

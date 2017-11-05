@@ -82,8 +82,8 @@ public class AppService {
 	public Board getBoard(Board board) {
 		return dao.getBoard(board);
 	}
-	
-	public List<Board> getAllBoards(){
+
+	public List<Board> getAllBoards() {
 		return dao.getAllBoards();
 	}
 
@@ -140,8 +140,13 @@ public class AppService {
 	public void deleteTask(Task task) {
 		dao.deleteTask(task);
 	}
-	 public LaneDTO convertToLaneCardTaskDTO(ArrayList<Lane>  lane, ArrayList<Card> card,  ArrayList<Task> task) {
-	        return new LaneDTO(lane, card, task);
-	    }
+
+	public LaneDTO convertToLaneCardTaskDTO(ArrayList<Lane> lane, ArrayList<Card> card, ArrayList<Task> task) {
+		return new LaneDTO(lane, card, task);
+	}
+
+	public LaneDTO convertToLaneCardTaskDTO(ArrayList<Card> card) {
+		return new LaneDTO(card);
+	}
 
 }
