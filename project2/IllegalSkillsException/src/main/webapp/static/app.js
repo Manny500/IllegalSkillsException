@@ -703,10 +703,7 @@ function goTo(){
 }
 
 function getBoard() {
-	console.log(this.id)
 	var boardId = this.id;
-	
-
 }
 
 function getTB(){

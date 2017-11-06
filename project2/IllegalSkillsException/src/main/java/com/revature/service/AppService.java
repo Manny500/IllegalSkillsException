@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.revature.dao.IllegalDao;
 import com.revature.domain.Board;
 import com.revature.domain.Card;
+import com.revature.domain.Chart;
 import com.revature.domain.Lane;
 import com.revature.domain.LaneDTO;
 import com.revature.domain.TV2User;
@@ -84,8 +85,8 @@ public class AppService {
 	public Board getBoard(Board board) {
 		return dao.getBoard(board);
 	}
-	
-	public List<Board> getAllBoards(){
+
+	public List<Board> getAllBoards() {
 		return dao.getAllBoards();
 	}
 
@@ -142,8 +143,13 @@ public class AppService {
 	public void deleteTask(Task task) {
 		dao.deleteTask(task);
 	}
-	 public LaneDTO convertToLaneCardTaskDTO(ArrayList<Lane> lane, ArrayList<cardDTO> card,  ArrayList<taskDTO> task) {
-	        return new LaneDTO(lane, card, task);
-	 }
+
+	public LaneDTO convertToLaneCardTaskDTO(ArrayList<Chart> chart) {
+		return new LaneDTO(chart);
+	}
+
+	public LaneDTO convertToLaneCardTaskDTO(ArrayList<Lane> lane, ArrayList<cardDTO> card, ArrayList<taskDTO> task) {
+		return new LaneDTO(lane, card, task);
+	}
 
 }

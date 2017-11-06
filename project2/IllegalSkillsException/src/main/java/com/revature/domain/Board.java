@@ -41,7 +41,9 @@ public class Board implements Serializable {
 	@JoinColumn(name = "TV2_ID")
 	private TV2User boardUser;
 
-	
+	@JsonIgnore
+	@OneToMany(mappedBy = "chartBoard", fetch = FetchType.EAGER)
+	Set<Chart> chart = new HashSet<Chart>();
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "laneBoard", fetch = FetchType.EAGER)
@@ -123,6 +125,18 @@ public class Board implements Serializable {
 
 	public void setTeam(int team) {
 		this.team = team;
+	}
+	
+	public Set<Chart> getChart() {
+		return chart;
+	}
+
+	public void setChart(Set<Chart> chart) {
+		this.chart = chart;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 }
