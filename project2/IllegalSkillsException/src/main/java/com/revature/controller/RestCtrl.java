@@ -8,9 +8,6 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,14 +18,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.sym.Name1;
 import com.revature.domain.Board;
 import com.revature.domain.BoardDTO;
 import com.revature.domain.Card;
+import com.revature.domain.Chart;
 import com.revature.domain.Lane;
 import com.revature.domain.LaneDTO;
 import com.revature.domain.TV2User;
 import com.revature.domain.Task;
+import com.revature.domain.cardDTO;
+import com.revature.domain.taskDTO;
 import com.revature.service.AppService;
 
 @RestController
@@ -37,28 +36,18 @@ public class RestCtrl {
 	@Autowired
 	private AppService service;
 
-	@RequestMapping(value = { "/chart" }, method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = {"/chart" }, method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	@ResponseBody
-	public JSONObject chart(HttpServletRequest request) {
+	public ResponseEntity<LaneDTO> chart(@RequestBody Board board, HttpServletRequest request) {
 
-		// client wants the bankUser that at this point should be stored in the session
-		// HttpSession session = request.getSession();
-		//
-		// TV2User clientUser = (TV2User) session.getAttribute("user");
-		//
-		JSONParser parser = new JSONParser();
-		JSONObject json2 = null;
+		Board nb = service.getBoard(board);
+		Set<Chart> chart = nb.getChart();
 
-		String json = "{ \"Afghanistan\" : [{\"Date\" : 1999,\"Imports\" :15,\"Exports\" :20},{\"Date\" : 2000,\"Imports\" :40,\"Exports\" :115}]}";
-		System.out.println(json);
-		try {
-			json2 = (JSONObject) parser.parse(json);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		ArrayList<Chart> chartList = new ArrayList<Chart>(chart);
 
-		return json2;
+		LaneDTO dto = service.convertToLaneCardTaskDTO(chartList);
+		
+		return new ResponseEntity<LaneDTO>(dto, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = { "/profile" }, method = RequestMethod.GET, produces = "application/json")
@@ -96,7 +85,6 @@ public class RestCtrl {
 			user.setUserName(clientUser.getUserName());
 		}
 		if (user.getPassword() == null || user.getPassword() == "") {
-			System.out.println("in pass");
 			user.setPassword(clientUser.getPassword());
 		}
 		if (user.getEmail() == null || user.getEmail() == "") {
@@ -181,36 +169,41 @@ public class RestCtrl {
 
 	}
 
-	@RequestMapping(value = {
-			"/trelloInfo" }, method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-	@ResponseBody
-	public ResponseEntity<LaneDTO> trello(@RequestBody Board board, HttpServletRequest request) {
+	@RequestMapping(value = { "/trelloInfo" }, method = RequestMethod.POST, consumes= "application/json",produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<LaneDTO> trello(@RequestBody Board board,HttpServletRequest request) {
 		
 		Board nb = service.getBoard(board);
 		Set<Lane> lanes = nb.getLanes();
-		Set<Card> cards = new HashSet<Card>();
-		Set<Task> tasks = new HashSet<Task>();
+		Set<cardDTO> cards = new HashSet<cardDTO>();
+		Set<taskDTO> tasks = new HashSet<taskDTO>();
 		for (Lane l : lanes) {
 			Set<Card> card = l.getCards();
+			
 			for (Card c : card) {
-				cards.add(c);
+				int laneid = c.getCardLane().getlId();
+				cardDTO cdto = new cardDTO(c.getcId(),c.getcVerify(),c.getcWorth(),c.getcTitle(),c.getcDescription(),laneid);
+				cards.add(cdto);
 				Set<Task> task = c.getTasks();
+				
 				for (Task t : task) {
-					tasks.add(t);
+					int cardid = t.getTaskCard().getcId();
+					taskDTO tdto = new taskDTO(t.gettId(), t.gettComplete(), t.gettInfo(), cardid);
+					tasks.add(tdto);
 				}
 			}
 		}
 
 		ArrayList<Lane> laneList = new ArrayList<Lane>(lanes);
-		ArrayList<Card> cardList = new ArrayList<Card>(cards);
-		ArrayList<Task> taskList = new ArrayList<Task>(tasks);
+		ArrayList<cardDTO> cardList = new ArrayList<cardDTO>(cards);
+		ArrayList<taskDTO> taskList = new ArrayList<taskDTO>(tasks);
+		
 
 		LaneDTO dto = service.convertToLaneCardTaskDTO(laneList, cardList, taskList);
 		return new ResponseEntity<LaneDTO>(dto, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = {
-			"/updateLane" }, method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@RequestMapping(value = {"/updateLane" }, method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public ResponseEntity<BoardDTO> updateLane(@RequestBody BoardDTO bDTO, HttpServletRequest request) {
 		System.out.println("ResponseEntity<Lane> updateLane()");

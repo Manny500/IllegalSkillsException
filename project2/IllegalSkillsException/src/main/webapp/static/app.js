@@ -1,7 +1,3 @@
-/**
- * 
- */
-
 // ///////////////ANGULAR//////////////////////////////////////////
 var app = angular.module("myHome", [ "ngRoute" ]);
 
@@ -19,19 +15,25 @@ app.config(function($routeProvider) {
 		controller : 'usersList'
 
 	}).when("/Burndown", {
-	templateUrl : "static/features/table/burndownChart.html",
-	controller : 'chartCtrl'
-		
+		templateUrl : "static/features/table/burndownChart.html",
+		controller : "home2"
+
 	}).when("/RegisterUser", {
-		templateUrl : "static/features/form/register.html",
-//		controller: "register"
+		templateUrl : "static/features/form/register.html"
 
 	}).when("/Trello", {
 		templateUrl : "static/features/trello/trello.html",
-		controller: "trello"
+		controller : "trello"
 
-	});;
+	}).when("/BurnChart", {
+		templateUrl : "static/features/table/chart.html",
+		controller : 'chartCtrl',
+
+	});
+	;
 });
+
+// //////////////////////////////CONTROLLER/////////////////////////////
 
 app.controller('chartCtrl', function(dataChart) {
 
@@ -47,32 +49,40 @@ app.controller('chartCtrl', function(dataChart) {
 
 	dataChart.getChart = function() {
 
-		$http.get('chart').then(function(response) {
+		var chartB = {
 
+			'bId' : boardTId
+		}
+
+		$http.post('chart', chartB).then(function(response) {
 			displayChart(response.data);
-
 		});
 	}
 
 });
 
+// //////////////////////////////CONTROLLER/////////////////////////////
+
 app.controller('trello', function(scrumService) {
-    trel = this; 
-    
-    trel.getInfo = scrumService.info ;
-    trel.getInfo(); 
+	trel = this;
+
+	trel.getInfo = scrumService.info;
+	trel.getInfo();
+
 }).service('scrumService', function($http) {
-    var scrumService = this;
-    scrumService.info = function() {
-        var trelloB = {
-                'bId': boardTId
-        }
-        $http.post('trelloInfo',trelloB).then(function(response) {
-            getTrelloInfo(response);
-        });
-    }
+
+	var scrumService = this;
+	scrumService.info = function() {
+		var trelloB = {
+			'bId' : boardTId
+		}
+		$http.post('trelloInfo', trelloB).then(function(response) {
+			getTrelloInfo(response); // &1
+		});
+	}
 });
 
+// //////////////////////////////CONTROLLER/////////////////////////////
 
 app.controller('TestCtrl',function(dataServ) {
 	console.log('11111111 TestCtrl');
@@ -81,7 +91,6 @@ app.controller('TestCtrl',function(dataServ) {
 	addL = this; // add lines
 	
 	reim.updateInfo = function() {
-		console.log('reim.updateInfo  => profile updateInfo js function')
 		document.getElementById('updateBtn').style.visibility = 'hidden';
 		document.getElementById('profileForm').style.visibility = 'visible';
 	}
@@ -98,11 +107,6 @@ app.controller('TestCtrl',function(dataServ) {
 		document.getElementById('createBoardForm').style.visibility = 'visible';
 	};
 	
-
-	
-	reim.getInfo = dataServ.viewBoard
-	var responseb = reim.getInfo();
-
 	addL.doneL= function(){  //1229
 		console.log('addL.done');
 		addL.updateL = dataServ.updateL;
@@ -112,47 +116,44 @@ app.controller('TestCtrl',function(dataServ) {
 //		$(document).ready(function() {
 //			$("#userTable").find("tr:gt(0)").remove();
 //		});
-
-		//
-		// hide the form and show the update button
-		document.getElementById('updateLaneBtn').style.visibility = 'visible';
-		document.getElementById('laneForm').style.visibility = 'hidden';
-
 	}
-	
 	// hide the form and send the ajax request
-	reim.done = function() {                            
-		console.log('reim.done');
-		reim.update = dataServ.update; 
 
-		reim.update();
+		reim.getInfo = dataServ.viewBoard
+		var responseb = reim.getInfo();
 
-		// delete all contents of previous table
-		$(document).ready(function() {
-			$("#userTable").find("tr:gt(0)").remove();
-		});
+		// hide the form and send the ajax request
+		reim.done = function() {
 
-		// hide the form and show the update button
-		document.getElementById('updateBtn').style.visibility = 'visible';
-		document.getElementById('profileForm').style.visibility = 'hidden';
+				reim.update = dataServ.update;
 
-	}
-	
-	createB.create = function(){
-		createB.process = dataServ.process;
-		createB.process();
+				reim.update();
 
-		// hide the form and show the update button and clear input form
-		document.getElementById('bTitle').value = "";
-		document.getElementById('createBoardBtn').style.visibility = 'visible';
-		document.getElementById('createBoardForm').style.visibility = 'hidden';
-	}
+						// delete all contents of previous table
+						$(document).ready(function() {
+							$("#userTable").find("tr:gt(0)").remove();
+						});
 
-}).service('dataServ', function($http) {
+						// hide the form and show the update button
+						document.getElementById('updateBtn').style.visibility = 'visible';
+						document.getElementById('profileForm').style.visibility = 'hidden';
+		}
+		
+		createB.create = function() {
+			createB.process = dataServ.process;
+			createB.process();
 
-	var dataService = this;
-	var bDataService = this;
-	var lnDataService = this; //line 1229
+			// hide the form and show the update button and clear
+			// input form
+			document.getElementById('bTitle').value = "";
+			document.getElementById('createBoardBtn').style.visibility = 'visible';
+			document.getElementById('createBoardForm').style.visibility = 'hidden';
+		}
+		
+	    var dataService = this;
+	    var bDataService = this;
+	    var lnDataService = this; //line 1229
+					
 
 	
 	dataService.viewBoard = function(){
@@ -161,7 +162,6 @@ app.controller('TestCtrl',function(dataServ) {
 	
 	// sends the post information from the profile form
 	dataService.update = function() {
-		console.log('reim done -> dataService update')
 		var indata = {
 			'firstName' : reim.firstName,
 			'lastName' : reim.lastName,
@@ -169,10 +169,21 @@ app.controller('TestCtrl',function(dataServ) {
 			'password' : reim.password,
 			'email' : reim.email
 		};
-
 		$http.post('updateProfile', indata).then(function(response) {
-			console.log('getProfileInfo $http.post')
+
 			getProfileInfo(response);
+
+		});
+	};
+		
+	bDataService.process = function() {
+
+		var cbData = {
+			'bTitle' : createB.bTitle
+		}
+
+		$http.post('createBoard', cbData).then(function(response) {
+			loadHome(response);
 
 		});
 	};
@@ -191,19 +202,9 @@ app.controller('TestCtrl',function(dataServ) {
 		});
 	};
 	
-	bDataService.process = function() {
-		
-		var cbData = {
-				'bTitle' : createB.bTitle
-		} 
-		
-		$http.post('createBoard', cbData).then(function(response) {
-			loadHome(response);
-
-		});
-	};
-	
 });
+	
+// //////////////////////////////CONTROLLER/////////////////////////////
 
 app.controller('profile', function(dataService) {
 
@@ -227,30 +228,60 @@ app.controller('profile', function(dataService) {
 	}
 });
 
+// //////////////////////////////CONTROLLER/////////////////////////////
+
+app.controller('home2', function(getInfoService2) {
+
+	homeB = this;
+	team = this;
+
+	// For Boards
+	homeB.getBoards = getInfoService2.boards
+	homeB.getBoards();
+
+	// TB stands for team boards
+	team.getTB = getInfoService2.tb
+	team.getTB();
+
+}).service('getInfoService2', function($http) {
+
+	var getInfoService2 = this;
+
+	getInfoService2.boards = function() {
+		$http.get('getHome').then(function(response) {
+
+			loadHome(response, '#!BurnChart');
+
+		});
+	}
+	getInfoService2.tb = function() {
+		$http.get('getTeamBoards').then(function(response) {
+
+			loadTeamBoards(response, '#!BurnChart');
+
+		});
+	}
+});
+
+// //////////////////////////////CONTROLLER/////////////////////////////
+
 app.controller('home', function(getInfoService) {
 
 	inf = this;
 	homeB = this;
 	team = this;
-	
-	
+
 	// to get role type of user who logged in
 	inf.getRole = getInfoService.info
 	inf.getRole();
-	
-	
 
 	// For Boards
 	homeB.getBoards = getInfoService.boards
 	homeB.getBoards();
-	
+
 	// TB stands for team boards
 	team.getTB = getInfoService.tb
 	team.getTB();
-	
-	
-	
-	
 
 }).service('getInfoService', function($http) {
 
@@ -268,20 +299,20 @@ app.controller('home', function(getInfoService) {
 	getInfoService.boards = function() {
 		$http.get('getHome').then(function(response) {
 
-			loadHome(response);
-			
-			
+			loadHome(response, '#!Trello');
 
 		});
 	}
 	getInfoService.tb = function() {
 		$http.get('getTeamBoards').then(function(response) {
 
-			loadTeamBoards(response);
+			loadTeamBoards(response, '#!Trello');
 
 		});
 	}
 });
+
+// //////////////////////////////CONTROLLER/////////////////////////////
 
 app.controller('usersList', function(getUsersService) {
 
@@ -305,98 +336,70 @@ app.controller('usersList', function(getUsersService) {
 	}
 });
 
-
-
-
 // ///////////////ENDANGULAR//////////////////////////////////////////
 
 // /////////////////D3.JS////////////////////////////////////////////
+
 function displayChart(myData) {
-	// set the dimensions and margins of the graph
-	var margin = {
-		top : 20,
-		right : 20,
-		bottom : 30,
-		left : 50
-	}, width = 960 - margin.left - margin.right, height = 500 - margin.top
-			- margin.bottom;
 
-	// parse the date / time
-	var parseTime = d3.timeParse("%Y");
-
-	// set the ranges
-	var x = d3.scaleTime().range([ 0, width ]);
-	var y = d3.scaleLinear().range([ height, 0 ]);
-
-	// define the line
-	var valueline = d3.line().x(function(d) {
-		return x(d.Date);
-	}).y(function(d) {
-		return y(d.Imports);
-	});
-	// define the line
-	var valueline2 = d3.line().x(function(d) {
-		return x(d.Date);
-	}).y(function(d) {
-		return y(d.Exports);
-	});
-
-	// append the svg obgect to the body of the page
-	// appends a 'group' element to 'svg'
-	// moves the 'group' element to the top left margin
-	var svg = d3.select("#svg").append("svg").attr("width",
-			width + margin.left + margin.right).attr("height",
-			height + margin.top + margin.bottom).append("g").attr("transform",
-			"translate(" + margin.left + "," + margin.top + ")");
-
-	function draw(data, country) {
-
-		var data = data[country];
-
-		// format the data
-		data.forEach(function(d) {
-			d.Date = parseTime(d.Date);
-			d.Imports = +d.Imports;
-			d.Exports = +d.Exports;
-		});
-
-
-		// sort years ascending
-		data.sort(function(a, b) {
-			return a["Date"] - b["Date"];
-		})
-
-		// Scale the range of the data
-		x.domain(d3.extent(data, function(d) {
-			return d.Date;
-		}));
-		y.domain([ 0, d3.max(data, function(d) {
-			return Math.max(d.Imports, d.Exports);
-		}) ]);
-
-		// Add the valueline path.
-		svg.append("path").data([ data ]).attr("class", "line").attr("d",
-				valueline);
-		// Add the valueline path.
-		svg.append("path").data([ data ]).attr("class", "line").attr("d",
-				valueline2);
-		// Add the X Axis
-		svg.append("g").attr("transform", "translate(0," + height + ")").call(
-				d3.axisBottom(x));
-
-		// Add the Y Axis
-		svg.append("g").call(d3.axisLeft(y));
+	// Add a helper to format timestamp data
+	Date.prototype.formatYYYYDDMM = function() {
+		return (this.getFullYear() + 1) + "-" + this.getDate() + "-"
+				+ this.getMonth();
 	}
 
-	draw(myData, "Afghanistan");
+	// Split timestamp and data into separate arrays
+	var labels = [], data = [];
+	myData["chart"].forEach(function(chart) {
+		labels.push(new Date(chart.chartDate).formatYYYYDDMM());
+		data.push(chart.chartSum);
+	});
+
+	// Create the chart.js data structure using 'labels' and 'data'
+	var tempData = {
+		labels : labels,
+		datasets : [ {
+			fillColor : "rgba(151,187,205,0.2)",
+			strokeColor : "rgba(151,187,205,1)",
+			pointColor : "rgba(151,187,205,1)",
+			pointStrokeColor : "#fff",
+			pointHighlightFill : "#fff",
+			pointHighlightStroke : "rgba(151,187,205,1)",
+			data : data
+		} ]
+	};
+
+	// Get the context of the canvas element we want to select
+	var ctx = document.getElementById("myChart").getContext("2d");
+
+	// Instantiate a new chart
+	var myNewChart = new Chart(ctx, {
+		type : "line",
+		data : tempData,
+		scales : {
+			yAxes : [ {
+				ticks : {
+					beginAtZero : true,
+					min : 0,
+					max : 500
+				}
+			} ]
+		}
+
+	});
+
 }
 // /////////////////ENDD3.JS////////////////////////////////////////////
 
 // //////////////////JAVASCRIPT/////////////////////////////////////
 function loadMasterNavbar() {
+
 	var xhr = new XMLHttpRequest();
+
 	xhr.onreadystatechange = function() {
+
 		if (xhr.readyState == 4 && xhr.status == 200) {
+
 			document.getElementById('navbar').innerHTML = xhr.responseText;
 		}
 	}
@@ -405,9 +408,13 @@ function loadMasterNavbar() {
 }
 
 function loadUserNavbar() {
+
 	var xhr = new XMLHttpRequest();
+
 	xhr.onreadystatechange = function() {
+
 		if (xhr.readyState == 4 && xhr.status == 200) {
+
 			document.getElementById('navbar').innerHTML = xhr.responseText;
 		}
 	}
@@ -533,7 +540,7 @@ function getListOfUsers(response) {
 
 }
 
-function loadHome(response) {
+function loadHome(response, href) {
 
 	var clientUser = response.data;
 
@@ -541,102 +548,154 @@ function loadHome(response) {
 
 	var boardTitle;
 
-	if(clientUser.length == 0){
-		
-		
+	if (clientUser.length == 0) {
+
 		var row = document.createElement('tr');
 
 		var message = document.createElement('td');
 		message.innerHTML = 'You have no Boards. Click the button above to create a Board.';
 		row.appendChild(message);
 
-
 		tableElement.appendChild(row);
 	}
-	
+
 	for (i = 0; i < clientUser.length; i++) {
 
 		var row = document.createElement('tr');
 
 		var tdTitle = document.createElement('td');
-		tdTitle.innerHTML = clientUser[i]["bTitle"];
+		var content = document.createElement('a');
+		content.innerHTML = clientUser[i]["bTitle"];
+		content.style.backgroundImage = "url('static/features/img/b8.jpg')";
+		content.setAttribute('id', clientUser[i]["bId"]);
+		content.onclick = goTo;
+		content.setAttribute('href', href)
+		content.width = '100';
+		content.height = '50';
+		content.style.backgroundSize = 'contain';
+		tdTitle.appendChild(content);
+		tdTitle.height = "60";
+		tdTitle.style.textAlign = "center";
+		tdTitle.style.fontSize = "xx-large";
+		tdTitle.style.color = "black";
 		row.appendChild(tdTitle);
 
-		var link = document.createElement('a');
-		link.setAttribute('id', clientUser[i]["bId"])
-		link.onclick = goTo;
-		link.innerHTML = "click here";
-		link.setAttribute('href', '#!Trello')
-		row.appendChild(link);
-
 		tableElement.appendChild(row);
-		
 
 	}
 }
 
-function loadTeamBoards(response){
+function loadTeamBoards(response, href) {
+
 	var clientUser = response.data;
 
 	var tableElement = document.getElementById('view2');
 
 	var boardTitle;
 
+	if (clientUser.length == 0) {
+
+		var row = document.createElement('tr');
+
+		var message = document.createElement('td');
+		message.innerHTML = 'You have no Boards. Click the button above to create a Board.';
+		row.appendChild(message);
+
+		tableElement.appendChild(row);
+	}
+
 	for (i = 0; i < clientUser.length; i++) {
 
 		var row = document.createElement('tr');
 
 		var tdTitle = document.createElement('td');
-		tdTitle.innerHTML = clientUser[i]["bTitle"];
+		var content = document.createElement('a');
+		content.innerHTML = clientUser[i]["bTitle"];
+		content.style.backgroundImage = "url('static/features/img/b8.jpg')";
+		content.setAttribute('id', clientUser[i]["bId"]);
+		content.onclick = goTo;
+		content.setAttribute('href', href)
+		content.width = '100';
+		content.height = '50';
+		content.style.backgroundSize = 'contain';
+		tdTitle.appendChild(content);
+		tdTitle.height = "60";
+		tdTitle.style.textAlign = "center";
+		tdTitle.style.fontSize = "xx-large";
+		tdTitle.style.color = "black";
 		row.appendChild(tdTitle);
-		
-		var link = document.createElement('a');
-		link.setAttribute('id', clientUser[i]["bId"])
-		link.onclick = goTo;
-		link.innerHTML = "click here";
-		link.setAttribute('href', '#!Trello')
-		row.appendChild(link);
 
 		tableElement.appendChild(row);
-		
 
 	}
-	
+
 }
 
-function getTrelloInfo(response){
+function getTrelloInfo(response) { // &1 (using this as a marker)
 	var d = response
-    var trelloInfo = response.data;
-    
-    for(var i = 0; i < trelloInfo.lanes.length; i++){
-                
-        
-                var lTitle = trelloInfo.lanes[i].lTitle;
-                
-                //create 
-                var tdlTitle = document.createElement('td');
-                //var tdbId = document.createElement('td');
-                
-                tdlTitle.innerHTML = lTitle;
-                
-                var row = document.createElement('tr');
-                
-                //add the row to the table
-                var table = document.getElementById('lane');
-//              table.appendChild(row);
-    }
+	var trelloInfo = response.data;
+
+	var lanes = trelloInfo.lanes;
+	var cards = trelloInfo.cards;
+	var tasks = trelloInfo.tasks;
+
+	// sorting the lanes by their id
+	lanes = lanes.sort(function(a, b) {
+		return a.lId - b.lId;
+	})
+	cards = cards.sort(function(a, b) {
+		return a.cId - b.cId;
+	})
+	tasks = tasks.sort(function(a, b) {
+		return a.tId - b.tId;
+	})
+
+	var tableElement = document.getElementById('view');
+	for (var i = 0; i < lanes.length; i++) {
+		var laneDivs = document.createElement('div');
+		laneDivs.setAttribute("id", "lane" + lanes[i].lId)
+		laneDivs.setAttribute("style", "float:left; width: 20%")
+
+		var row = document.createElement('tr');
+		var tdlTitle = document.createElement('td');
+
+		var lTitle = lanes[i].lId + "." + lanes[i].lTitle;
+		tdlTitle.innerHTML = lTitle;
+
+		row.appendChild(tdlTitle);
+
+		for (var j = 0; j < cards.length; j++) {
+			var aCard = document.createElement('tr')
+			var aCardTitle = document.createElement('td')
+			aCardTitle.innerHTML = cards[j].cTitle;
+
+			aCard.appendChild(aCardTitle);
+
+			if (lanes[i].lId == cards[j].laneId) {
+				// append card to the lane
+
+				tdlTitle.appendChild(aCard)
+
+			}
+
+		}
+
+		laneDivs.appendChild(row);
+		tableElement.appendChild(laneDivs);
+	}
 }
 
 var boardTId;
-function goTo(){
+function goTo() {
 	boardTId = this.id;
 }
 
 function getBoard() {
 	var boardId = this.id;
+
 }
 
-function getTB(){
+function getTB() {
 	var team = this.id;
 }
 
@@ -676,4 +735,3 @@ function loadTrelloInfo(){
 	xhr.send(trelB);
 	
 }
-
