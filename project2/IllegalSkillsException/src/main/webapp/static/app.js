@@ -77,7 +77,7 @@ app.controller('trello', function(scrumService) {
 			'bId' : boardTId
 		}
 		$http.post('trelloInfo', trelloB).then(function(response) {
-			getTrelloInfo(response); // &1
+			getTrelloInfo(response,1); // &1
 		});
 	}
 });
@@ -116,6 +116,8 @@ app.controller('TestCtrl',function(dataServ) {
 //		$(document).ready(function() {
 //			$("#userTable").find("tr:gt(0)").remove();
 //		});
+		document.getElementById('updateLaneBtn').style.visibility = 'visible';
+		document.getElementById('laneForm').style.visibility = 'hidden';
 	}
 	// hide the form and send the ajax request
 
@@ -149,7 +151,7 @@ app.controller('TestCtrl',function(dataServ) {
 			document.getElementById('createBoardBtn').style.visibility = 'visible';
 			document.getElementById('createBoardForm').style.visibility = 'hidden';
 		}
-		
+	}).service('dataServ', function($http) {
 	    var dataService = this;
 	    var bDataService = this;
 	    var lnDataService = this; //line 1229
@@ -631,10 +633,16 @@ function loadTeamBoards(response, href) {
 
 }
 
-function getTrelloInfo(response) { // &1 (using this as a marker)
+function getTrelloInfo(response, check) { // &1 (using this as a marker)
+	
+	console.log(response);
 	var d = response
-	var trelloInfo = response.data;
-
+	if(check == 1){ //angular
+		var trelloInfo = response.data;
+	}else{ //ajax
+		var trelloInfo = response;
+	}
+	
 	var lanes = trelloInfo.lanes;
 	var cards = trelloInfo.cards;
 	var tasks = trelloInfo.tasks;
@@ -721,9 +729,8 @@ function loadTrelloInfo(){
 		
 		if(xhr.readyState == 4 && xhr.status == 200){
 //			document.getElementById("view").innerHTML = xhr.responseText;
-			console.log(xhr.responseText);
-			
-            getTrelloInfo(xhr.responseText);
+            var res = JSON.parse(xhr.responseText)
+			getTrelloInfo(res,2);
 
 		}
 	}
