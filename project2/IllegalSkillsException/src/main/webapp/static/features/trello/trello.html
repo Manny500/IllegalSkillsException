@@ -1,3 +1,17 @@
-
 <div id="view"></div>
+
+<br>
+<!-- ADD LANES -->
+<button type="button" data-ng-click="test.updateLane()" id="updateLaneBtn" class="btn btn-primary">Add a new Lane</button>
+
+
+<div id="laneForm" style="visibility:hidden;">
+
+	New Lane: <input id="lTitle" data-ng-model="test.lTitle" type="text"> <br>
+	
+	<button type="button" data-ng-click="test.doneL()" id="doneLaneBtn" class="btn btn-primary">OK</button>
+	
+</div>
+
+
 
