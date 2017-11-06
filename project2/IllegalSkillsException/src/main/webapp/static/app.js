@@ -1,3 +1,6 @@
+//Global
+var boardTId;
+
 // ///////////////ANGULAR//////////////////////////////////////////
 var app = angular.module("myHome", [ "ngRoute" ]);
 
@@ -93,6 +96,9 @@ app
 
 					createB = this;
 
+					reim.getRole = dataServ.info;
+					reim.getRole();
+
 					reim.updateInfo = function() {
 						document.getElementById('updateBtn').style.visibility = 'hidden';
 						document.getElementById('profileForm').style.visibility = 'visible';
@@ -139,6 +145,15 @@ app
 
 			var dataService = this;
 			var bDataService = this;
+
+			dataService.info = function() {
+
+				$http.get('getRole').then(function(response) {
+
+					getRoleType(response);
+
+				});
+			}
 
 			dataService.viewBoard = function() {
 				$http.get('getHome')
@@ -242,10 +257,6 @@ app.controller('home', function(getInfoService) {
 	homeB = this;
 	team = this;
 
-	// to get role type of user who logged in
-	inf.getRole = getInfoService.info
-	inf.getRole();
-
 	// For Boards
 	homeB.getBoards = getInfoService.boards
 	homeB.getBoards();
@@ -257,15 +268,6 @@ app.controller('home', function(getInfoService) {
 }).service('getInfoService', function($http) {
 
 	var getInfoService = this;
-
-	getInfoService.info = function() {
-
-		$http.get('getRole').then(function(response) {
-
-			getRoleType(response);
-
-		});
-	}
 
 	getInfoService.boards = function() {
 		$http.get('getHome').then(function(response) {
@@ -315,15 +317,25 @@ function displayChart(myData) {
 
 	// Add a helper to format timestamp data
 	Date.prototype.formatYYYYDDMM = function() {
-		return (this.getFullYear() + 1) + "-" + this.getDate() + "-"
+		return (this.getFullYear()) + "-" + this.getDate() + "-"
 				+ this.getMonth();
 	}
 
 	// Split timestamp and data into separate arrays
 	var labels = [], data = [];
+
+	function custom_sort(a, b) {
+		return new Date(a.chartDate).getTime()
+				- new Date(b.chartDate).getTime();
+	}
+
+	myData["chart"].sort(custom_sort);
+
 	myData["chart"].forEach(function(chart) {
+
 		labels.push(new Date(chart.chartDate).formatYYYYDDMM());
 		data.push(chart.chartSum);
+
 	});
 
 	// Create the chart.js data structure using 'labels' and 'data'
@@ -347,6 +359,12 @@ function displayChart(myData) {
 	var myNewChart = new Chart(ctx, {
 		type : "line",
 		data : tempData,
+		options : {
+			title : {
+				display : true,
+				text : 'BurnDown Chart'
+			}
+		},
 		scales : {
 			yAxes : [ {
 				ticks : {
@@ -656,7 +674,6 @@ function getTrelloInfo(response) { // &1 (using this as a marker)
 	}
 }
 
-var boardTId;
 function goTo() {
 	boardTId = this.id;
 }
