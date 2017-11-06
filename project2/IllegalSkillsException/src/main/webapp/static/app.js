@@ -85,7 +85,6 @@ app.controller('trello', function(scrumService) {
 // //////////////////////////////CONTROLLER/////////////////////////////
 
 app.controller('TestCtrl',function(dataServ) {
-	console.log('11111111 TestCtrl');
 	reim = this;
 	createB = this;
 	addL = this; // add lines
@@ -96,7 +95,6 @@ app.controller('TestCtrl',function(dataServ) {
 	}
 	
 	addL.updateLane = function(){ //1229
-		console.log('updateLane js function');
 		document.getElementById('updateLaneBtn').style.visibility = 'hidden';
 		document.getElementById('laneForm').style.visibility = 'visible';
 	}
@@ -108,14 +106,9 @@ app.controller('TestCtrl',function(dataServ) {
 	};
 	
 	addL.doneL= function(){  //1229
-		console.log('addL.done');
 		addL.updateL = dataServ.updateL;
 		addL.updateL();
 		
-		// delete all contents of previous table ????????????????????????????????????????????IMPLEMENT
-//		$(document).ready(function() {
-//			$("#userTable").find("tr:gt(0)").remove();
-//		});
 		document.getElementById('updateLaneBtn').style.visibility = 'visible';
 		document.getElementById('laneForm').style.visibility = 'hidden';
 	}
@@ -191,14 +184,11 @@ app.controller('TestCtrl',function(dataServ) {
 	};
 	
 	lnDataService.updateL = function(){    //1229
-		console.log('updateL');
 		var lnData = {
 				'lTitle' : addL.lTitle,
 				'bId': boardTId
 		}
-		console.log(boardTId);
 		$http.post('updateLane', lnData).then(function(response) {
-			console.log('lnDataService.update LANE $http.post')
 			loadTrelloInfo();
 
 		});
@@ -635,7 +625,6 @@ function loadTeamBoards(response, href) {
 
 function getTrelloInfo(response, check) { // &1 (using this as a marker)
 	
-	console.log(response);
 	var d = response
 	if(check == 1){ //angular
 		var trelloInfo = response.data;
@@ -712,11 +701,8 @@ function getTB() {
 
 //AJAX
 function loadTrelloInfo(){
-	console.log('Loading loadTrelloInfo!!');
  	
-	//Use AJAX to grab the navbar.html fragment
 	var xhr = new XMLHttpRequest();
-	console.log('received loadTrelloInfo fragment');
 	
 	var trelloB = {
             'bId': boardTId
@@ -728,17 +714,14 @@ function loadTrelloInfo(){
 	xhr.onreadystatechange = function(){
 		
 		if(xhr.readyState == 4 && xhr.status == 200){
-//			document.getElementById("view").innerHTML = xhr.responseText;
             var res = JSON.parse(xhr.responseText)
 			getTrelloInfo(res,2);
 
 		}
 	}
-	// open the request  ?? where does get go
-	xhr.open("POST", "trelloInfo", true); //method, URL, true =>synchronous
 
 	xhr.setRequestHeader("Content-type", "application/json");
-	//sent it
+	
 	xhr.send(trelB);
 	
 }

@@ -206,17 +206,9 @@ public class RestCtrl {
 	@RequestMapping(value = {"/updateLane" }, method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public ResponseEntity<BoardDTO> updateLane(@RequestBody BoardDTO bDTO, HttpServletRequest request) {
-		System.out.println("ResponseEntity<Lane> updateLane()");
 		
-		System.out.println("TITLE!!!!! "+ bDTO.getlTitle());
-		System.out.println("BID!!!!! "+ bDTO.getbId());
 		Board b = new Board(bDTO.getbId());
 	    Lane nl = new Lane(bDTO.getlTitle(),b);
-		
-		//Board laneBoard = (Board) session.getAttribute("board");
-		//System.out.println("bid? " +lane.getLaneBoard().getbId());
-		//Lane nl = new Lane(lane.getlTitle(), lane.getLaneBoard().getbId());
-		
 
 		if (nl.getlTitle() != null) {
 			service.createLane(nl);
