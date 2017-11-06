@@ -782,7 +782,7 @@ function loadTrelloInfo(){
 
 		}
 	}
-
+	xhr.open("POST", "trelloInfo", true); 
 	xhr.setRequestHeader("Content-type", "application/json");
 	
 	xhr.send(trelB);
