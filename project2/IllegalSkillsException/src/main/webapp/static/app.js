@@ -80,44 +80,55 @@ app.controller('trello', function(scrumService) {
 			'bId' : boardTId
 		}
 		$http.post('trelloInfo', trelloB).then(function(response) {
-			getTrelloInfo(response); // &1
+			getTrelloInfo(response,1); // &1
 		});
 	}
 });
 
 // //////////////////////////////CONTROLLER/////////////////////////////
 
-app
-		.controller(
-				'TestCtrl',
-				function(dataServ) {
-
-					reim = this;
-
-					createB = this;
-
-					reim.getRole = dataServ.info;
+app.controller('TestCtrl',function(dataServ) {
+	reim = this;
+	createB = this;
+	addL = this; // add lines
+  
+  			reim.getRole = dataServ.info;
 					reim.getRole();
+	
+	reim.updateInfo = function() {
+		document.getElementById('updateBtn').style.visibility = 'hidden';
+		document.getElementById('profileForm').style.visibility = 'visible';
+	}
+	
+	addL.updateLane = function(){ //1229
+		document.getElementById('updateLaneBtn').style.visibility = 'hidden';
+		document.getElementById('laneForm').style.visibility = 'visible';
+	}
+	
+	
+	createB.startCreate = function(){
+		document.getElementById('createBoardBtn').style.visibility = 'hidden';
+		document.getElementById('createBoardForm').style.visibility = 'visible';
+	};
+	
+	addL.doneL= function(){  //1229
+		addL.updateL = dataServ.updateL;
+		addL.updateL();
+		
+		document.getElementById('updateLaneBtn').style.visibility = 'visible';
+		document.getElementById('laneForm').style.visibility = 'hidden';
+	}
+	// hide the form and send the ajax request
 
-					reim.updateInfo = function() {
-						document.getElementById('updateBtn').style.visibility = 'hidden';
-						document.getElementById('profileForm').style.visibility = 'visible';
-					}
+		reim.getInfo = dataServ.viewBoard
+		var responseb = reim.getInfo();
 
-					createB.startCreate = function() {
-						document.getElementById('createBoardBtn').style.visibility = 'hidden';
-						document.getElementById('createBoardForm').style.visibility = 'visible';
-					};
+		// hide the form and send the ajax request
+		reim.done = function() {
 
-					reim.getInfo = dataServ.viewBoard
-					var responseb = reim.getInfo();
+				reim.update = dataServ.update;
 
-					// hide the form and send the ajax request
-					reim.done = function() {
-
-						reim.update = dataServ.update;
-
-						reim.update();
+				reim.update();
 
 						// delete all contents of previous table
 						$(document).ready(function() {
@@ -127,69 +138,70 @@ app
 						// hide the form and show the update button
 						document.getElementById('updateBtn').style.visibility = 'visible';
 						document.getElementById('profileForm').style.visibility = 'hidden';
+		}
+		
+		createB.create = function() {
+			createB.process = dataServ.process;
+			createB.process();
 
-					}
+			// hide the form and show the update button and clear
+			// input form
+			document.getElementById('bTitle').value = "";
+			document.getElementById('createBoardBtn').style.visibility = 'visible';
+			document.getElementById('createBoardForm').style.visibility = 'hidden';
+		}
+	}).service('dataServ', function($http) {
+	    var dataService = this;
+	    var bDataService = this;
+	    var lnDataService = this; //line 1229
+					
 
-					createB.create = function() {
-						createB.process = dataServ.process;
-						createB.process();
+	
+	dataService.viewBoard = function(){
+		$http.get('getHome')
+	}
+	
+	// sends the post information from the profile form
+	dataService.update = function() {
+		var indata = {
+			'firstName' : reim.firstName,
+			'lastName' : reim.lastName,
+			'userName' : reim.userName,
+			'password' : reim.password,
+			'email' : reim.email
+		};
+		$http.post('updateProfile', indata).then(function(response) {
 
-						// hide the form and show the update button and clear
-						// input form
-						document.getElementById('bTitle').value = "";
-						document.getElementById('createBoardBtn').style.visibility = 'visible';
-						document.getElementById('createBoardForm').style.visibility = 'hidden';
-					}
-
-				}).service('dataServ', function($http) {
-
-			var dataService = this;
-			var bDataService = this;
-
-			dataService.info = function() {
-
-				$http.get('getRole').then(function(response) {
-
-					getRoleType(response);
-
-				});
-			}
-
-			dataService.viewBoard = function() {
-				$http.get('getHome')
-			}
-			// sends the post information from the profile form
-			dataService.update = function() {
-
-				var indata = {
-					'firstName' : reim.firstName,
-					'lastName' : reim.lastName,
-					'userName' : reim.userName,
-					'password' : reim.password,
-					'email' : reim.email
-				};
-
-				$http.post('updateProfile', indata).then(function(response) {
-
-					getProfileInfo(response);
-
-				});
-			};
-
-			bDataService.process = function() {
-
-				var cbData = {
-					'bTitle' : createB.bTitle
-				}
-
-				$http.post('createBoard', cbData).then(function(response) {
-					loadHome(response);
-
-				});
-			};
+			getProfileInfo(response);
 
 		});
+	};
+		
+	bDataService.process = function() {
 
+		var cbData = {
+			'bTitle' : createB.bTitle
+		}
+
+		$http.post('createBoard', cbData).then(function(response) {
+			loadHome(response);
+
+		});
+	};
+	
+	lnDataService.updateL = function(){    //1229
+		var lnData = {
+				'lTitle' : addL.lTitle,
+				'bId': boardTId
+		}
+		$http.post('updateLane', lnData).then(function(response) {
+			loadTrelloInfo();
+
+		});
+	};
+	
+});
+	
 // //////////////////////////////CONTROLLER/////////////////////////////
 
 app.controller('profile', function(dataService) {
@@ -620,10 +632,15 @@ function loadTeamBoards(response, href) {
 
 }
 
-function getTrelloInfo(response) { // &1 (using this as a marker)
+function getTrelloInfo(response, check) { // &1 (using this as a marker)
+	
 	var d = response
-	var trelloInfo = response.data;
-
+	if(check == 1){ //angular
+		var trelloInfo = response.data;
+	}else{ //ajax
+		var trelloInfo = response;
+	}
+	
 	var lanes = trelloInfo.lanes;
 	var cards = trelloInfo.cards;
 	var tasks = trelloInfo.tasks;
@@ -687,4 +704,30 @@ function getTB() {
 	var team = this.id;
 }
 
-// //////////////////ENDJAVASCRIPT/////////////////////////////////////
+//AJAX
+function loadTrelloInfo(){
+ 	
+	var xhr = new XMLHttpRequest();
+	
+	var trelloB = {
+            'bId': boardTId
+    }
+	
+	trelB = JSON.stringify(trelloB);
+	
+	
+	xhr.onreadystatechange = function(){
+		
+		if(xhr.readyState == 4 && xhr.status == 200){
+            var res = JSON.parse(xhr.responseText)
+			getTrelloInfo(res,2);
+
+		}
+	}
+
+	xhr.setRequestHeader("Content-type", "application/json");
+	
+	xhr.send(trelB);
+	
+}
+////////////////////ENDJAVASCRIPT/////////////////////////////////////
