@@ -592,6 +592,7 @@ if(clientUser.length == 0){
 }
 
 function getTrelloInfo(response){ //&1 (using this as a marker)
+	
 	var d = response
     var trelloInfo = response.data;
 	
@@ -612,13 +613,16 @@ function getTrelloInfo(response){ //&1 (using this as a marker)
     			return a.tId - b.tId;
     		})		
     
-   
+   console.log(cards)
+   console.log(tasks)
     	
     var tableElement = document.getElementById('view');
+    //adding a space between navbar and the lanes
+    tableElement.appendChild(document.createElement('br'));
     for(var i = 0; i < lanes.length; i++){
     	var laneDivs = document.createElement('div');
     	laneDivs.setAttribute("id", "lane"+lanes[i].lId)
-    	laneDivs.setAttribute("style", "float:left; width: 20%")
+    	laneDivs.setAttribute("style", "float:left; width: 20%; overflow: visible; word-wrap: nowrap")
 
     	var row = document.createElement('tr');
     	var tdlTitle = document.createElement('td');
@@ -631,22 +635,64 @@ function getTrelloInfo(response){ //&1 (using this as a marker)
     	
     	for(var j = 0; j< cards.length; j++){
     		var aCard = document.createElement('tr')
-	    	var aCardTitle = document.createElement('td')
+	    	var aCardTitle = document.createElement('a')
+	    	aCardTitle.setAttribute("data-toggle", 'modal')
+	    	aCardTitle.setAttribute("data-target", "#myModal")
+	    	aCardTitle.setAttribute("id","cid"+cards[j].cId)
+	    	aCardTitle.setAttribute("href","!#")
 	    	aCardTitle.innerHTML = cards[j].cTitle;
     		
-    		aCard.appendChild(aCardTitle);
+    		aCardTitle.onclick = function(){
+    			// get the modal
+    			var myModal = document.getElementById("myModal");
+				var modalContents = myModal.getElementsByClassName("modal-body")[0];
+				console.log("before clear "+ modalContents.innerHTML)
+				modalContents.innerHTML = "";
+				
+    			
+    				for(var k = 0 ; k < tasks.length; k++){
+    					
+    					//create labels that contain the string of the task 
+        				var label = document.createElement('label');
+        				label.setAttribute("for", "#"+tasks[k].tInfo);
+        				label.innerHTML = tasks[k].tInfo;
+        				
+        				//create a checkbox specific for each task
+        				var taskCheckbox = document.createElement('input');
+        				taskCheckbox.setAttribute('type', "checkbox");
+        				taskCheckbox.setAttribute('id', "#"+tasks[k].tInfo);
+        				
+        				//only append info to the modal if id's match
+        				if("cid"+tasks[k].cardId == this.id){
+        					console.log(tasks[k].tInfo)
+        					
+        					modalContents.appendChild(label);
+        					modalContents.appendChild(taskCheckbox);
+        					modalContents.appendChild(document.createElement('br'));
+        					
+        				}else{
+        					modalContents.innerHTML = "";
+        				}
+    				}
+    			
+    			
+    		}
+
     		
+    		
+    		
+    		aCard.appendChild(aCardTitle);
     		if(lanes[i].lId == cards[j].laneId){
     			//append card to the lane
-    			
     			tdlTitle.appendChild(aCard)
-  
+   
     		}
     		
     		
     	}
     	
 		laneDivs.appendChild(row);
+		
 		tableElement.appendChild(laneDivs);
     }
 }
