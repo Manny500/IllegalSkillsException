@@ -92,8 +92,8 @@ app.controller('TestCtrl',function(dataServ) {
 	createB = this;
 	addL = this; // add lines
   
-  			reim.getRole = dataServ.info;
-					reim.getRole();
+  	reim.getRole = dataServ.info;
+	reim.getRole();
 	
 	reim.updateInfo = function() {
 		document.getElementById('updateBtn').style.visibility = 'hidden';
@@ -155,7 +155,14 @@ app.controller('TestCtrl',function(dataServ) {
 	    var bDataService = this;
 	    var lnDataService = this; //line 1229
 					
+	dataService.info = function() {
 
+				$http.get('getRole').then(function(response) {
+
+					getRoleType(response);
+
+				});
+			}
 	
 	dataService.viewBoard = function(){
 		$http.get('getHome')
