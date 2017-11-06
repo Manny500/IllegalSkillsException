@@ -678,7 +678,6 @@ function getTrelloInfo(response, check) { // &1 (using this as a marker)
     			// get the modal
     			var myModal = document.getElementById("myModal");
 				var modalContents = myModal.getElementsByClassName("modal-body")[0];
-				console.log("before clear "+ modalContents.innerHTML)
 				modalContents.innerHTML = "";
 				
     			
@@ -696,7 +695,6 @@ function getTrelloInfo(response, check) { // &1 (using this as a marker)
         				
         				//only append info to the modal if id's match
         				if("cid"+tasks[k].cardId == this.id){
-        					console.log(tasks[k].tInfo)
         					
         					modalContents.appendChild(label);
         					modalContents.appendChild(taskCheckbox);
