@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.domain.Board;
+import com.revature.domain.BoardDTO;
 import com.revature.domain.Card;
 import com.revature.domain.Chart;
 import com.revature.domain.Lane;
@@ -52,7 +53,7 @@ public class RestCtrl {
 	@RequestMapping(value = { "/profile" }, method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public ResponseEntity<TV2User> profile(HttpServletRequest request) {
-
+		System.out.println("ResponseEntity<TV2User> profile");
 		// client wants the bankUser that at this point should be stored in the session
 		HttpSession session = request.getSession();
 
@@ -64,7 +65,7 @@ public class RestCtrl {
 			"/updateProfile" }, method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public ResponseEntity<TV2User> updateProfile(@RequestBody TV2User user, HttpServletRequest request) {
-
+		System.out.println("ResponseEntity<TV2User> updateProfile");
 		// client wants the bankUser that at this point should be stored in the session
 		HttpSession session = request.getSession();
 
@@ -168,11 +169,10 @@ public class RestCtrl {
 
 	}
 
-	@RequestMapping(value = {
-			"/trelloInfo" }, method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-	@ResponseBody
-	public ResponseEntity<LaneDTO> trello(@RequestBody Board board, HttpServletRequest request) {
-
+	@RequestMapping(value = { "/trelloInfo" }, method = RequestMethod.POST, consumes= "application/json",produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<LaneDTO> trello(@RequestBody Board board,HttpServletRequest request) {
+		
 		Board nb = service.getBoard(board);
 		Set<Lane> lanes = nb.getLanes();
 		Set<cardDTO> cards = new HashSet<cardDTO>();
@@ -201,6 +201,24 @@ public class RestCtrl {
 
 		LaneDTO dto = service.convertToLaneCardTaskDTO(laneList, cardList, taskList);
 		return new ResponseEntity<LaneDTO>(dto, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = {"/updateLane" }, method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@ResponseBody
+	public ResponseEntity<BoardDTO> updateLane(@RequestBody BoardDTO bDTO, HttpServletRequest request) {
+		
+		Board b = new Board(bDTO.getbId());
+	    Lane nl = new Lane(bDTO.getlTitle(),b);
+
+		if (nl.getlTitle() != null) {
+			service.createLane(nl);
+		}else {
+			System.out.println("Title is empty!!");
+		}
+
+
+		return new ResponseEntity<BoardDTO>(bDTO, HttpStatus.OK);
+
 	}
 
 }
