@@ -1,6 +1,3 @@
-//Global
-var boardTId;
-
 // ///////////////ANGULAR//////////////////////////////////////////
 var app = angular.module("myHome", [ "ngRoute" ]);
 
@@ -80,55 +77,54 @@ app.controller('trello', function(scrumService) {
 			'bId' : boardTId
 		}
 		$http.post('trelloInfo', trelloB).then(function(response) {
-			getTrelloInfo(response,1); // &1
+			getTrelloInfo(response, 1); // &1
 		});
 	}
 });
 
 // //////////////////////////////CONTROLLER/////////////////////////////
 
-app.controller('TestCtrl',function(dataServ) {
-	reim = this;
-	createB = this;
-	addL = this; // add lines
-  
-  	reim.getRole = dataServ.info;
-	reim.getRole();
-	
-	reim.updateInfo = function() {
-		document.getElementById('updateBtn').style.visibility = 'hidden';
-		document.getElementById('profileForm').style.visibility = 'visible';
-	}
-	
-	addL.updateLane = function(){ //1229
-		document.getElementById('updateLaneBtn').style.visibility = 'hidden';
-		document.getElementById('laneForm').style.visibility = 'visible';
-	}
-	
-	
-	createB.startCreate = function(){
-		document.getElementById('createBoardBtn').style.visibility = 'hidden';
-		document.getElementById('createBoardForm').style.visibility = 'visible';
-	};
-	
-	addL.doneL= function(){  //1229
-		addL.updateL = dataServ.updateL;
-		addL.updateL();
-		
-		document.getElementById('updateLaneBtn').style.visibility = 'visible';
-		document.getElementById('laneForm').style.visibility = 'hidden';
-	}
-	// hide the form and send the ajax request
+app
+		.controller(
+				'TestCtrl',
+				function(dataServ) {
+					reim = this;
+					createB = this;
+					addL = this; // add lines
 
-		reim.getInfo = dataServ.viewBoard
-		var responseb = reim.getInfo();
+					reim.updateInfo = function() {
+						document.getElementById('updateBtn').style.visibility = 'hidden';
+						document.getElementById('profileForm').style.visibility = 'visible';
+					}
 
-		// hide the form and send the ajax request
-		reim.done = function() {
+					addL.updateLane = function() { // 1229
+						document.getElementById('updateLaneBtn').style.visibility = 'hidden';
+						document.getElementById('laneForm').style.visibility = 'visible';
+					}
 
-				reim.update = dataServ.update;
+					createB.startCreate = function() {
+						document.getElementById('createBoardBtn').style.visibility = 'hidden';
+						document.getElementById('createBoardForm').style.visibility = 'visible';
+					};
 
-				reim.update();
+					addL.doneL = function() { // 1229
+						addL.updateL = dataServ.updateL;
+						addL.updateL();
+
+						document.getElementById('updateLaneBtn').style.visibility = 'visible';
+						document.getElementById('laneForm').style.visibility = 'hidden';
+					}
+					// hide the form and send the ajax request
+
+					reim.getInfo = dataServ.viewBoard
+					var responseb = reim.getInfo();
+
+					// hide the form and send the ajax request
+					reim.done = function() {
+
+						reim.update = dataServ.update;
+
+						reim.update();
 
 						// delete all contents of previous table
 						$(document).ready(function() {
@@ -138,77 +134,68 @@ app.controller('TestCtrl',function(dataServ) {
 						// hide the form and show the update button
 						document.getElementById('updateBtn').style.visibility = 'visible';
 						document.getElementById('profileForm').style.visibility = 'hidden';
-		}
-		
-		createB.create = function() {
-			createB.process = dataServ.process;
-			createB.process();
+					}
 
-			// hide the form and show the update button and clear
-			// input form
-			document.getElementById('bTitle').value = "";
-			document.getElementById('createBoardBtn').style.visibility = 'visible';
-			document.getElementById('createBoardForm').style.visibility = 'hidden';
-		}
-	}).service('dataServ', function($http) {
-	    var dataService = this;
-	    var bDataService = this;
-	    var lnDataService = this; //line 1229
-					
-	dataService.info = function() {
+					createB.create = function() {
+						createB.process = dataServ.process;
+						createB.process();
 
-				$http.get('getRole').then(function(response) {
+						// hide the form and show the update button and clear
+						// input form
+						document.getElementById('bTitle').value = "";
+						document.getElementById('createBoardBtn').style.visibility = 'visible';
+						document.getElementById('createBoardForm').style.visibility = 'hidden';
+					}
+				}).service('dataServ', function($http) {
+			var dataService = this;
+			var bDataService = this;
+			var lnDataService = this; // line 1229
 
-					getRoleType(response);
+			dataService.viewBoard = function() {
+				$http.get('getHome')
+			}
+
+			// sends the post information from the profile form
+			dataService.update = function() {
+				var indata = {
+					'firstName' : reim.firstName,
+					'lastName' : reim.lastName,
+					'userName' : reim.userName,
+					'password' : reim.password,
+					'email' : reim.email
+				};
+				$http.post('updateProfile', indata).then(function(response) {
+
+					getProfileInfo(response);
 
 				});
-			}
-	
-	dataService.viewBoard = function(){
-		$http.get('getHome')
-	}
-	
-	// sends the post information from the profile form
-	dataService.update = function() {
-		var indata = {
-			'firstName' : reim.firstName,
-			'lastName' : reim.lastName,
-			'userName' : reim.userName,
-			'password' : reim.password,
-			'email' : reim.email
-		};
-		$http.post('updateProfile', indata).then(function(response) {
+			};
 
-			getProfileInfo(response);
+			bDataService.process = function() {
 
-		});
-	};
-		
-	bDataService.process = function() {
+				var cbData = {
+					'bTitle' : createB.bTitle
+				}
 
-		var cbData = {
-			'bTitle' : createB.bTitle
-		}
+				$http.post('createBoard', cbData).then(function(response) {
+					loadHome(response);
 
-		$http.post('createBoard', cbData).then(function(response) {
-			loadHome(response);
+				});
+			};
+
+			lnDataService.updateL = function() { // 1229
+				var lnData = {
+					'lTitle' : addL.lTitle,
+					'bId' : boardTId
+				}
+				$http.post('updateLane', lnData).then(function(response) {
+					loadTrelloInfo();
+
+				});
+			};
 
 		});
-	};
-	
-	lnDataService.updateL = function(){    //1229
-		var lnData = {
-				'lTitle' : addL.lTitle,
-				'bId': boardTId
-		}
-		$http.post('updateLane', lnData).then(function(response) {
-			loadTrelloInfo();
 
-		});
-	};
-	
-});
-	
 // //////////////////////////////CONTROLLER/////////////////////////////
 
 app.controller('profile', function(dataService) {
@@ -276,6 +263,10 @@ app.controller('home', function(getInfoService) {
 	homeB = this;
 	team = this;
 
+	// to get role type of user who logged in
+	inf.getRole = getInfoService.info
+	inf.getRole();
+
 	// For Boards
 	homeB.getBoards = getInfoService.boards
 	homeB.getBoards();
@@ -287,6 +278,15 @@ app.controller('home', function(getInfoService) {
 }).service('getInfoService', function($http) {
 
 	var getInfoService = this;
+
+	getInfoService.info = function() {
+
+		$http.get('getRole').then(function(response) {
+
+			getRoleType(response);
+
+		});
+	}
 
 	getInfoService.boards = function() {
 		$http.get('getHome').then(function(response) {
@@ -336,25 +336,15 @@ function displayChart(myData) {
 
 	// Add a helper to format timestamp data
 	Date.prototype.formatYYYYDDMM = function() {
-		return (this.getFullYear()) + "-" + this.getDate() + "-"
+		return (this.getFullYear() + 1) + "-" + this.getDate() + "-"
 				+ this.getMonth();
 	}
 
 	// Split timestamp and data into separate arrays
 	var labels = [], data = [];
-
-	function custom_sort(a, b) {
-		return new Date(a.chartDate).getTime()
-				- new Date(b.chartDate).getTime();
-	}
-
-	myData["chart"].sort(custom_sort);
-
 	myData["chart"].forEach(function(chart) {
-
 		labels.push(new Date(chart.chartDate).formatYYYYDDMM());
 		data.push(chart.chartSum);
-
 	});
 
 	// Create the chart.js data structure using 'labels' and 'data'
@@ -378,12 +368,6 @@ function displayChart(myData) {
 	var myNewChart = new Chart(ctx, {
 		type : "line",
 		data : tempData,
-		options : {
-			title : {
-				display : true,
-				text : 'BurnDown Chart'
-			}
-		},
 		scales : {
 			yAxes : [ {
 				ticks : {
@@ -639,6 +623,8 @@ function loadTeamBoards(response, href) {
 
 }
 
+
+    
 function getTrelloInfo(response, check) { // &1 (using this as a marker)
 	
 	var d = response
@@ -664,52 +650,102 @@ function getTrelloInfo(response, check) { // &1 (using this as a marker)
 	})
 
 	var tableElement = document.getElementById('view');
-	for (var i = 0; i < lanes.length; i++) {
-		var laneDivs = document.createElement('div');
-		laneDivs.setAttribute("id", "lane" + lanes[i].lId)
-		laneDivs.setAttribute("style", "float:left; width: 20%")
+	tableElement.appendChild(document.createElement('br'));
+	for(var i = 0; i < lanes.length; i++){
+    	var laneDivs = document.createElement('div');
+    	laneDivs.setAttribute("id", "lane"+lanes[i].lId)
+    	laneDivs.setAttribute("style", "float:left; width: 20%; overflow: visible; word-wrap: nowrap")
 
-		var row = document.createElement('tr');
-		var tdlTitle = document.createElement('td');
+    	var row = document.createElement('tr');
+    	var tdlTitle = document.createElement('td');
+    	
+    	var lTitle = lanes[i].lId+"."+lanes[i].lTitle;
+    	tdlTitle.innerHTML = lTitle;
+    	
+    	row.appendChild(tdlTitle);
+    	
+    	
+    	for(var j = 0; j< cards.length; j++){
+    		var aCard = document.createElement('tr')
+	    	var aCardTitle = document.createElement('a')
+	    	aCardTitle.setAttribute("data-toggle", 'modal')
+	    	aCardTitle.setAttribute("data-target", "#myModal")
+	    	aCardTitle.setAttribute("id","cid"+cards[j].cId)
+	    	aCardTitle.setAttribute("href","!#")
+	    	aCardTitle.innerHTML = cards[j].cTitle;
+    		
+    		aCardTitle.onclick = function(){
+    			// get the modal
+    			var myModal = document.getElementById("myModal");
+				var modalContents = myModal.getElementsByClassName("modal-body")[0];
+				modalContents.innerHTML = "";
+				
+    			
+    				for(var k = 0 ; k < tasks.length; k++){
+    					
+    					//create labels that contain the string of the task 
+        				var label = document.createElement('label');
+        				label.setAttribute("for", "#"+tasks[k].tInfo);
+        				label.innerHTML = tasks[k].tInfo;
+        				
+        				//create a checkbox specific for each task
+        				var taskCheckbox = document.createElement('input');
+        				taskCheckbox.setAttribute('type', "checkbox");
+        				taskCheckbox.setAttribute('id', "#"+tasks[k].tInfo);
+        				
+        				//only append info to the modal if id's match
+        				if("cid"+tasks[k].cardId == this.id){
+        					
+        					modalContents.appendChild(label);
+        					modalContents.appendChild(taskCheckbox);
+        					modalContents.appendChild(document.createElement('br'));
+        					
+        				}else{
+        					modalContents.innerHTML = "";
+        				}
+    				}
+    			
+    			
+    		}
 
-		var lTitle = lanes[i].lId + "." + lanes[i].lTitle;
-		tdlTitle.innerHTML = lTitle;
+    		
+    		
+    		
+    		aCard.appendChild(aCardTitle);
+    		if(lanes[i].lId == cards[j].laneId){
+    			//append card to the lane
+    			tdlTitle.appendChild(aCard)
+   
+    		}
+    		
+    		
+    	}
 
-		row.appendChild(tdlTitle);
-
-		for (var j = 0; j < cards.length; j++) {
-			var aCard = document.createElement('tr')
-			var aCardTitle = document.createElement('td')
-			aCardTitle.innerHTML = cards[j].cTitle;
-
-			aCard.appendChild(aCardTitle);
-
-			if (lanes[i].lId == cards[j].laneId) {
-				// append card to the lane
-
-				tdlTitle.appendChild(aCard)
-
-			}
-
-		}
 
 		laneDivs.appendChild(row);
+		
 		tableElement.appendChild(laneDivs);
-	}
+    }
 }
 
-function goTo() {
+var boardTId;
+function goTo(){
 	boardTId = this.id;
 }
 
 function getBoard() {
 	var boardId = this.id;
-
 }
 
-function getTB() {
+function getTB(){
 	var team = this.id;
 }
+
+
+
+////////////////////ENDJAVASCRIPT/////////////////////////////////////
+
+
 
 //AJAX
 function loadTrelloInfo(){
