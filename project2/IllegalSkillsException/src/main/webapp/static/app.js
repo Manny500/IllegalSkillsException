@@ -1,3 +1,6 @@
+//Global
+var boardTId;
+
 // ///////////////ANGULAR//////////////////////////////////////////
 var app = angular.module("myHome", [ "ngRoute" ]);
 
@@ -77,54 +80,55 @@ app.controller('trello', function(scrumService) {
 			'bId' : boardTId
 		}
 		$http.post('trelloInfo', trelloB).then(function(response) {
-			getTrelloInfo(response, 1); // &1
+			getTrelloInfo(response,1); // &1
 		});
 	}
 });
 
 // //////////////////////////////CONTROLLER/////////////////////////////
 
-app
-		.controller(
-				'TestCtrl',
-				function(dataServ) {
-					reim = this;
-					createB = this;
-					addL = this; // add lines
+app.controller('TestCtrl',function(dataServ) {
+	reim = this;
+	createB = this;
+	addL = this; // add lines
+  
+  	reim.getRole = dataServ.info;
+	reim.getRole();
+	
+	reim.updateInfo = function() {
+		document.getElementById('updateBtn').style.visibility = 'hidden';
+		document.getElementById('profileForm').style.visibility = 'visible';
+	}
+	
+	addL.updateLane = function(){ //1229
+		document.getElementById('updateLaneBtn').style.visibility = 'hidden';
+		document.getElementById('laneForm').style.visibility = 'visible';
+	}
+	
+	
+	createB.startCreate = function(){
+		document.getElementById('createBoardBtn').style.visibility = 'hidden';
+		document.getElementById('createBoardForm').style.visibility = 'visible';
+	};
+	
+	addL.doneL= function(){  //1229
+		addL.updateL = dataServ.updateL;
+		addL.updateL();
+		
+		document.getElementById('updateLaneBtn').style.visibility = 'visible';
+		document.getElementById('laneForm').style.visibility = 'hidden';
+	}
+	// hide the form and send the ajax request
 
-					reim.updateInfo = function() {
-						document.getElementById('updateBtn').style.visibility = 'hidden';
-						document.getElementById('profileForm').style.visibility = 'visible';
-					}
+		reim.getInfo = dataServ.viewBoard
+		var responseb = reim.getInfo();
 
-					addL.updateLane = function() { // 1229
-						document.getElementById('updateLaneBtn').style.visibility = 'hidden';
-						document.getElementById('laneForm').style.visibility = 'visible';
-					}
+		// hide the form and send the ajax request
+		reim.done = function() {
 
-					createB.startCreate = function() {
-						document.getElementById('createBoardBtn').style.visibility = 'hidden';
-						document.getElementById('createBoardForm').style.visibility = 'visible';
-					};
+				reim.update = dataServ.update;
 
-					addL.doneL = function() { // 1229
-						addL.updateL = dataServ.updateL;
-						addL.updateL();
-
-						document.getElementById('updateLaneBtn').style.visibility = 'visible';
-						document.getElementById('laneForm').style.visibility = 'hidden';
-					}
-					// hide the form and send the ajax request
-
-					reim.getInfo = dataServ.viewBoard
-					var responseb = reim.getInfo();
-
-					// hide the form and send the ajax request
-					reim.done = function() {
-
-						reim.update = dataServ.update;
-
-						reim.update();
+				reim.update();
 
 						// delete all contents of previous table
 						$(document).ready(function() {
@@ -134,92 +138,77 @@ app
 						// hide the form and show the update button
 						document.getElementById('updateBtn').style.visibility = 'visible';
 						document.getElementById('profileForm').style.visibility = 'hidden';
-					}
+		}
+		
+		createB.create = function() {
+			createB.process = dataServ.process;
+			createB.process();
 
-					createB.create = function() {
-						createB.process = dataServ.process;
-						createB.process();
+			// hide the form and show the update button and clear
+			// input form
+			document.getElementById('bTitle').value = "";
+			document.getElementById('createBoardBtn').style.visibility = 'visible';
+			document.getElementById('createBoardForm').style.visibility = 'hidden';
+		}
+	}).service('dataServ', function($http) {
+	    var dataService = this;
+	    var bDataService = this;
+	    var lnDataService = this; //line 1229
+					
+	dataService.info = function() {
 
-						// hide the form and show the update button and clear
-						// input form
-						document.getElementById('bTitle').value = "";
-						document.getElementById('createBoardBtn').style.visibility = 'visible';
-						document.getElementById('createBoardForm').style.visibility = 'hidden';
-					}
-				}).service('dataServ', function($http) {
-			var dataService = this;
-			var bDataService = this;
-			var lnDataService = this; // line 1229
+				$http.get('getRole').then(function(response) {
 
-			dataService.viewBoard = function() {
-				$http.get('getHome')
+					getRoleType(response);
+
+				});
 			}
-
-			// sends the post information from the profile form
-			dataService.update = function() {
-				var indata = {
-					'firstName' : reim.firstName,
-					'lastName' : reim.lastName,
-					'userName' : reim.userName,
-					'password' : reim.password,
-					'email' : reim.email
-				};
-				$http.post('updateProfile', indata).then(function(response) {
-
-					getProfileInfo(response);
-
-				});
-			};
-
-			bDataService.process = function() {
-
-				var cbData = {
-					'bTitle' : createB.bTitle
-				}
-
-				$http.post('createBoard', cbData).then(function(response) {
-					loadHome(response);
-
-				});
-			};
-
-			lnDataService.updateL = function() { // 1229
-				var lnData = {
-					'lTitle' : addL.lTitle,
-					'bId' : boardTId
-				}
-				$http.post('updateLane', lnData).then(function(response) {
-					loadTrelloInfo();
-
-				});
-			};
-
-		});
-
-// //////////////////////////////CONTROLLER/////////////////////////////
-
-app.controller('profile', function(dataService) {
-
-	prof = this;
-
-	prof.getProfile = dataService.profile
-
-	prof.getProfile();
-
-}).service('dataService', function($http) {
-
-	var dataService = this;
-
-	dataService.profile = function() {
-
-		$http.get('profile').then(function(response) {
+	
+	dataService.viewBoard = function(){
+		$http.get('getHome')
+	}
+	
+	// sends the post information from the profile form
+	dataService.update = function() {
+		var indata = {
+			'firstName' : reim.firstName,
+			'lastName' : reim.lastName,
+			'userName' : reim.userName,
+			'password' : reim.password,
+			'email' : reim.email
+		};
+		$http.post('updateProfile', indata).then(function(response) {
 
 			getProfileInfo(response);
 
 		});
-	}
-});
+	};
+		
+	bDataService.process = function() {
 
+		var cbData = {
+			'bTitle' : createB.bTitle
+		}
+
+		$http.post('createBoard', cbData).then(function(response) {
+			loadHome(response);
+
+		});
+	};
+	
+	lnDataService.updateL = function(){    //1229
+		var lnData = {
+				'lTitle' : addL.lTitle,
+				'bId': boardTId
+		}
+		$http.post('updateLane', lnData).then(function(response) {
+			loadTrelloInfo();
+
+		});
+	};
+	
+});
+	
 // //////////////////////////////CONTROLLER/////////////////////////////
 
 app.controller('profile', function(dataService) {
@@ -287,10 +276,6 @@ app.controller('home', function(getInfoService) {
 	homeB = this;
 	team = this;
 
-	// to get role type of user who logged in
-	inf.getRole = getInfoService.info
-	inf.getRole();
-
 	// For Boards
 	homeB.getBoards = getInfoService.boards
 	homeB.getBoards();
@@ -302,15 +287,6 @@ app.controller('home', function(getInfoService) {
 }).service('getInfoService', function($http) {
 
 	var getInfoService = this;
-
-	getInfoService.info = function() {
-
-		$http.get('getRole').then(function(response) {
-
-			getRoleType(response);
-
-		});
-	}
 
 	getInfoService.boards = function() {
 		$http.get('getHome').then(function(response) {
@@ -360,15 +336,25 @@ function displayChart(myData) {
 
 	// Add a helper to format timestamp data
 	Date.prototype.formatYYYYDDMM = function() {
-		return (this.getFullYear() + 1) + "-" + this.getDate() + "-"
+		return (this.getFullYear()) + "-" + this.getDate() + "-"
 				+ this.getMonth();
 	}
 
 	// Split timestamp and data into separate arrays
 	var labels = [], data = [];
+
+	function custom_sort(a, b) {
+		return new Date(a.chartDate).getTime()
+				- new Date(b.chartDate).getTime();
+	}
+
+	myData["chart"].sort(custom_sort);
+
 	myData["chart"].forEach(function(chart) {
+
 		labels.push(new Date(chart.chartDate).formatYYYYDDMM());
 		data.push(chart.chartSum);
+
 	});
 
 	// Create the chart.js data structure using 'labels' and 'data'
@@ -392,6 +378,12 @@ function displayChart(myData) {
 	var myNewChart = new Chart(ctx, {
 		type : "line",
 		data : tempData,
+		options : {
+			title : {
+				display : true,
+				text : 'BurnDown Chart'
+			}
+		},
 		scales : {
 			yAxes : [ {
 				ticks : {
@@ -646,7 +638,6 @@ function loadTeamBoards(response, href) {
 	}
 
 }
-
 
     
 function getTrelloInfo(response, check) { // &1 (using this as a marker)
