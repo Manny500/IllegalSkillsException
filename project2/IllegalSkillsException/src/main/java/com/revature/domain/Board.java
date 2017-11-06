@@ -53,6 +53,14 @@ public class Board implements Serializable {
 		super();
 	}
 	
+	
+	public Board(int bId) {
+		super();
+		this.bId = bId;
+	}
+
+
+
 	public Board(String bTitle, int team, TV2User boardUser) {
 		super();
 		this.bTitle = bTitle;
