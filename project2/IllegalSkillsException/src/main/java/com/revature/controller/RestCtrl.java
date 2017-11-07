@@ -166,6 +166,68 @@ public class RestCtrl {
 		return new ResponseEntity<Board>(b, HttpStatus.OK);
 
 	}
+	
+	//card
+		@RequestMapping(value = {"/createCard" }, method = RequestMethod.POST, consumes= "application/json", produces = "application/json")
+		@ResponseBody
+		public ResponseEntity<LaneDTO> createCard(@RequestBody cardDTO cardD, HttpServletRequest request) {
+			System.err.println("Description" + cardD.getcDescription() + " Title " + cardD.getcTitle() + " Lane Id " + cardD.getLaneId());
+			Card cardT = new Card();
+			cardT.setcTitle(cardD.getcTitle());
+			cardT.setcDescription(cardD.getcDescription());
+			Lane lane = new Lane();
+			lane.setlId(cardD.getLaneId());
+			
+			try {
+			lane = service.getLane(lane);
+			}catch(Exception e) {
+				
+			}
+			cardT.setCardLane(lane);
+			
+			try {
+			service.createCard(cardT);
+			}catch(Exception e) {
+				
+			}
+			Board board = cardT.getCardLane().getLaneBoard();
+			
+			Board nb = new Board();
+			try {
+			nb = service.getBoard(board);
+			}catch(Exception e) {
+				
+			}
+			Set<Lane> lanes = nb.getLanes();
+			Set<cardDTO> cards = new HashSet<cardDTO>();
+			Set<taskDTO> tasks = new HashSet<taskDTO>();
+			for (Lane l : lanes) {
+				Set<Card> card = l.getCards();
+				
+				for (Card c : card) {
+					int laneid = c.getCardLane().getlId();
+					cardDTO cdto = new cardDTO(c.getcId(),c.getcVerify(),c.getcWorth(),c.getcTitle(),c.getcDescription(),laneid);
+					cards.add(cdto);
+					Set<Task> task = c.getTasks();
+					
+					for (Task t : task) {
+						int cardid = t.getTaskCard().getcId();
+						taskDTO tdto = new taskDTO(t.gettId(), t.gettComplete(), t.gettInfo(), cardid);
+						tasks.add(tdto);
+					}
+				}
+			}
+
+			ArrayList<Lane> laneList = new ArrayList<Lane>(lanes);
+			ArrayList<cardDTO> cardList = new ArrayList<cardDTO>(cards);
+			ArrayList<taskDTO> taskList = new ArrayList<taskDTO>(tasks);
+			
+			
+			LaneDTO dto = service.convertToLaneCardTaskDTO(laneList, cardList, taskList);
+
+			return new ResponseEntity<LaneDTO>(dto, HttpStatus.OK);
+
+		}
 
 	@RequestMapping(value = { "/trelloInfo" }, method = RequestMethod.POST, consumes= "application/json",produces = "application/json")
     @ResponseBody

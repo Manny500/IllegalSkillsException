@@ -91,6 +91,8 @@ app.controller('TestCtrl',function(dataServ) {
 	reim = this;
 	createB = this;
 	addL = this; // add lines
+	//card
+	createC = this;
   
   	reim.getRole = dataServ.info;
 	reim.getRole();
@@ -118,6 +120,13 @@ app.controller('TestCtrl',function(dataServ) {
 		document.getElementById('updateLaneBtn').style.visibility = 'visible';
 		document.getElementById('laneForm').style.visibility = 'hidden';
 	}
+	
+	//card
+	createC.startCreate2 = function(){
+		document.getElementById('createCardBtn').style.visibility = 'hidden';
+		document.getElementById('createCardForm').style.visibility = 'visible';
+	};
+	
 	// hide the form and send the ajax request
 
 		reim.getInfo = dataServ.viewBoard
@@ -150,10 +159,31 @@ app.controller('TestCtrl',function(dataServ) {
 			document.getElementById('createBoardBtn').style.visibility = 'visible';
 			document.getElementById('createBoardForm').style.visibility = 'hidden';
 		}
+		
+		//card
+		createC.create2 = function(){
+			createC.process = dataServ.processC;
+			createC.process();
+			
+			// delete all contents of previous table
+			$(document).ready(function() {
+				$("#view").find("th").remove();
+			});
+
+			// hide the form and show the update button and clear input form
+			document.getElementById('cTitle').value = "";
+			document.getElementById('laneId').value = 0;
+			document.getElementById('cDescription').value = "";
+			document.getElementById('createCardBtn').style.visibility = 'visible';
+			document.getElementById('createCardForm').style.visibility = 'hidden';
+		}
+		
 	}).service('dataServ', function($http) {
 	    var dataService = this;
 	    var bDataService = this;
 	    var lnDataService = this; //line 1229
+	    //card
+		var cDataService = this;
 					
 	dataService.info = function() {
 
@@ -203,6 +233,21 @@ app.controller('TestCtrl',function(dataServ) {
 		}
 		$http.post('updateLane', lnData).then(function(response) {
 			loadTrelloInfo();
+
+		});
+	};
+	
+	//card
+	cDataService.processC = function() {
+		
+		var cData = {
+				'cTitle' : createC.cTitle,
+				'laneId' : createC.laneId,
+				'cDescription' : createC.cDescription
+		} 
+		
+		$http.post('createCard', cData).then(function(response) {
+			getTrelloInfo(response,1);
 
 		});
 	};
@@ -574,18 +619,19 @@ function loadHome(response, href) {
 		var tdTitle = document.createElement('td');
 		var content = document.createElement('a');
 		content.innerHTML = clientUser[i]["bTitle"];
-		content.style.backgroundImage = "url('static/features/img/b8.jpg')";
+		content.style.backgroundImage = "url('static/features/img/water.jpg')";
+		content.style.backgroundSize = 'contain';
 		content.setAttribute('id', clientUser[i]["bId"]);
 		content.onclick = goTo;
 		content.setAttribute('href', href)
 		content.width = '100';
 		content.height = '50';
-		content.style.backgroundSize = 'contain';
+		content.style.color = "black";
+		
 		tdTitle.appendChild(content);
 		tdTitle.height = "60";
 		tdTitle.style.textAlign = "center";
 		tdTitle.style.fontSize = "xx-large";
-		tdTitle.style.color = "black";
 		row.appendChild(tdTitle);
 
 		tableElement.appendChild(row);
@@ -619,18 +665,18 @@ function loadTeamBoards(response, href) {
 		var tdTitle = document.createElement('td');
 		var content = document.createElement('a');
 		content.innerHTML = clientUser[i]["bTitle"];
-		content.style.backgroundImage = "url('static/features/img/b8.jpg')";
+		content.style.backgroundImage = "url('static/features/img/water.jpg')";
+		content.style.backgroundSize = 'contain';
 		content.setAttribute('id', clientUser[i]["bId"]);
 		content.onclick = goTo;
 		content.setAttribute('href', href)
 		content.width = '100';
 		content.height = '50';
-		content.style.backgroundSize = 'contain';
+		content.style.color = "black";
 		tdTitle.appendChild(content);
 		tdTitle.height = "60";
 		tdTitle.style.textAlign = "center";
 		tdTitle.style.fontSize = "xx-large";
-		tdTitle.style.color = "black";
 		row.appendChild(tdTitle);
 
 		tableElement.appendChild(row);
@@ -665,6 +711,7 @@ function getTrelloInfo(response, check) { // &1 (using this as a marker)
 	})
 
 	var tableElement = document.getElementById('view');
+	var tab = document.createElement('TH');
 	tableElement.appendChild(document.createElement('br'));
 	for(var i = 0; i < lanes.length; i++){
     	var laneDivs = document.createElement('div');
@@ -738,8 +785,8 @@ function getTrelloInfo(response, check) { // &1 (using this as a marker)
 
 
 		laneDivs.appendChild(row);
-		
-		tableElement.appendChild(laneDivs);
+		tab.appendChild(laneDivs);
+		tableElement.appendChild(tab);
     }
 }
 
