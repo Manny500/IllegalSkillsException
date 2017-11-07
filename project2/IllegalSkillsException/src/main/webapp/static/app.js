@@ -254,6 +254,9 @@ app.controller('TestCtrl',function(dataServ) {
 	};
 	
 	lnDataService.updateL = function(){    //1229
+		$(document).ready(function() {
+			$("#view").find("th").remove();
+		});
 		var lnData = {
 				'lTitle' : addL.lTitle,
 				'bId': boardTId
@@ -848,7 +851,6 @@ function getTB(){
 
 //AJAX
 function loadTrelloInfo(){
- 	
 	var xhr = new XMLHttpRequest();
 	
 	var trelloB = {

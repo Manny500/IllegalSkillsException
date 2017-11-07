@@ -88,7 +88,7 @@ public class IllegalDaoImp implements IllegalDao {
 		List<Board> boards = crit.list();
 		return boards;
 	}
-
+	
 	@Override
 	public Lane getLane(Lane lane) {
 		Session session = sessionFactory.getCurrentSession();
@@ -109,6 +109,11 @@ public class IllegalDaoImp implements IllegalDao {
 
 	@Override
 	public void updateUser(TV2User user) {
+		Session session = sessionFactory.getCurrentSession();
+		session.merge(user);
+	}
+	
+	public void mergeUser(TV2User user) {
 		Session session = sessionFactory.getCurrentSession();
 		session.merge(user);
 	}
