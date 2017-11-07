@@ -112,6 +112,7 @@ app.controller('TestCtrl',function(dataServ) {
 	};
 	
 	addL.doneL= function(){  //1229
+		
 		addL.updateL = dataServ.updateL;
 		addL.updateL();
 		
@@ -197,6 +198,10 @@ app.controller('TestCtrl',function(dataServ) {
 	};
 	
 	lnDataService.updateL = function(){    //1229
+		$(document).ready(function() {
+			$("#view").find("th").remove();
+		});
+		
 		var lnData = {
 				'lTitle' : addL.lTitle,
 				'bId': boardTId
@@ -665,6 +670,7 @@ function getTrelloInfo(response, check) { // &1 (using this as a marker)
 	})
 
 	var tableElement = document.getElementById('view');
+	var tab = document.createElement('th');
 	tableElement.appendChild(document.createElement('br'));
 	for(var i = 0; i < lanes.length; i++){
     	var laneDivs = document.createElement('div');
@@ -738,8 +744,8 @@ function getTrelloInfo(response, check) { // &1 (using this as a marker)
 
 
 		laneDivs.appendChild(row);
-		
-		tableElement.appendChild(laneDivs);
+		tab.appendChild(laneDivs)
+		tableElement.appendChild(tab);
     }
 }
 
