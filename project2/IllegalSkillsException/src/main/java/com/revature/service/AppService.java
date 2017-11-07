@@ -68,6 +68,9 @@ public class AppService {
 	public void createTask(Task task) {
 		dao.createTask(task);
 	}
+	public void createChart(Chart chart) {
+		dao.createChart(chart);
+	}
 
 	// READ
 	public TV2User getUser(TV2User user) {
@@ -101,6 +104,10 @@ public class AppService {
 	public Task getTask(Task task) {
 		return dao.getTask(task);
 	}
+	
+	public Chart getChart(Chart chart) {
+		return dao.getChart(chart);
+	}
 
 	// UPDATE
 	public void updateUser(TV2User user) {
@@ -122,6 +129,10 @@ public class AppService {
 	public void updateTask(Task task) {
 		dao.updateTask(task);
 	}
+	
+	public void updateChart(Chart chart) {
+		dao.updateChart(chart);
+	}
 
 	// DELETE
 	public void deleteUser(TV2User user) {
@@ -142,6 +153,10 @@ public class AppService {
 
 	public void deleteTask(Task task) {
 		dao.deleteTask(task);
+	}
+	
+	public void deleteChart(Chart chart) {
+		dao.deleteChart(chart);
 	}
 
 	public LaneDTO convertToLaneCardTaskDTO(ArrayList<Chart> chart) {

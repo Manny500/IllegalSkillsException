@@ -47,8 +47,9 @@
 <div id="createCardForm" style="visibility:hidden;">
 
 	Enter Title: <input id="cTitle" data-ng-model="test.cTitle"  type="text" required><br><br>
-	Enter Lane ID: <input id="laneId" data-ng-model="test.laneId"  type="number" min="0" max="999"><br><br>
-	Enter Description: <input id="cDescription" data-ng-model="test.cDescription"  type="text"><br><br>
+	Enter Lane ID: <input id="laneId" data-ng-model="test.laneId"  type="number" min="1" max="999" required><br><br>
+	Enter Description: <input id="cDescription" data-ng-model="test.cDescription"  type="text" required><br><br>
+	Enter Points: <input id="cWorth" data-ng-model="test.cWorth"  type="number" min="1" max="999" required><br><br>
 	<button type="button" data-ng-click="test.create2()" id="createBtn" class="btn btn-primary btn-sm">Create Card</button>
 
 </div>
