@@ -1,7 +1,9 @@
 
 
 
+
 <div id="view"></div>
+
 
 
 
@@ -19,6 +21,8 @@
           
         </div>
         <div class="modal-footer">
+        Enter Lane: <input id="laneNumber" data-ng-model="test.updatedLaneId" type="number"> 
+        <button id="move" data-ng-click="test.updateCardLane()" type="button" class="btn btn-default" data-dismiss="modal">move</button>
           <button id="close" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </div>
@@ -54,4 +58,7 @@
 </div>
 
 
+
+
+   
 
