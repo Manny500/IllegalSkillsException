@@ -12,7 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.revature.dao.IllegalDaoImp;
 import com.revature.domain.Board;
+import com.revature.domain.Card;
 import com.revature.domain.Lane;
+import com.revature.domain.TV2User;
+import com.revature.domain.Task;
+import com.revature.service.AppService;
 
 //@ContextConfiguration(locations = "classpath:/static/features/beans-test.xml")
 @ContextConfiguration
@@ -26,30 +30,64 @@ public class TestIllegalDao {
 
 	@Autowired
 	private IllegalDaoImp dao;
-	
+	@Autowired
+	private AppService service;
 	
 	
 	@Test
 	@Transactional
 	@Rollback(true)
 	public void testCreateLanes() {
-		int id = 500;
-		Lane lane = new Lane(id,"Information Technology");
+		Lane lane = new Lane("Information Technology");
 		dao.createLane(lane);
-		
-		List<Lane> lanes = dao.getAllLanes(id);
-		Assert.assertEquals(lane.getlTitle(), lanes.get(0).getlTitle());
+		Lane newLane = dao.getLane(lane);
+		Assert.assertEquals(lane.getlTitle(), newLane.getlTitle());
 	}
 	
 	@Test
 	@Transactional
 	@Rollback(true)
 	public void testCreateBoards() {
-		int id = 500;
-		Board board = new Board(id,"John Snow's Trello");
+		Board board = new Board("John Snow's Trello");
 		dao.createBoard(board);
 		
-		List<Board> boards = dao.getAllBoards(id);
-		Assert.assertEquals(board.getbTitle(), boards.get(0).getbTitle());
+		Board newBoard = dao.getBoard(board);
+		Assert.assertEquals(board.getbTitle(), newBoard.getbTitle());
 	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testCreateCards() {
+		Card card = new Card("User can watch a movie");
+		dao.createCard(card);
+		
+		Card newCard = dao.getCard(card);
+		
+		Assert.assertEquals(card.getcTitle(), newCard.getcTitle());
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testCreateTasks() {
+		Task task = new Task("Dao methods");
+		dao.createTask(task);
+		
+		Task newTask = dao.getTask(task);
+		
+		Assert.assertEquals(task.getTaskCard(), newTask.getTaskCard());
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(false)
+	public void testValidateLogin() {
+		TV2User user = new TV2User("b","b");
+		TV2User user2 = new TV2User(21,"bob","Thunder","b","b",2,"test@yahoo.com",0);
+		//Assert.assertNotEquals(user2, service.validateLogin(user));
+		Assert.assertEquals(user2.getUserId(), service.validateLogin(user).getUserId());
+	}
+
+	
 }

@@ -55,6 +55,15 @@ public class Card implements Serializable {
 		super();
 	}
 
+	
+	
+	public Card(String cTitle) {
+		super();
+		this.cTitle = cTitle;
+	}
+
+
+
 	public Card(int cId, int cVerify, int cWorth, String cTitle, String cDescription, Lane cardLane, Set<Task> tasks) {
 		super();
 		this.cId = cId;

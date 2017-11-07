@@ -88,16 +88,6 @@ public class IllegalDaoImp implements IllegalDao {
 		List<Board> boards = crit.list();
 		return boards;
 	}
-
-	@SuppressWarnings("unchecked")
-	public List<Board> getAllBoards(int n) {
-		Session session = sessionFactory.getCurrentSession();
-		Criteria crit = session.createCriteria(Board.class);
-		crit.add(Restrictions.eq("bId", new Integer(n)));
-		List<Board> lists = crit.list();
-		return lists;
-	}
-	
 	
 	@Override
 	public Lane getLane(Lane lane) {
@@ -134,16 +124,6 @@ public class IllegalDaoImp implements IllegalDao {
 		Session session = sessionFactory.getCurrentSession();
 		session.update(lane);
 	}
-	
-	@SuppressWarnings("unchecked")
-	public List<Lane> getAllLanes(int n) {
-		Session session = sessionFactory.getCurrentSession();
-		Criteria crit = session.createCriteria(Lane.class);
-		crit.add(Restrictions.eq("lId", new Integer(n)));
-		List<Lane> lists = crit.list();
-		return lists;
-	}
-
 
 	@Override
 	public void updateCard(Card card) {
