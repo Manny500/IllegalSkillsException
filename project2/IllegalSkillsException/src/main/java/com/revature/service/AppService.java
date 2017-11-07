@@ -28,7 +28,6 @@ public class AppService {
 	private IllegalDao dao;
 
 	public TV2User validateLogin(TV2User us) {
-		System.out.println("wonder if i get here");
 		user = dao.getUserByUsername(us);
 
 		if (user == null) {
