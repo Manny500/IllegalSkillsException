@@ -124,6 +124,16 @@ public class IllegalDaoImp implements IllegalDao {
 		Session session = sessionFactory.getCurrentSession();
 		session.update(lane);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Lane> getAllLanes(int n) {
+		Session session = sessionFactory.getCurrentSession();
+		Criteria crit = session.createCriteria(Lane.class);
+		crit.add(Restrictions.eq("lId", new Integer(n)));
+		List<Lane> lists = crit.list();
+		return lists;
+	}
+
 
 	@Override
 	public void updateCard(Card card) {
