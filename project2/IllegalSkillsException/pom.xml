@@ -132,7 +132,6 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
 		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-test</artifactId> 
@@ -147,8 +146,15 @@
 		<dependency>
 			<groupId>org.jboss.logging</groupId>
 			<artifactId>jboss-logging</artifactId>
-			<version>3.3.1.Final</version>
-		</dependency>
+			</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-commons-annotations -->
+	<!-- 	<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-commons-annotations</artifactId>
+			<version>4.0.2.Final</version>
+		</dependency> -->
+
 
 
 	</dependencies>
