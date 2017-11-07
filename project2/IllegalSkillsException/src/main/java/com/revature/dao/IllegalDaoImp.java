@@ -110,7 +110,7 @@ public class IllegalDaoImp implements IllegalDao {
 	@Override
 	public void updateUser(TV2User user) {
 		Session session = sessionFactory.getCurrentSession();
-		session.update(user);
+		session.merge(user);
 	}
 
 	@Override
@@ -128,7 +128,7 @@ public class IllegalDaoImp implements IllegalDao {
 	@Override
 	public void updateCard(Card card) {
 		Session session = sessionFactory.getCurrentSession();
-		session.update(card);
+		session.merge(card);
 	}
 
 	@Override

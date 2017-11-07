@@ -1,6 +1,6 @@
 //Global
 var boardTId;
-
+var cIdGlobal;
 // ///////////////ANGULAR//////////////////////////////////////////
 var app = angular.module("myHome", [ "ngRoute" ]);
 
@@ -93,7 +93,13 @@ app.controller('TestCtrl',function(dataServ) {
 	addL = this; // add lines
 	//card
 	createC = this;
+	
+	// update card thing
+	uc = this;
   
+	uc.updateCardLane = dataServ.updateCardInfo;
+//	uc.updateCardLane();
+	
   	reim.getRole = dataServ.info;
 	reim.getRole();
 	
@@ -185,6 +191,7 @@ app.controller('TestCtrl',function(dataServ) {
 	    var lnDataService = this; //line 1229
 	    //card
 		var cDataService = this;
+		var ucDataService = this;
 					
 	dataService.info = function() {
 
@@ -197,6 +204,26 @@ app.controller('TestCtrl',function(dataServ) {
 	
 	dataService.viewBoard = function(){
 		$http.get('getHome')
+	}
+	
+	ucDataService.updateCardInfo = function(){
+		
+			// delete all contents of previous table
+		$(document).ready(function() {
+			$("#view").find("th").remove();
+		});
+
+		var ucData = {
+				'laneId': uc.updatedLaneId,
+				'cId': cIdGlobal
+		};
+		
+		$http.post('updateCardLane', ucData).then(function(response) {
+
+			getTrelloInfo(response,1)
+
+		});
+		
 	}
 	
 	// sends the post information from the profile form
@@ -731,6 +758,7 @@ function getTrelloInfo(response, check) { // &1 (using this as a marker)
     	
     	
     	for(var j = 0; j< cards.length; j++){
+    		var moveBtn = document.getElementById("move");
     		var aCard = document.createElement('tr')
 	    	var aCardTitle = document.createElement('a')
 	    	aCardTitle.setAttribute("data-toggle", 'modal')
@@ -739,13 +767,17 @@ function getTrelloInfo(response, check) { // &1 (using this as a marker)
 	    	aCardTitle.setAttribute("href","!#")
 	    	aCardTitle.innerHTML = cards[j].cTitle;
     		
+    		//getting tasks START
     		aCardTitle.onclick = function(){
+    			//cIdGlobal is a global variable containing the id of the card that was clicked
+    			cIdGlobal = this.id
+    			cIdGlobal= parseInt(cIdGlobal.slice(3)) // getting card Id to pass to updateCardLane()
     			// get the modal
     			var myModal = document.getElementById("myModal");
 				var modalContents = myModal.getElementsByClassName("modal-body")[0];
 				modalContents.innerHTML = "";
 				
-    			
+    				//task for-loop START
     				for(var k = 0 ; k < tasks.length; k++){
     					
     					//create labels that contain the string of the task 
@@ -768,9 +800,14 @@ function getTrelloInfo(response, check) { // &1 (using this as a marker)
         				}else{
         					modalContents.innerHTML = "";
         				}
-    				}
+    				}//task for-loop END
     			
     			
+    		}//getting tasks END
+    		
+    		moveBtn.onclick = function(card){
+    			card = cards
+    			console.log(card)
     		}
 
     		

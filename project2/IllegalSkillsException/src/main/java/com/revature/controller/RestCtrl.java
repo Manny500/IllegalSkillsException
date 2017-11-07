@@ -100,6 +100,83 @@ public class RestCtrl {
 		return new ResponseEntity<TV2User>(user, HttpStatus.OK);
 
 	}
+	
+	//update card's lane id to move it 
+	@RequestMapping(value = {
+			"/updateCardLane" }, method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@ResponseBody
+	public ResponseEntity<LaneDTO> updateCardLane(@RequestBody cardDTO cardD, HttpServletRequest request) {
+		Card card = new Card();
+		card.setcId(cardD.getcId());
+		
+		card = service.getCard(card);
+		
+		Lane lane = new Lane();
+		
+		lane.setlId(cardD.getLaneId());
+		
+		lane = service.getLane(lane);
+		
+		Set<Task> currentTasks = card.getTasks();
+		
+		if(currentTasks != null) {
+			for(Task t: currentTasks) {
+				service.deleteTask(t);
+			}
+		}
+		
+		service.deleteCard(card);
+		
+		card.setCardLane(lane);
+		
+		service.createCard(card);
+		
+		Card updatedCard = service.getCard(card);
+		
+		for(Task t: currentTasks) {
+			service.createTask(t);
+		}
+	
+		updatedCard.setTasks(currentTasks);
+		
+		Board board = updatedCard.getCardLane().getLaneBoard();
+		
+		Board nb = new Board();
+		try {
+			nb = service.getBoard(board);
+		}catch(Exception e) {
+			
+		}
+		Set<Lane> lanes = nb.getLanes();
+		Set<cardDTO> cards = new HashSet<cardDTO>();
+		Set<taskDTO> tasks = new HashSet<taskDTO>();
+		for (Lane l : lanes) {
+			Set<Card> cardz = l.getCards();
+			
+			for (Card c : cardz) {
+				int laneid = c.getCardLane().getlId();
+				cardDTO cdto = new cardDTO(c.getcId(),c.getcVerify(),c.getcWorth(),c.getcTitle(),c.getcDescription(),laneid);
+				cards.add(cdto);
+				Set<Task> task = c.getTasks();
+				
+				for (Task t : task) {
+					int cardid = t.getTaskCard().getcId();
+					taskDTO tdto = new taskDTO(t.gettId(), t.gettComplete(), t.gettInfo(), cardid);
+					tasks.add(tdto);
+				}
+			}
+		}
+
+		ArrayList<Lane> laneList = new ArrayList<Lane>(lanes);
+		ArrayList<cardDTO> cardList = new ArrayList<cardDTO>(cards);
+		ArrayList<taskDTO> taskList = new ArrayList<taskDTO>(tasks);
+//		
+//		
+		LaneDTO dto = service.convertToLaneCardTaskDTO(laneList, cardList, taskList);
+
+		return new ResponseEntity<LaneDTO>(dto, HttpStatus.OK);
+
+	}
 
 	@RequestMapping(value = { "/getRole" }, method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
