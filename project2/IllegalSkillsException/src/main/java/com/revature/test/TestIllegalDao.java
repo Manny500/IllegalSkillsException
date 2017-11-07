@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.revature.dao.IllegalDaoImp;
+import com.revature.domain.Board;
 import com.revature.domain.Lane;
 
 //@ContextConfiguration(locations = "classpath:/static/features/beans-test.xml")
@@ -38,5 +39,17 @@ public class TestIllegalDao {
 		
 		List<Lane> lanes = dao.getAllLanes(id);
 		Assert.assertEquals(lane.getlTitle(), lanes.get(0).getlTitle());
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testCreateBoards() {
+		int id = 500;
+		Board board = new Board(id,"John Snow's Trello");
+		dao.createBoard(board);
+		
+		List<Board> boards = dao.getAllBoards(id);
+		Assert.assertEquals(board.getbTitle(), boards.get(0).getbTitle());
 	}
 }

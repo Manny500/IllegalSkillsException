@@ -89,6 +89,16 @@ public class IllegalDaoImp implements IllegalDao {
 		return boards;
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Board> getAllBoards(int n) {
+		Session session = sessionFactory.getCurrentSession();
+		Criteria crit = session.createCriteria(Board.class);
+		crit.add(Restrictions.eq("bId", new Integer(n)));
+		List<Board> lists = crit.list();
+		return lists;
+	}
+	
+	
 	@Override
 	public Lane getLane(Lane lane) {
 		Session session = sessionFactory.getCurrentSession();
