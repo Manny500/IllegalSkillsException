@@ -112,6 +112,11 @@ public class IllegalDaoImp implements IllegalDao {
 		Session session = sessionFactory.getCurrentSession();
 		session.update(user);
 	}
+	
+	public void mergeUser(TV2User user) {
+		Session session = sessionFactory.getCurrentSession();
+		session.merge(user);
+	}
 
 	@Override
 	public void updateBoard(Board board) {
