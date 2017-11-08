@@ -32,6 +32,10 @@ public class HomepageCtrl {
 		}
 	}
 	
+	@RequestMapping("/load.gif")
+	public String loader() {
+		return "forward: static/features/trello/load.gif";
+	}
 
 
 }
