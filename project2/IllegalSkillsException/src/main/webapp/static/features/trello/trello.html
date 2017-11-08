@@ -46,10 +46,10 @@
 
 <br>
 <!-- ADD LANES -->
-<button type="button" data-ng-click="test.updateLane()" id="updateLaneBtn" class="btn btn-primary">Add a new Lane</button>
+<button type="button" data-ng-click="test.updateLane()" id="updateLaneBtn" class="btn btn-primary" style="color: white;">Add a new Lane</button>
 
 
-<div id="laneForm" style="visibility:hidden;">
+<div id="laneForm" style="visibility:hidden; color: white;">
 
 	New Lane: <input id="lTitle" data-ng-model="test.lTitle" type="text"> <br>
 	
@@ -58,9 +58,9 @@
 </div>
 
 <!-- Add Card -->
-<button type="button" data-ng-click="test.startCreate2()" id="createCardBtn" class="btn btn-primary btn-sm">+ Create Card</button> 
+<button type="button" data-ng-click="test.startCreate2()" id="createCardBtn" class="btn btn-primary btn-sm" style="color: white;">+ Create Card</button> 
 
-<div id="createCardForm" style="visibility:hidden;">
+<div id="createCardForm" style="visibility:hidden; color: white;">
 
 	Enter Title: <input id="cTitle" data-ng-model="test.cTitle"  type="text" required><br><br>
 	Enter Lane ID: <input id="laneId" data-ng-model="test.laneId"  type="number" min="1" max="999" required><br><br>
@@ -71,9 +71,9 @@
 </div>
 
 <!-- Verify -->
-<button type="button" data-ng-click="test.startVerify()" id="verifyCardBtn" class="btn btn-primary btn-sm">+ Verify Card</button> 
+<button type="button" data-ng-click="test.startVerify()" id="verifyCardBtn" class="btn btn-primary btn-sm" style="color: white;">+ Verify Card</button> 
 
-<div id="verifyCardForm" style="visibility:hidden;">
+<div id="verifyCardForm" style="visibility:hidden; color: white;">
 
 	Enter Card ID: <input id="cId" data-ng-model="test.cId"  type="number" min="1" max="999" required><br><br>
 	<button type="button" data-ng-click="test.verify()" id="createBtn" class="btn btn-primary btn-sm">Verify Card</button>
