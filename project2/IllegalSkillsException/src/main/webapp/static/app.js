@@ -820,7 +820,7 @@ function getTrelloInfo(response, check) { // &1 (using this as a marker)
     		
     		moveBtn.onclick = function(card){
     			card = cards
-    			console.log(card)
+    			
     		}
 
     		
