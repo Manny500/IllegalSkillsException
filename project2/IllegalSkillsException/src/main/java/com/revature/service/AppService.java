@@ -123,6 +123,10 @@ public class AppService {
 	public void updateCard(Card card) {
 		dao.createCard(card);
 	}
+	
+	public void mergeCard(Card card) {
+		dao.mergeCard(card);
+	}
 
 	public void updateTask(Task task) {
 		dao.updateTask(task);
