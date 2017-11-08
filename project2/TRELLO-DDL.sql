@@ -141,4 +141,9 @@ create or replace TRIGGER chart_seq_trg BEFORE
 END IF;
 END;
 /
+create or replace TRIGGER task2_seq_trg BEFORE
+  INSERT ON task FOR EACH ROW BEGIN IF :new.T_ID = 0 THEN
+  SELECT task_seq.NEXTVAL INTO :new.T_ID FROM dual;
+END IF;
+END;
 COMMIT;
