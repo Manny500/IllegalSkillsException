@@ -1,6 +1,7 @@
 //Global
 var boardTId;
 var cIdGlobal;
+var tIdGlobal;
 // ///////////////ANGULAR//////////////////////////////////////////
 var app = angular.module("myHome", [ "ngRoute" ]);
 
@@ -97,16 +98,21 @@ app.controller('TestCtrl',function(dataServ) {
 	addL = this; // add lines
 	//card
 	createC = this;
+
 	verifyC = this;
 	
+
 	// update card thing
 	uc = this;
   
 	uc.updateCardLane = dataServ.updateCardInfo;
 //	uc.updateCardLane();
 	
+	reim.createTask = dataServ.createTask; 
+	
   	reim.getRole = dataServ.info;
 	reim.getRole();
+
 	
 	reim.updateInfo = function() {
 		document.getElementById('updateBtn').style.visibility = 'hidden';
@@ -229,6 +235,16 @@ app.controller('TestCtrl',function(dataServ) {
 	
 	dataService.viewBoard = function(){
 		$http.get('getHome')
+	}
+	
+	dataService.createTask = function(){
+		inTask = {
+				'tInfo': reim.makeTask,
+				'cardId': cIdGlobal
+		};
+		$http.post("createTasks", inTask).then(function(response){
+				 displayTask(inTask);
+		})
 	}
 	
 	ucDataService.updateCardInfo = function(){
@@ -821,6 +837,7 @@ function getTrelloInfo(response, check) { // &1 (using this as a marker)
     		
     		//getting tasks START
     		aCardTitle.onclick = function(){
+    			
     			//cIdGlobal is a global variable containing the id of the card that was clicked
     			cIdGlobal = this.id
     			cIdGlobal= parseInt(cIdGlobal.slice(3)) // getting card Id to pass to updateCardLane()
@@ -894,6 +911,21 @@ function getBoard() {
 
 function getTB(){
 	var team = this.id;
+}
+
+
+function displayTask(inTask){
+	var task = inTask;
+	var modalContents = myModal.getElementsByClassName("modal-body")[0];
+	var label = document.createElement('label');
+	label.setAttribute("for", "#"+task.tInfo);
+	label.innerHTML = task.tInfo;
+	var taskCheckbox = document.createElement('input');
+	taskCheckbox.setAttribute('type', "checkbox");
+	taskCheckbox.setAttribute('id', "#"+task.tInfo);
+	modalContents.appendChild(label);
+	modalContents.appendChild(taskCheckbox);
+	
 }
 
 

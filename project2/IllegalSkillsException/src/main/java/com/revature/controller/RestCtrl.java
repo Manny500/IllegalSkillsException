@@ -462,5 +462,23 @@ public class RestCtrl {
 		return new ResponseEntity<BoardDTO>(bDTO, HttpStatus.OK);
 
 	}
+	
+	@RequestMapping(value = {"/createTasks" }, method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@ResponseBody
+	public void createTasks(@RequestBody taskDTO tdto, HttpServletRequest request) {
+		String info = tdto.gettInfo();
+		int cid = tdto.getCardId();
+		Card card = new Card();
+		card.setcId(cid);
+		card = service.getCard(card);
+		
+		Task task = new Task();
+		task.settInfo(info);
+		task.setTaskCard(card);
+		service.createTask(task);
+
+	}
+	
+	
 
 }

@@ -19,12 +19,23 @@
           <h4 class="modal-title">Tasks To Do</h4>
         </div>
         <div class="modal-body">
-          
+        
         </div>
         <div class="modal-footer">
+        
+        <div class="row">
+        New Task: <input id="task" data-ng-model="test.makeTask" type="text">
+        <button id="createTask" data-ng-click="test.createTask()" type="button" class="btn btn-default" >create task</button>
+        </div>
+        
+        <div class="row"> 
         Enter Lane: <input id="laneNumber" data-ng-model="test.updatedLaneId" type="number"> 
         <button id="move" data-ng-click="test.updateCardLane()" type="button" class="btn btn-default" data-dismiss="modal">move</button>
-          <button id="close" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button id="close" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+       
+        
+          
         </div>
       </div>
       
