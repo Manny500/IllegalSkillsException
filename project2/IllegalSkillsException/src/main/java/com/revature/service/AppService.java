@@ -28,17 +28,15 @@ public class AppService {
 	private IllegalDao dao;
 
 	public TV2User validateLogin(TV2User us) {
-
+		System.out.println("wonder if i get here");
 		user = dao.getUserByUsername(us);
 
 		if (user == null) {
-
 			// Create custom exception delete print out
 			return null;
 			// throw new AccountDoesNotExistException();
 
 		} else if (user.getPassword().equals(us.getPassword())) {
-
 			return user;
 
 		} else {
@@ -67,6 +65,9 @@ public class AppService {
 
 	public void createTask(Task task) {
 		dao.createTask(task);
+	}
+	public void createChart(Chart chart) {
+		dao.createChart(chart);
 	}
 
 	// READ
@@ -101,6 +102,10 @@ public class AppService {
 	public Task getTask(Task task) {
 		return dao.getTask(task);
 	}
+	
+	public Chart getChart(Chart chart) {
+		return dao.getChart(chart);
+	}
 
 	// UPDATE
 	public void updateUser(TV2User user) {
@@ -122,6 +127,10 @@ public class AppService {
 	public void updateTask(Task task) {
 		dao.updateTask(task);
 	}
+	
+	public void updateChart(Chart chart) {
+		dao.updateChart(chart);
+	}
 
 	// DELETE
 	public void deleteUser(TV2User user) {
@@ -142,6 +151,10 @@ public class AppService {
 
 	public void deleteTask(Task task) {
 		dao.deleteTask(task);
+	}
+	
+	public void deleteChart(Chart chart) {
+		dao.deleteChart(chart);
 	}
 
 	public LaneDTO convertToLaneCardTaskDTO(ArrayList<Chart> chart) {

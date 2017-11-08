@@ -73,14 +73,18 @@ app.controller('trello', function(scrumService) {
 	trel.getInfo();
 
 }).service('scrumService', function($http) {
-
+	
 	var scrumService = this;
 	scrumService.info = function() {
 		var trelloB = {
 			'bId' : boardTId
 		}
 		$http.post('trelloInfo', trelloB).then(function(response) {
-			getTrelloInfo(response,1); // &1
+			
+			getTrelloInfo(response,1);
+			$(document).ready(function() {
+				$("#loading").hide();
+			});// &1
 		});
 	}
 });
@@ -173,6 +177,7 @@ app.controller('TestCtrl',function(dataServ) {
 			
 			// delete all contents of previous table
 			$(document).ready(function() {
+				$("#loading").show();
 				$("#view").find("th").remove();
 			});
 
@@ -208,7 +213,9 @@ app.controller('TestCtrl',function(dataServ) {
 	ucDataService.updateCardInfo = function(){
 		
 			// delete all contents of previous table
+		
 		$(document).ready(function() {
+			$("#loading").show();
 			$("#view").find("th").remove();
 		});
 
@@ -218,8 +225,11 @@ app.controller('TestCtrl',function(dataServ) {
 		};
 		
 		$http.post('updateCardLane', ucData).then(function(response) {
-
+			
 			getTrelloInfo(response,1)
+			$(document).ready(function() {
+				$("#loading").hide();
+			});
 
 		});
 		
@@ -254,13 +264,17 @@ app.controller('TestCtrl',function(dataServ) {
 	};
 	
 	lnDataService.updateL = function(){    //1229
+		$(document).ready(function() {
+			$("#loading").show();
+			$("#view").find("th").remove();
+		});
 		var lnData = {
 				'lTitle' : addL.lTitle,
 				'bId': boardTId
 		}
 		$http.post('updateLane', lnData).then(function(response) {
 			loadTrelloInfo();
-
+			
 		});
 	};
 	
@@ -275,7 +289,9 @@ app.controller('TestCtrl',function(dataServ) {
 		
 		$http.post('createCard', cData).then(function(response) {
 			getTrelloInfo(response,1);
-
+			$(document).ready(function() {
+				$("#loading").hide();
+			});
 		});
 	};
 	
@@ -743,7 +759,7 @@ function getTrelloInfo(response, check) { // &1 (using this as a marker)
 	for(var i = 0; i < lanes.length; i++){
     	var laneDivs = document.createElement('div');
     	laneDivs.setAttribute("id", "lane"+lanes[i].lId)
-    	laneDivs.setAttribute("style", "float:left; width: 20%; overflow: visible; word-wrap: nowrap")
+    	laneDivs.setAttribute("style", "float:left; margin-left: 30px; margin-right: 30px; overflow: visible; word-wrap: nowrap")
 
     	var row = document.createElement('tr');
     	var tdlTitle = document.createElement('td');
@@ -825,6 +841,7 @@ function getTrelloInfo(response, check) { // &1 (using this as a marker)
 		tab.appendChild(laneDivs);
 		tableElement.appendChild(tab);
     }
+	
 }
 
 var boardTId;
@@ -848,7 +865,6 @@ function getTB(){
 
 //AJAX
 function loadTrelloInfo(){
- 	
 	var xhr = new XMLHttpRequest();
 	
 	var trelloB = {
@@ -863,6 +879,9 @@ function loadTrelloInfo(){
 		if(xhr.readyState == 4 && xhr.status == 200){
             var res = JSON.parse(xhr.responseText)
 			getTrelloInfo(res,2);
+            $(document).ready(function() {
+				$("#loading").hide();
+			});
 
 		}
 	}

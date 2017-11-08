@@ -35,6 +35,13 @@ public class Task implements Serializable {
 	public Task() {
 		super();
 	}
+	
+
+	public Task(String tInfo) {
+		super();
+		this.tInfo = tInfo;
+	}
+
 
 	public Task(int tId, int tComplete, String tInfo, Card taskCard) {
 		super();
