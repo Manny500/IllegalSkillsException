@@ -1,14 +1,20 @@
 package com.revature.controller;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -247,18 +253,28 @@ public class RestCtrl {
 	//card
 		@RequestMapping(value = {"/createCard" }, method = RequestMethod.POST, consumes= "application/json", produces = "application/json")
 		@ResponseBody
-		public ResponseEntity<LaneDTO> createCard(@RequestBody cardDTO cardD, HttpServletRequest request) {
-			System.err.println("Description" + cardD.getcDescription() + " Title " + cardD.getcTitle() + " Lane Id " + cardD.getLaneId());
+		public ResponseEntity<LaneDTO> createCard(@RequestBody cardDTO cardD, HttpServletRequest request) throws URISyntaxException {
+			System.err.println("Description" + cardD.getcDescription() + " Title " + cardD.getcTitle() + " Lane Id " + cardD.getLaneId() + " Points " + cardD.getcWorth());
+			if(cardD.getLaneId() == 0) {
+//				URI home = new URI("redirect: home");
+//			    HttpHeaders httpHeaders = new HttpHeaders();
+//			    httpHeaders.setLocation(home);
+//			    return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
+			}
 			Card cardT = new Card();
 			cardT.setcTitle(cardD.getcTitle());
 			cardT.setcDescription(cardD.getcDescription());
+			cardT.setcWorth(cardD.getcWorth());
 			Lane lane = new Lane();
 			lane.setlId(cardD.getLaneId());
 			
 			try {
 			lane = service.getLane(lane);
 			}catch(Exception e) {
-				
+//				URI home = new URI("/#!home");
+//			    HttpHeaders httpHeaders = new HttpHeaders();
+//			    httpHeaders.setLocation(home);
+//			    return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
 			}
 			cardT.setCardLane(lane);
 			
@@ -299,11 +315,37 @@ public class RestCtrl {
 			ArrayList<cardDTO> cardList = new ArrayList<cardDTO>(cards);
 			ArrayList<taskDTO> taskList = new ArrayList<taskDTO>(tasks);
 			
+			addPoints(cardList);
 			
 			LaneDTO dto = service.convertToLaneCardTaskDTO(laneList, cardList, taskList);
 
 			return new ResponseEntity<LaneDTO>(dto, HttpStatus.OK);
 
+		}
+		
+		public void addPoints(ArrayList<cardDTO> cardlist) {
+			int points = 0;
+			
+			
+			for(int i = 0; i < cardlist.size(); i++) {
+				points += cardlist.get(i).getcWorth();
+			}
+			
+			Lane lane = new Lane();
+			lane.setlId(cardlist.get(0).getLaneId());
+			lane = service.getLane(lane);
+			
+			Board board = service.getBoard(lane.getLaneBoard());
+			board.setTotal(points);
+			service.updateBoard(board);
+	
+			Chart chart = new Chart();
+			chart.setChartBoard(board);
+			chart.setChartDate(new SimpleDateFormat("dd-MMM-yy").format(Calendar.getInstance().getTime()));
+			chart.setChartSum(points);
+			
+			service.createChart(chart);
+			System.err.println("Success " + chart.getChartSum());
 		}
 
 	@RequestMapping(value = { "/trelloInfo" }, method = RequestMethod.POST, consumes= "application/json",produces = "application/json")

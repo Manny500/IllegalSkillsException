@@ -178,8 +178,9 @@ app.controller('TestCtrl',function(dataServ) {
 
 			// hide the form and show the update button and clear input form
 			document.getElementById('cTitle').value = "";
-			document.getElementById('laneId').value = 0;
+			document.getElementById('laneId').value = 1;
 			document.getElementById('cDescription').value = "";
+			document.getElementById('cWorth').value = 1;
 			document.getElementById('createCardBtn').style.visibility = 'visible';
 			document.getElementById('createCardForm').style.visibility = 'hidden';
 		}
@@ -270,11 +271,13 @@ app.controller('TestCtrl',function(dataServ) {
 		var cData = {
 				'cTitle' : createC.cTitle,
 				'laneId' : createC.laneId,
-				'cDescription' : createC.cDescription
+				'cDescription' : createC.cDescription,
+				'cWorth' : createC.cWorth
 		} 
 		
 		$http.post('createCard', cData).then(function(response) {
 			getTrelloInfo(response,1);
+			
 
 		});
 	};
@@ -743,7 +746,7 @@ function getTrelloInfo(response, check) { // &1 (using this as a marker)
 	for(var i = 0; i < lanes.length; i++){
     	var laneDivs = document.createElement('div');
     	laneDivs.setAttribute("id", "lane"+lanes[i].lId)
-    	laneDivs.setAttribute("style", "float:left; width: 20%; overflow: visible; word-wrap: nowrap")
+    	laneDivs.setAttribute("style", "float:left; margin-left: 30px; margin-right: 30px;  margin-top: 10px; margin-bottom: 10px; overflow: visible; word-wrap: nowrap")
 
     	var row = document.createElement('tr');
     	var tdlTitle = document.createElement('td');
@@ -872,4 +875,7 @@ function loadTrelloInfo(){
 	xhr.send(trelB);
 	
 }
+
+
+
 ////////////////////ENDJAVASCRIPT/////////////////////////////////////
