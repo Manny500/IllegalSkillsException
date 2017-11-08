@@ -759,7 +759,7 @@ function getTrelloInfo(response, check) { // &1 (using this as a marker)
 	for(var i = 0; i < lanes.length; i++){
     	var laneDivs = document.createElement('div');
     	laneDivs.setAttribute("id", "lane"+lanes[i].lId)
-    	laneDivs.setAttribute("style", "float:left; width: 20%; overflow: visible; word-wrap: nowrap")
+    	laneDivs.setAttribute("style", "float:left; margin-left: 30px; margin-right: 30px; overflow: visible; word-wrap: nowrap")
 
     	var row = document.createElement('tr');
     	var tdlTitle = document.createElement('td');
