@@ -20,16 +20,22 @@ public class HomepageCtrl {
 
 	@RequestMapping("/home")
 	public String home(HttpServletRequest request) {
-		
-		if(request.isRequestedSessionIdValid()) {
-			
+
+		if (request.isRequestedSessionIdValid()) {
+
 			return "/static/homePage.html";
 
-		}else {
-						
+		} else {
+
 			return "/static/features/form/login.html";
 
 		}
 	}
+	
+	@RequestMapping("/load.gif")
+	public String loader() {
+		return "forward: static/features/trello/load.gif";
+	}
+
 
 }

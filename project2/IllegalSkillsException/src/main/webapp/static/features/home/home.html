@@ -1,5 +1,20 @@
-<div id="view">
-<h1>Welcome to the tv2 View</h1>
+<br>
+<br>
+<h2 style="float:left" style="width: 15%;" >Personal Boards:</h2>
+<h2 style="margin-left: 50%">Team Boards: </h2>
+<br>
+<button type="button" data-ng-click="test.startCreate()" id="createBoardBtn" class="btn btn-primary btn-sm">+ Create Board</button> <br>
+<br>
+<div id="homeTitle"></div>
+
+<div id="view" style="float:left" style="width: 15%;"></div>
+<div id="view2" style="margin-left: 50%"></div>
+
+
+
+<div id="createBoardForm" style="visibility:hidden;">
+
+	Enter Title: <input id="bTitle" data-ng-model="test.bTitle"  type="text"><br><br>
+	<button type="button" data-ng-click="test.create()" id="createBtn" class="btn btn-primary btn-sm">Create Board</button>
+
 </div>
-
-

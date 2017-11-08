@@ -30,7 +30,8 @@ public class Lane implements Serializable {
 
 	@Column(name = "L_TITLE")
 	private String lTitle;
-
+	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "B_ID")
 	private Board laneBoard;
@@ -42,6 +43,31 @@ public class Lane implements Serializable {
 	public Lane() {
 		super();
 	}
+	
+	
+
+	public Lane(String lTitle) {
+		super();
+		this.lTitle = lTitle;
+	}
+
+    
+
+	public Lane(int lId, String lTitle) {
+		super();
+		this.lId = lId;
+		this.lTitle = lTitle;
+	}
+
+
+
+	public Lane(String lTitle, Board laneBoard) {
+		super();
+		this.lTitle = lTitle;
+		this.laneBoard = laneBoard;
+	}
+
+
 
 	public Lane(int lId, String lTitle, Board laneBoard, Set<Card> cards) {
 		super();
@@ -82,5 +108,7 @@ public class Lane implements Serializable {
 	public void setCards(Set<Card> cards) {
 		Cards = cards;
 	}
+	
+	
 
 }

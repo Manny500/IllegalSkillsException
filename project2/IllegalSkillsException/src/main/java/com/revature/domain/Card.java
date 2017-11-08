@@ -40,9 +40,12 @@ public class Card implements Serializable {
 	@Column(name = "C_DESCRIPTION")
 	private String cDescription;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "L_ID")
 	private Lane cardLane;
+	
+
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "taskCard", fetch = FetchType.EAGER)
@@ -51,6 +54,15 @@ public class Card implements Serializable {
 	public Card() {
 		super();
 	}
+
+	
+	
+	public Card(String cTitle) {
+		super();
+		this.cTitle = cTitle;
+	}
+
+
 
 	public Card(int cId, int cVerify, int cWorth, String cTitle, String cDescription, Lane cardLane, Set<Task> tasks) {
 		super();
@@ -63,6 +75,8 @@ public class Card implements Serializable {
 		this.tasks = tasks;
 	}
 
+
+	
 	public int getcId() {
 		return cId;
 	}

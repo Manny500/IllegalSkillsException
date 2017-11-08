@@ -1,0 +1,66 @@
+<style>
+#loading {
+    position: absolute; width: 65%; height: 75%;background: url('https://cdn-images-1.medium.com/max/800/1*W8cj-FRc58UozzcMWqVPZw.gif') no-repeat center center;
+}
+</style>
+<div id="loading"></div>
+
+
+<div id="view" style="overflow: auto; word-wrap: nowrap; height: 350px; width: 10000px;"></div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Tasks To Do</h4>
+        </div>
+        <div class="modal-body">
+          
+        </div>
+        <div class="modal-footer">
+        Enter Lane: <input id="laneNumber" data-ng-model="test.updatedLaneId" type="number"> 
+        <button id="move" data-ng-click="test.updateCardLane()" type="button" class="btn btn-default" data-dismiss="modal">move</button>
+          <button id="close" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+ 
+<div id="view"></div>
+
+<br>
+<!-- ADD LANES -->
+<button type="button" data-ng-click="test.updateLane()" id="updateLaneBtn" class="btn btn-primary">Add a new Lane</button>
+
+
+<div id="laneForm" style="visibility:hidden;">
+
+	New Lane: <input id="lTitle" data-ng-model="test.lTitle" type="text"> <br>
+	
+	<button type="button" data-ng-click="test.doneL()" id="doneLaneBtn" class="btn btn-primary">OK</button>
+	
+</div>
+
+<!-- Add Card -->
+<button type="button" data-ng-click="test.startCreate2()" id="createCardBtn" class="btn btn-primary btn-sm">+ Create Card</button> 
+
+<div id="createCardForm" style="visibility:hidden;">
+
+	Enter Title: <input id="cTitle" data-ng-model="test.cTitle"  type="text" required><br><br>
+	Enter Lane ID: <input id="laneId" data-ng-model="test.laneId"  type="number" min="1" max="999" required><br><br>
+	Enter Description: <input id="cDescription" data-ng-model="test.cDescription"  type="text" required><br><br>
+	Enter Points: <input id="cWorth" data-ng-model="test.cWorth"  type="number" min="1" max="999" required><br><br>
+	<button type="button" data-ng-click="test.create2()" id="createBtn" class="btn btn-primary btn-sm">Create Card</button>
+
+</div>
+
+
+
+
+   
+

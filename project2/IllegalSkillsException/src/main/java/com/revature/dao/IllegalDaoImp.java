@@ -1,5 +1,7 @@
 package com.revature.dao;
 
+import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -9,13 +11,14 @@ import org.springframework.stereotype.Repository;
 
 import com.revature.domain.Board;
 import com.revature.domain.Card;
+import com.revature.domain.Chart;
 import com.revature.domain.Lane;
 import com.revature.domain.TV2User;
 import com.revature.domain.Task;
 
 @Repository
 public class IllegalDaoImp implements IllegalDao {
-	
+
 	@Autowired
 	private SessionFactory sessionFactory;
 
@@ -55,6 +58,15 @@ public class IllegalDaoImp implements IllegalDao {
 		return (TV2User) session.get(TV2User.class, user.getUserId());
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<TV2User> getAllUsers() {
+		Session session = sessionFactory.getCurrentSession();
+		Criteria crit = session.createCriteria(TV2User.class);
+		List<TV2User> tv2u = crit.list();
+		return tv2u;
+	}
+
 	public TV2User getUserByUsername(TV2User user) {
 		Session session = sessionFactory.getCurrentSession();
 		Criteria crit = session.createCriteria(TV2User.class);
@@ -68,6 +80,15 @@ public class IllegalDaoImp implements IllegalDao {
 		return (Board) session.get(Board.class, board.getbId());
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Board> getAllBoards() {
+		Session session = sessionFactory.getCurrentSession();
+		Criteria crit = session.createCriteria(Board.class);
+		List<Board> boards = crit.list();
+		return boards;
+	}
+	
 	@Override
 	public Lane getLane(Lane lane) {
 		Session session = sessionFactory.getCurrentSession();
@@ -89,7 +110,12 @@ public class IllegalDaoImp implements IllegalDao {
 	@Override
 	public void updateUser(TV2User user) {
 		Session session = sessionFactory.getCurrentSession();
-		session.update(user);
+		session.merge(user);
+	}
+	
+	public void mergeUser(TV2User user) {
+		Session session = sessionFactory.getCurrentSession();
+		session.merge(user);
 	}
 
 	@Override
@@ -107,7 +133,7 @@ public class IllegalDaoImp implements IllegalDao {
 	@Override
 	public void updateCard(Card card) {
 		Session session = sessionFactory.getCurrentSession();
-		session.update(card);
+		session.merge(card);
 	}
 
 	@Override
@@ -146,6 +172,30 @@ public class IllegalDaoImp implements IllegalDao {
 	public void deleteTask(Task task) {
 		Session session = sessionFactory.getCurrentSession();
 		session.delete(task);
+	}
+
+	@Override
+	public void createChart(Chart chart) {
+		Session session = sessionFactory.getCurrentSession();
+		session.save(chart);
+	}
+
+	@Override
+	public Chart getChart(Chart chart) {
+		Session session = sessionFactory.getCurrentSession();
+		return (Chart) session.get(Chart.class, chart.getChartId());
+	}
+
+	@Override
+	public void updateChart(Chart chart) {
+		Session session = sessionFactory.getCurrentSession();
+		session.update(chart);
+	}
+
+	@Override
+	public void deleteChart(Chart chart) {
+		Session session = sessionFactory.getCurrentSession();
+		session.delete(chart);
 	}
 
 }

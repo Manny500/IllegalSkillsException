@@ -26,6 +26,7 @@ public class Task implements Serializable {
 
 	@Column(name = "T_INFO")
 	private String tInfo;
+	
 
 	@ManyToOne
 	@JoinColumn(name = "C_ID")
@@ -34,6 +35,13 @@ public class Task implements Serializable {
 	public Task() {
 		super();
 	}
+	
+
+	public Task(String tInfo) {
+		super();
+		this.tInfo = tInfo;
+	}
+
 
 	public Task(int tId, int tComplete, String tInfo, Card taskCard) {
 		super();
@@ -43,6 +51,8 @@ public class Task implements Serializable {
 		this.taskCard = taskCard;
 	}
 
+	
+	
 	public int gettId() {
 		return tId;
 	}
