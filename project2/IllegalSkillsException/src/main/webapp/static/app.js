@@ -607,6 +607,7 @@ function getProfileInfo(response) {
 
 	// create the row -tr
 	var row = document.createElement('tr');
+	row.style.color = "white";
 
 	// append the cells to the tr
 	row.appendChild(tdID);
@@ -671,6 +672,7 @@ function getListOfUsers(response) {
 			tdTeam.innerHTML = team;
 
 			var row = document.createElement('tr');
+			row.style.color = "white";
 
 			// append the cells to the tr
 			row.appendChild(tdID);
