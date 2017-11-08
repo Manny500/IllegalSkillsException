@@ -97,6 +97,7 @@ app.controller('TestCtrl',function(dataServ) {
 	addL = this; // add lines
 	//card
 	createC = this;
+	verifyC = this;
 	
 	// update card thing
 	uc = this;
@@ -135,6 +136,12 @@ app.controller('TestCtrl',function(dataServ) {
 	createC.startCreate2 = function(){
 		document.getElementById('createCardBtn').style.visibility = 'hidden';
 		document.getElementById('createCardForm').style.visibility = 'visible';
+	};
+	
+	//verify
+	verifyC.startVerify = function(){
+		document.getElementById('verifyCardBtn').style.visibility = 'hidden';
+		document.getElementById('verifyCardForm').style.visibility = 'visible';
 	};
 	
 	// hide the form and send the ajax request
@@ -183,10 +190,23 @@ app.controller('TestCtrl',function(dataServ) {
 
 			// hide the form and show the update button and clear input form
 			document.getElementById('cTitle').value = "";
-			document.getElementById('laneId').value = 0;
+			document.getElementById('laneId').value = 1;
 			document.getElementById('cDescription').value = "";
+			document.getElementById('cWorth').value = 1;
 			document.getElementById('createCardBtn').style.visibility = 'visible';
 			document.getElementById('createCardForm').style.visibility = 'hidden';
+		}
+		
+		//verify
+		verifyC.verify = function(){
+			verifyC.process = dataServ.processV;
+			verifyC.process();
+			
+
+			// hide the form and show the update button and clear input form
+			document.getElementById('cId').value = 1;
+			document.getElementById('verifyCardBtn').style.visibility = 'visible';
+			document.getElementById('verifyCardForm').style.visibility = 'hidden';
 		}
 		
 	}).service('dataServ', function($http) {
@@ -196,6 +216,7 @@ app.controller('TestCtrl',function(dataServ) {
 	    //card
 		var cDataService = this;
 		var ucDataService = this;
+		var vDataService = this;
 					
 	dataService.info = function() {
 
@@ -284,11 +305,28 @@ app.controller('TestCtrl',function(dataServ) {
 		var cData = {
 				'cTitle' : createC.cTitle,
 				'laneId' : createC.laneId,
-				'cDescription' : createC.cDescription
+				'cDescription' : createC.cDescription,
+				'cWorth' : createC.cWorth
 		} 
 		
 		$http.post('createCard', cData).then(function(response) {
 			getTrelloInfo(response,1);
+			$(document).ready(function() {
+				$("#loading").hide();
+			});
+		});
+	};
+	
+	//verify
+	vDataService.processV = function() {
+		
+		var vData = {
+				'cId' : verifyC.cId
+				
+		} 
+		
+		$http.post('verifyCard', vData).then(function(response) {
+			
 			$(document).ready(function() {
 				$("#loading").hide();
 			});
@@ -449,12 +487,12 @@ function displayChart(myData) {
 	var tempData = {
 		labels : labels,
 		datasets : [ {
-			fillColor : "rgba(151,187,205,0.2)",
-			strokeColor : "rgba(151,187,205,1)",
-			pointColor : "rgba(151,187,205,1)",
+			fillColor : "rgba(255,255,255,0.2)",
+			strokeColor : "rgba(255,255,255,1)",
+			pointColor : "rgba(255,255,255,1)",
 			pointStrokeColor : "#fff",
 			pointHighlightFill : "#fff",
-			pointHighlightStroke : "rgba(151,187,205,1)",
+			pointHighlightStroke : "rgba(255,255,255,1)",
 			data : data
 		} ]
 	};
@@ -759,7 +797,7 @@ function getTrelloInfo(response, check) { // &1 (using this as a marker)
 	for(var i = 0; i < lanes.length; i++){
     	var laneDivs = document.createElement('div');
     	laneDivs.setAttribute("id", "lane"+lanes[i].lId)
-    	laneDivs.setAttribute("style", "float:left; margin-left: 30px; margin-right: 30px; overflow: visible; word-wrap: nowrap")
+    	laneDivs.setAttribute("style", "float:left; margin-left: 30px; margin-right: 30px; overflow: visible; word-wrap: nowrap; color: white;")
 
     	var row = document.createElement('tr');
     	var tdlTitle = document.createElement('td');
@@ -778,7 +816,8 @@ function getTrelloInfo(response, check) { // &1 (using this as a marker)
 	    	aCardTitle.setAttribute("data-target", "#myModal")
 	    	aCardTitle.setAttribute("id","cid"+cards[j].cId)
 	    	aCardTitle.setAttribute("href","!#")
-	    	aCardTitle.innerHTML = cards[j].cTitle;
+	    	aCardTitle.innerHTML = cards[j].cId+"."+cards[j].cTitle;
+    		aCardTitle.style.color = "silver";
     		
     		//getting tasks START
     		aCardTitle.onclick = function(){

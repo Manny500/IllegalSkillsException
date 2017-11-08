@@ -198,4 +198,11 @@ public class IllegalDaoImp implements IllegalDao {
 		session.delete(chart);
 	}
 
+	@Override
+	public void mergeCard(Card card) {
+		Session session = sessionFactory.getCurrentSession();
+		session.merge(card);
+		
+	}
+
 }

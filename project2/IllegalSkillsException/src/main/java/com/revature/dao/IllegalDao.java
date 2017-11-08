@@ -51,6 +51,8 @@ public interface IllegalDao {
 	public void updateLane(Lane lane);
 
 	public void updateCard(Card card);
+	
+	public void mergeCard(Card card);
 
 	public void updateTask(Task task);
 	

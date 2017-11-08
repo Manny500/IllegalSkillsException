@@ -250,7 +250,7 @@ public class RestCtrl {
 
 	}
 	
-	//card
+		//card
 		@RequestMapping(value = {"/createCard" }, method = RequestMethod.POST, consumes= "application/json", produces = "application/json")
 		@ResponseBody
 		public ResponseEntity<LaneDTO> createCard(@RequestBody cardDTO cardD, HttpServletRequest request) throws URISyntaxException {
@@ -323,12 +323,75 @@ public class RestCtrl {
 
 		}
 		
+				//verify
+				@RequestMapping(value = {"/verifyCard" }, method = RequestMethod.POST, consumes= "application/json", produces = "application/json")
+				@ResponseBody
+				public void verifyCard(@RequestBody cardDTO cardD, HttpServletRequest request) throws URISyntaxException {
+					System.err.println("id " + cardD.getcId());
+
+					Card cardT = new Card();
+					cardT.setcId(cardD.getcId());
+					
+					cardT = service.getCard(cardT);
+					cardT.setcVerify(1);
+					Lane lane = new Lane();
+					lane.setlId(cardD.getLaneId());
+					
+					try {
+					lane = service.getLane(lane);
+					}catch(Exception e) {
+
+					}
+					//cardT.setCardLane(lane);
+					
+					
+					try {
+					service.mergeCard(cardT);
+					}catch(Exception e) {
+						
+					}
+					System.err.println("Card Verify " + cardD.getcVerify());
+					Board board = cardT.getCardLane().getLaneBoard();
+					
+					Board nb = new Board();
+					try {
+					nb = service.getBoard(board);
+					}catch(Exception e) {
+						
+					}
+					Set<Lane> lanes = nb.getLanes();
+					Set<cardDTO> cards = new HashSet<cardDTO>();
+					
+					for (Lane l : lanes) {
+						Set<Card> card = l.getCards();
+						
+						for (Card c : card) {
+							int laneid = c.getCardLane().getlId();
+							cardDTO cdto = new cardDTO(c.getcId(),c.getcVerify(),c.getcWorth(),c.getcTitle(),c.getcDescription(),laneid);
+							cards.add(cdto);
+							
+							
+							
+						}
+					}
+
+					ArrayList<cardDTO> cardList = new ArrayList<cardDTO>(cards);
+					
+					addPoints(cardList);
+					
+
+
+				}
+		
 		public void addPoints(ArrayList<cardDTO> cardlist) {
 			int points = 0;
 			
 			
 			for(int i = 0; i < cardlist.size(); i++) {
+				System.err.println("Verified or not " + cardlist.get(i).getcVerify());
+				if(cardlist.get(i).getcVerify() != 1) {
 				points += cardlist.get(i).getcWorth();
+				}
 			}
 			
 			Lane lane = new Lane();
