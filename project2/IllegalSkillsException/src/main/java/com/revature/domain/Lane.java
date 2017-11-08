@@ -51,6 +51,14 @@ public class Lane implements Serializable {
 		this.lTitle = lTitle;
 	}
 
+    
+
+	public Lane(int lId, String lTitle) {
+		super();
+		this.lId = lId;
+		this.lTitle = lTitle;
+	}
+
 
 
 	public Lane(String lTitle, Board laneBoard) {

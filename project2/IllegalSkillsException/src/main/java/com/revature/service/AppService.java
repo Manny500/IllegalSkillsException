@@ -28,17 +28,15 @@ public class AppService {
 	private IllegalDao dao;
 
 	public TV2User validateLogin(TV2User us) {
-
+		System.out.println("wonder if i get here");
 		user = dao.getUserByUsername(us);
 
 		if (user == null) {
-
 			// Create custom exception delete print out
 			return null;
 			// throw new AccountDoesNotExistException();
 
 		} else if (user.getPassword().equals(us.getPassword())) {
-
 			return user;
 
 		} else {
