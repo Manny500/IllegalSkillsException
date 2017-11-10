@@ -254,7 +254,7 @@ public class RestCtrl {
 		@RequestMapping(value = {"/createCard" }, method = RequestMethod.POST, consumes= "application/json", produces = "application/json")
 		@ResponseBody
 		public ResponseEntity<LaneDTO> createCard(@RequestBody cardDTO cardD, HttpServletRequest request) throws URISyntaxException {
-			System.err.println("Description" + cardD.getcDescription() + " Title " + cardD.getcTitle() + " Lane Id " + cardD.getLaneId() + " Points " + cardD.getcWorth());
+			
 			if(cardD.getLaneId() == 0) {
 //				URI home = new URI("redirect: home");
 //			    HttpHeaders httpHeaders = new HttpHeaders();
@@ -327,7 +327,7 @@ public class RestCtrl {
 				@RequestMapping(value = {"/verifyCard" }, method = RequestMethod.POST, consumes= "application/json", produces = "application/json")
 				@ResponseBody
 				public void verifyCard(@RequestBody cardDTO cardD, HttpServletRequest request) throws URISyntaxException {
-					System.err.println("id " + cardD.getcId());
+					
 
 					Card cardT = new Card();
 					cardT.setcId(cardD.getcId());
@@ -342,7 +342,7 @@ public class RestCtrl {
 					}catch(Exception e) {
 
 					}
-					//cardT.setCardLane(lane);
+					
 					
 					
 					try {
@@ -350,7 +350,7 @@ public class RestCtrl {
 					}catch(Exception e) {
 						
 					}
-					System.err.println("Card Verify " + cardD.getcVerify());
+					
 					Board board = cardT.getCardLane().getLaneBoard();
 					
 					Board nb = new Board();
@@ -388,7 +388,7 @@ public class RestCtrl {
 			
 			
 			for(int i = 0; i < cardlist.size(); i++) {
-				System.err.println("Verified or not " + cardlist.get(i).getcVerify());
+				
 				if(cardlist.get(i).getcVerify() != 1) {
 				points += cardlist.get(i).getcWorth();
 				}
@@ -408,7 +408,7 @@ public class RestCtrl {
 			chart.setChartSum(points);
 			
 			service.createChart(chart);
-			System.err.println("Success " + chart.getChartSum());
+			
 		}
 
 	@RequestMapping(value = { "/trelloInfo" }, method = RequestMethod.POST, consumes= "application/json",produces = "application/json")
