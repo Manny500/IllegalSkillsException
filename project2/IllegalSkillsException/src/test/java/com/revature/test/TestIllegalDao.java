@@ -18,9 +18,10 @@ import com.revature.domain.TV2User;
 import com.revature.domain.Task;
 import com.revature.service.AppService;
 
-//@ContextConfiguration(locations = "classpath:src/main/webapp/WEB-INF/beans-test.xml")
+//@ContextConfiguration(locations = "classpath:beans-test.xml")
 @ContextConfiguration({ "file:src/main/webapp/WEB-INF/beans-test.xml" })
 @RunWith(SpringJUnit4ClassRunner.class)
+//@RunWith(MockitoJUnitRunner.class)
 public class TestIllegalDao {
 
 	@Autowired
