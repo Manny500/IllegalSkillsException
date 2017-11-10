@@ -9,7 +9,27 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
 
-	<import resource="beans.xml" />
+	<!-- Scans for Spring @s -->
+	<context:component-scan base-package="com.revature"></context:component-scan>
+
+	<!-- Turn on MVC @s like @Controller, @RequestMapping -->
+	<mvc:annotation-driven />
+
+	<!-- turn on AOP -->
+	<aop:aspectj-autoproxy />
+
+	<!-- Tell DispatcherServlet the location of our static content -->
+	<mvc:resources location="/static/" mapping="/static/**"></mvc:resources>
+
+
+	<tx:annotation-driven />
+
+	<!-- Searches for @Controller, @RequestMapping etc. -->
+	<mvc:annotation-driven />
+
+	<!-- We need to configure Hibernate with Spring: called contextual Sessions -->
+
+	<!-- 1st supply your DataSource: basic JDBC information -->
 	<bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<!-- Setter DI of Username, Pw, URL, Driver -->
 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
@@ -19,6 +39,31 @@
 			value="jdbc:oracle:thin:@octcat.ckqf8rreyjxi.us-east-2.rds.amazonaws.com:1521:ORCL"></property>
 	</bean>
 
+	<!-- Now give that DataSource object to SessionFactory -->
+	<bean id="mySessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<!-- Inject the DataSource bean -->
+		<property name="dataSource" ref="myDataSource"></property>
 
+		<!-- Now supply the rest of the Hibernate Properties -->
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">none</prop>
+			</props>
+		</property>
+
+		<!-- scans for JPA -->
+		<property name="packagesToScan" value="com.revature.domain" />
+
+	</bean>
+
+	<!-- create a transaction manager and give the sessionfactory -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="mySessionFactory"></property>
+	</bean> 
 
 </beans>
