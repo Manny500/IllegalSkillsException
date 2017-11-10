@@ -815,7 +815,7 @@ function getTrelloInfo(response, check) { // &1 (using this as a marker)
 	for(var i = 0; i < lanes.length; i++){
     	var laneDivs = document.createElement('div');
     	laneDivs.setAttribute("id", "lane"+lanes[i].lId)
-    	laneDivs.setAttribute("style", "float:left; margin-left: 30px; margin-right: 30px; overflow: visible; word-wrap: nowrap; color: white;")
+    	laneDivs.setAttribute("style", "float:left; margin-left: 30px; margin-right: 30px; overflow: visible; word-wrap: nowrap; color: white; font-size: 20px;")
 
     	var row = document.createElement('tr');
     	var tdlTitle = document.createElement('td');
@@ -836,6 +836,7 @@ function getTrelloInfo(response, check) { // &1 (using this as a marker)
 	    	aCardTitle.setAttribute("href","!#")
 	    	aCardTitle.innerHTML = cards[j].cId+"."+cards[j].cTitle;
     		aCardTitle.style.color = "silver";
+    		aCardTitle.style.fontSize = 15;
     		
     		//getting tasks START
     		aCardTitle.onclick = function(){
