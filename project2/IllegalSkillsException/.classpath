@@ -29,5 +29,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/ojdbc7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/x4383/Desktop/Training/jars/junit-4.12.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
